@@ -1,0 +1,512 @@
+
+set guideindexdir "/GuideIndexV2"
+
+# agw, 23/2/03 - nicked the global setup of seasonpassdir from TiVoWeb
+# httpd-tt.tcl and index.itcl
+global tivoswversion
+global version3
+RetryTransaction {
+   set swsystem [db $db open /SwSystem/ACTIVE]
+   set tivoswversion [dbobj $swsystem get Name]
+
+   if { [string range $tivoswversion 0 2] >= 3.0 } {
+      set version3 1
+   } else {
+      set version3 0
+   }
+}
+global seasonpassdir
+if {$version3} {
+  set seasonpassdir "/SeasonPass/User"
+} else {
+  set seasonpassdir "/SeasonPass"
+}
+
+
+# stolen from tivoweb search module's index.uitcl
+# for tms.index, relevant data is byte  0-11 of each record.  this proc 
+# closes in on an exact match (type 1), or ranged match (type 0)
+proc tms_indexsearch {indexfsid startoffset maxoffset recsize incrsize searchkey searchtype} {
+   #puts "indexsearch type=$searchtype so=$startoffset mo=$maxoffset"
+   set match 0
+   for {set offset $startoffset} {$offset < $maxoffset} {incr offset $incrsize} {
+      set end $incrsize
+      if { $maxoffset - $offset < $incrsize } {
+         set end [expr $maxoffset - $offset]
+      }
+         set indexdata [mfs getpart $indexfsid $offset $end]
+      set slen [expr $end / $recsize]
+      set top $slen
+      set current [expr $top / 2]
+      set bottom 0
+      set count 0
+      while { $top >= $bottom } {
+         #puts "top=$top bottom=$bottom"
+         set data [string range $indexdata [expr $current * $recsize] [expr $current * $recsize + 11]]
+         # binary scan $data H8 fsidnum
+         # puts "$searchtype $offset $top $bottom $current [expr 0x$fsidnum]"
+         set compare [string compare $data $searchkey]
+         if {$compare == 0 || ($searchtype == 0 && $compare == 1)} {
+            if { $current - 1 < 0 } {
+               set match 1
+               break
+            }
+            set data2 [string range $indexdata [expr ($current-1) * $recsize] [expr ($current-1) * $recsize + 11]]
+            if {[string compare $data2 $searchkey] == -1} {
+               set match 1
+               break
+            } else {
+               set top [expr $current - 1]
+            }
+         } elseif {$compare == -1} {
+            set bottom [expr $current + 1]
+         } else {
+            set top [expr $current - 1]
+         }
+         set current [expr $bottom + ($top - $bottom) / 2]
+         incr count
+         if { $count > $slen } {
+            error "Error: infinite loop in binary search ($bottom $top $current $slen)"
+         }
+      }
+      if { $match == 1} {
+         if {$searchtype == 1} {
+            #puts "current=$current, recsize=$recsize"
+            set range [expr $current * $recsize + 12]
+            #puts "range=$range"
+            binary scan [string range $indexdata $range [expr $range+3]] I d1
+            #puts [format "returning %04x" $d1] 
+            unset indexdata
+            return $d1
+         } else {
+            unset indexdata
+            return [expr ($offset-$startoffset)/$recsize + $current]
+         }
+      }
+   }
+
+   unset indexdata
+   if {$searchtype == 2} {
+      return ""
+   } else {
+      return -1
+   }
+}
+
+proc subtract {a b} {
+  set la [string length $a]
+  set lb [string length $b]
+
+  #puts "la=$la lb=$lb"
+
+  if {$la < $lb} {
+    set formatstring [format "%%0%s%s" $lb "s"]
+    set a [format $formatstring $a]
+    set la $lb
+  } else {
+    set formatstring [format "%%0%s%s" $la "s"]
+    set b [format $formatstring $b]
+    set lb $la
+  }
+
+  set result ""
+  set carry 0
+  for {set index [expr $lb-1]} {$index >= 0} {incr index -1} {
+   #puts "index=$index"
+   set current [expr [string index $a $index] - [string index $b $index]]
+    if {$carry == 1} {
+      incr current -1
+    }
+    if {$current<0} {
+      set carry 1
+      incr current 10
+    } else {
+      set carry 0
+    }
+
+    set result [format "%s%s" $current $result]
+
+    #puts "current=$current carry=$carry"
+  }
+  if {$carry == 1} {
+    set result [format "-%s" $result]
+  }
+  #puts ""
+  #puts "result=$result"
+  return $result
+}
+
+proc divide {dividend divisor} {
+  set result 0
+  set temp $dividend
+
+  #puts "$dividend / $divisor"
+  while {[string index $temp 0] != "-"} {
+    incr result 1
+    set prevtemp $temp
+   set temp [subtract $temp $divisor]
+  }
+  return "[expr $result - 1] $prevtemp"
+}
+
+proc string-to-hex {longstring} {
+  #puts "converting $longstring"
+  return [divide $longstring "4294967296"]
+}
+
+proc tms_to_fsid tmsid {
+  global guideindexdir
+  global db
+    set tmskeyfsid [lindex [mfs find $guideindexdir/Tms.key] 0]
+    set tmsindex [lindex [mfs find $guideindexdir/Tms.index] 0]
+    set tmskeydata [mfs getpart $tmskeyfsid 0x0 0x18]
+ 
+  binary scan [string range $tmskeydata 0x00 0x03] I recsize
+  binary scan [string range $tmskeydata 0x04 0x07] I totalnumkeys
+  binary scan [string range $tmskeydata 0x08 0x0B] I incrsize 
+  binary scan [string range $tmskeydata 0x10 0x13] I numkeys 
+
+  #puts "recordsize=$recsize"
+  #puts "totalnumkeys=$totalnumkeys"
+  #puts "incrsize=$incrsize"
+  #puts "numkeys=$numkeys"  
+
+  set startoffset 24
+  set maxoffset [expr $startoffset + $recsize * $numkeys]
+
+  #puts "maxoff=$maxoffset"
+
+  set prefix [string range $tmsid 0 1]
+  #set number [binary format I [string range $tmsid 2 end]]
+  #puts [string range $tmsid 2 end]
+  set number "1"
+  set number  [string range $tmsid 2 end]
+  #puts "sl=[string length $number]"
+  if [expr [string length $number] == 10] {
+    #puts "setting mn to zero, since this is a showing"
+    set mn 0
+  } else {
+    #puts "setting mn to 256 since this is a series"
+    set mn 256
+  }
+
+  set numbers [string-to-hex $number]
+  set n1 [lindex $numbers 0]
+  set n2 [lindex $numbers 1]
+  regsub ^0+(.+) $n1 \\1 n1
+  regsub ^0+(.+) $n2 \\1 n2
+  #puts [format "%x %x" $n1 $n2]
+   
+  set search [binary format a2SII $prefix $mn $n1 $n2]
+
+  #
+  # look through the key-file to get a starting point
+  #
+  
+  set startoffset 24
+  set maxoffset [expr $startoffset + $recsize * $numkeys]
+  set first [tms_indexsearch $tmskeyfsid $startoffset $maxoffset $recsize $incrsize $search 0]
+  if { $first == -1 } {
+      error "Error couldn't find starting offset in tms key"
+  }
+  #puts [format "first=0x%04x" $first]
+
+  # 
+  # next, go throught index-file to get the exact match
+  #
+  set startoffset [expr $first * $incrsize]
+  set maxoffset [expr $startoffset + $incrsize]
+  if { $maxoffset > $recsize * $totalnumkeys } {
+      set maxoffset [expr $recsize * $totalnumkeys]
+  }
+  set current [tms_indexsearch $tmsindex $startoffset $maxoffset $recsize $incrsize $search 1]
+  return $current
+}
+
+proc station_tms_to_fsid {tmsid} {
+  set j 0
+  global db
+  ForeachMfsFile fsid name type "/StationTms" "$tmsid" {
+    RetryTransaction {
+      set station [db $db openid $fsid]
+      set station_id [dbobj $station get TmsId]
+      if {![string compare $tmsid $station_id]} {
+        return $fsid
+      }
+    }
+  }
+  return -1
+}
+
+
+proc ForeachMfsFile-intrans {idVar nameVar typeVar dirName prefix body} {
+
+    global errorInfo errorCode
+
+    upvar $idVar   id
+    upvar $nameVar name
+    upvar $typeVar type
+
+    # Get the first batch of names
+        if { [catch {mfs scan $dirName -start $prefix -count 50} batch] } {
+            global errorCode errorInfo
+            if { $errorCode == "errNmNameNotFound" } {
+                return
+            } else {
+                error $batch $errorInfo $errorCode
+            }
+        }
+    
+    while { [llength $batch] > 0 } {
+        # Execute the body for each item in this batch
+        foreach item $batch {
+            set id   [lindex $item 0]
+            set name [lindex $item 1]
+            set type [lindex $item 2]
+            
+            # bail if we're past the entries that start with the given prefix
+            if { ! [PrefixMatches $prefix $name] } {
+                return
+            }
+            
+            set code [catch {uplevel $body} string]
+            if { $code == 1 } {
+                return -code error -errorinfo $errorInfo  -errorcode $errorCode $string
+            } elseif { $code == 3 } {
+                # this is a break in the body.  just return normally
+                return 
+            } elseif { $code != 0 } {
+                return -code $code $string 
+            }
+        }
+
+        # Get the next batch
+        set lastName [lindex [lindex $batch end] 1]
+            set batch [mfs scan $dirName -start $lastName -count 50]
+            if { $lastName == [lindex [lindex $batch 0] 1] } {
+                set batch [lrange $batch 1 end]
+            }
+    }
+}
+
+
+proc person_restring {string} {
+  global db
+  puts "string=$string"
+  #person_restring SCHWARTZKE:12::Schwartz|Kenny:
+  set fields [split $string ":"]
+  set short_name [lindex $fields 0]
+  set typenum    [lindex $fields 1]
+  set star       [lindex $fields 2]
+  set stringname [lindex $fields 3]
+  
+  
+  set result ""
+  
+  ForeachMfsFile fsid name type "/Person/$typenum" "$short_name" {
+    RetryTransaction {
+      set person [db $db openid $fsid]
+      if {[string compare $stringname [dbobj $person get Name]] == 0} {
+        set result $name
+      }
+    }
+  }
+  
+  if {[string length $result] < 1} {
+    RetryTransaction {
+      set person [db $db create Person]
+      dbobj $person set Name $stringname
+      dbobj $person set Version 1
+      if {[string length $star] > 0} {dbobj $person set Star $star}
+      dbobj $person set Role $typenum
+      set fsid [dbobj $person fsid]
+    }
+    set result "$short_name:$fsid"
+  }
+  return $result
+}
+
+proc set_station_logo {tmsid logoindex} {
+  global db
+  puts "Setting $tmsid to $logoindex"
+  set fsid [station_tms_to_fsid $tmsid]
+
+  # agw, 23/2/03 - skip missing stations, write trace to stderr
+  if {$fsid == "-1"} {
+    puts stderr "Couldn't find an fsid for station $tmsid - skipping..."
+  } else {
+    puts "fsid=$fsid"
+    RetryTransaction {
+#      set station [db $db openid $fsid]
+#      dbobj $station set LogoIndex $logoindex
+    }
+  }
+}
+
+proc object_rebuild {object} {
+  global db
+  puts "or:$object"
+  set type [lindex $object 0]
+  RetryTransaction {
+    set new_obj [db $db create $type]
+    for {set i 1} {$i<[llength $object]} {incr i} {
+      set element [lindex $object $i]
+      regexp "(\[^:\]*):(.*)" $element dummy type val 
+      if [regexp "^\\\$" $val] {
+        uplevel "set ooo_temp $val"
+        upvar ooo_temp deval
+        set val $deval
+      }
+      if {[string range $val 0 0] == "@"} {
+        puts "doing it"
+        set minival [string range $val 1 end]
+        puts "minival=$minival"
+        uplevel "set ooo_temp1 $minival"
+        upvar ooo_temp1 id
+        puts "id=$id"
+        set val [db $db openid $id]
+      }
+      set index 0
+      foreach subval $val {
+        if {$index==0} {
+          dbobj $new_obj set $type $subval
+        } else {
+          dbobj $new_obj add $type $subval 
+        }
+        incr index
+      }
+    }
+    set id [dbobj $new_obj fsid]
+  }
+  return $id
+}
+
+proc rebuild_series {object} {
+
+  global new_tms
+  global new_tms_fs
+  global newid
+  global oldid
+   
+  puts "rebuilding series: $object"
+  set tmsid [lindex $object 0]
+  RetryTransaction { 
+    set fsid [tms_to_fsid $tmsid]
+  }  
+  if {$fsid < 0} {
+    set index [lsearch $new_tms $tmsid]
+    if {$index >= 0} {
+      set fsid [lindex $new_tms_fs $index]
+    }
+  } 
+  if {$fsid >= 0} {
+    puts "found prebuilt $fsid"
+    return $fsid
+  }
+  RetryTransaction {
+    set new_obj [db $db create Series]
+    for {set i 1} {$i<[llength $object]} {incr i} {
+      set element [lindex $object $i]
+      regexp "(\[^:\]*):(.*)" $element dummy type val 
+      if [regexp "^\\\$" $val] {
+        uplevel "set ooo_temp $val"
+        upvar ooo_temp deval
+        set val $deval
+      }
+      set index 0
+      foreach subval $val {
+        if {$index==0} {
+          dbobj $new_obj set $type $subval
+        } else {
+          dbobj $new_obj add $type $subval 
+        }
+        incr index
+      }
+    }
+    set id [dbobj $new_obj fsid]
+  }
+  lappend new_tms $tmsid
+  lappend new_tms_fs $id
+  
+  return $id
+}
+
+proc rebuild_episode {object} {
+
+  global new_tms
+  global new_tms_fs
+  global newid
+  global oldid
+   
+  puts "rebuilding episode: $object"
+  set tmsid [lindex $object 0]
+  RetryTransaction { 
+    set fsid [tms_to_fsid $tmsid]
+  }  
+  if {$fsid < 0} {
+    set index [lsearch $new_tms $tmsid]
+    if {$index >= 0} {
+      set fsid [lindex $new_tms_fs $index]
+    }
+  } 
+  if {$fsid >= 0} {
+    puts "found prebuilt $fsid"
+    return $fsid
+  }
+  RetryTransaction {
+    set new_obj [db $db create Episode]
+    for {set i 1} {$i<[llength $object]} {incr i} {
+      set element [lindex $object $i]
+      regexp "(\[^:\]*):(.*)" $element dummy type val 
+      if [regexp "^\\\$" $val] {
+        uplevel "set ooo_temp $val"
+        upvar ooo_temp deval
+        set val $deval
+      }
+      if {[string range $val 0 0] == "@"} {
+        puts "doing it"
+        set minival [string range $val 1 end]
+        puts "minival=$minival"
+        uplevel "set ooo_temp1 $minival"
+        upvar ooo_temp1 id
+        puts "id=$id"
+        set val [db $db openid $id]
+      }
+      foreach subval $val {
+        if {$index==0} {
+          dbobj $new_obj set $type $subval
+        } else {
+          dbobj $new_obj add $type $subval 
+        }
+        incr index
+      }
+    }
+    set id [dbobj $new_obj fsid]
+  }
+  lappend new_tms $tmsid
+  lappend new_tms_fs $id
+  
+  return $id
+}
+
+proc series_tms {tmsid} {
+  RetryTransaction { 
+    set fsid [tms_to_fsid $tmsid]
+  }  
+  if {$fsid < 0} {
+    set index [lsearch $new_tms $tmsid]
+    if {$index >= 0} {
+      set fsid [lindex $new_tms_fs $index]
+    }
+  }
+  return $fsid
+} 
+  
+proc object_rethumb {fsid thumb} {
+  global db
+  RetryTransaction {
+    set object [db $db openid $fsid]
+    dbobj $object set Thumbdata
+  }
+} 
+    

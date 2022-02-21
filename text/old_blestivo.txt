@@ -1,0 +1,298 @@
+Dylan's Linux Boot Disk & Mike's BlessTiVo program.
+
+September 3rd 2000
+
+----------------------------------------------------------------------------
+
+WARNING!!!!
+
+You should not attempt to add a new drive to your TiVo until AFTER you have
+backed up your original A drive in your TiVo.  Failure to do so will not
+enable you to restore your TiVo if the upgrade fails, TiVo makes a change
+that requires you to go back to your original setup, etc.  So backup before
+you even think about using this software!  We are not liable for any damage
+you cause, or this program causes.  Use at your own risk.
+
+
+----------------------------------------------------------------------------
+
+
+Contents
+
+Section 1: Building the bootdisk
+Section 2: Overview of the bootdisk
+Section 3: Blessing your new TiVo B drive
+Section 4: Advanced BlessTiVo options
+Section 5: Troubleshooting
+Section 6: How to contact us
+
+
+Section 1:    Building the bootdisk
+
+        Linux:    Put a blank formatted floppy in your A drive and do the
+                  following.
+
+                  dd if=tivoboot.img of=/dev/fd0
+
+        Windows:  Put a blank formatted floppy in your A drive and do the
+                  following.
+
+		  double click or execute MakeBoot.bat
+
+	You can read on through section two if you want to see what Dylan 
+	has put on the bootdisk, or proceed to section three to bless your
+	drive.
+
+Section 2:    Overview of the bootdisk
+
+	Most of the bootdisk comes from Linux Mandrake 7.1. The kernel is
+	version	2.4.0-test1 with the custom Mac partition code released by cc,
+	Peter Creath, TiVoTechie and Ron Curry. A few basic Linux utilities as
+	well as the joe editor are included. You can run the editor by typing
+ 	"joe", "edit" or "vi". Follow the on screen instructions for help.
+
+	Some basic commands and their DOS equivalents for Linux newbies:
+
+	Linux		DOS
+	-----		---
+	ls		dir /w
+	ls -l		dir
+	cd		cd
+	more		type
+	edit		edit
+	rm		delete
+	cp		copy
+
+
+Section 3:    Blessing your new TiVo B drive
+
+        Connect your new hard drive you wish to bless to your PC's
+        IDE connector.  You can connect it to the Primary Slave, Secondary
+        Master, or Secondary Slave.  You can not hook it up to your
+        Primary Master.  Make sure to do this with the POWER OFF.
+
+        Once you have it connected you will need to go into your PC's
+        CMOS and make sure your PC can recognize the new drive.  Make sure
+        that if your drive is a 30GB drive that your PC sees it as such.
+
+        Assuming that works, boot your PC with the Linux boot floppy you
+        created earlier.  Log in as root at the "login" prompt.  To do
+        this just type "root" without the quotes and hit enter.  You are
+        now logged in.
+
+        At the command line you will want to type ONE of the following
+        commands depending on what IDE port your new drive is connected.
+        Do NOT type the quotes.
+
+        "BlessTiVo /dev/hdb"   Type this if connected to Primary/Slave
+        "BlessTiVo /dev/hdc"   Type this if connected to Secondary/Master
+        "BlessTiVo /dev/hdd"   Type this if connected to Secondary/Slave
+
+        The program will first check to see if the drive exists.  Then
+        it will make sure that it is not a DOS or Linux partition.  If it
+        is, it will warn you.  You can still proceed if you want.  This
+        is just a safety check and if you are using a drive you
+        previously had Windows or Linux on you will get this warning. If
+        you tell it to proceed it will start to bless the drive.
+
+        If the drive is neither a DOS or Linux partition you will be asked
+        also if you are sure you wish to proceed.  If you say yes the drive
+        blessing procedure will be started.
+
+        To bless a drive the program does these things.
+
+        First it erases the first few sectors of the drive for you.
+
+        Second it writes a valid bootpage to the first sector on the drive.
+
+        Third it partitions the drive into three partitions.
+
+        And fourth it writes the TiVo ID's out to the third partition
+
+        The system will print out a message as each stage is done.  The whole
+        process takes about 5 seconds!
+
+        When the last stage is complete the program prints out a message
+        telling you the drive was blessed and also tells you the size of
+        the data partition the TiVo will store video on.
+
+        It is VERY important you check this value.  It should be within
+        about 3GB of your actual drive size.  I strip off the decimal point
+        on this value, so if you have a 20GB drive you blessed and it says
+        it is 19GB you are fine.  If it reports back the wrong size, see the
+        troubleshooting section below.  DO NOT place a blessed drive in your
+        TiVo if the reported size is wrong.  If you put a 30GB drive in your
+        TiVo that was blessed and BlessTiVo reported back it is a 8GB drive
+        you will be adding only 8GB of space to your TiVo and currently
+        their is NO WAY to reverse the process, without restoring your
+        A drive backup.
+
+        If the bless process finished correctly and you are happy with the
+        drive size, you can shutdown your PC and install the new drive in
+        your TiVo.  Make sure to set the new drive as the slave before
+        connecting it to your TiVo.  Power up your TiVo and go to the
+        System Information screen in the setup menu and see if you're new
+        space is available for recordings.  If not go to the troubleshooting
+        section.
+
+Section 4:    Advanced BlessTiVo options
+
+        The BlessTiVo program also supports doing each of the blessing
+        stages manually.  This option is for people who know EXACTLY
+        what they are doing.
+
+        To use it use the following command line options. (Without quotes)
+
+        "BlessTiVo /dev/hdX erase"  (Erases the first few sectors on the drive)
+
+        "BlessTiVo /dev/hdX bpage"  (Creates bootpage on sector 0)
+
+        "BlessTiVo /dev/hdX part"   (Creates TiVo partitions)
+
+        "BlessTiVo /dev/hdX id"     (Generates TiVo ID string in partition 3)
+
+        Substitute the X in the /dev/hdX with the letter for the blank drive
+
+        Do not use these options unless you know what you are doing.
+
+        For those who are wondering about their TiVo equivalents.  The erase
+        command does the same as the 'dd' command used in the many example
+        to erase the first few sectors.  The bpage command does the same
+        thing as the BOOTPAGE program on the TiVo A drive.  The part command
+        does the same thing as the pdisk program.  And finally the id command
+        is the same as the GenAddDiskTiVoID program located on some TiVo's
+
+        Remember you do not need to use these individual commands.  The
+        BlessTiVo program will do them all in the proper sequence for you
+        when used as described in Section 3.
+
+
+Section 5:    TROUBLESHOOTING
+
+        Q) BlessTiVo says "No device specified when I run it. What am I
+           doing wrong?
+
+        A) You need to specify the name of the device for the drive you
+           wish to bless.  For example the following would bless
+           the drive connected to the Secondary/Master connector on
+           your motherboard or IDE controller. (type without quotes)
+
+           "BlessTiVo /dev/hdc"  
+
+        Q) I get "Too many command line options" when I run BlessTiVo
+
+        A) You are specifying too many things on the command line.
+           See Section 3 on proper format.
+
+        Q) I get "Unable to connect to /dev/hdX". What's up with that?
+
+        A) Either the device name you specified is not what the drive
+           is connected to on the motherboard, the drive jumper(s) are
+           not set right, the drive doesn't have power, your CMOS BIOS
+           is not set to recognize the drive, or the drive is bad.  Lots
+           of things to check, but it is usually the device name not matching
+           the jumpers.
+
+        Q) I get a warning that my drive appears to have a DOS partition.
+
+        A) BlessTiVo looks at the drive to warn you of this just to play
+           it safe.  If the drive was previously used in your Windows
+           box, you will get this message.  If you still want to proceed
+           then answer Yes to the prompt and it will be blessed.  If you
+           want to play it safe turn off your PC, disconnect any DOS drives
+           and rerun with just the drive to be blessed being connected.
+
+        Q) I get a warning that my drive appears to have a Linux partition.
+
+        A) See the answer above for an explanation.  The only difference is
+           BlessTiVo found a potential Linux partition.
+
+        Q) I get a warning that says this program could damage my hard drive
+           on my PC or possibly render my TiVo useless.  Help!
+
+        A) This is my standard warning.  I make no guarantees about this
+           program.  It has been tested well, but there are always glitches,
+           or bugs. You could accidentally erase your DOS partitions and
+           all kinds of stuff.  So if you are going to do this, make sure
+           you have a backup of the TiVo A drive.
+
+        Q) My 30GB drive is reported as a 6GB drive.  The blessing was
+           fine though.  What should I do?
+
+        A) DO NOT PUT THIS DRIVE IN YOUR TiVo!!!!!!!  Either your BIOS
+           on the PC couldn't handle the large drive, or for some reason
+           the Linux kernel you're using doesn't like that size drive.  This
+           is a problem with some Linux kernels.  Dylan's bootdisk does
+           not have this problem.  If you encounter this problem drop one
+           of us an email at the address at the bottom of this document.
+
+        Q) I get an "Invalid Device specified".
+
+        A) You are probably either typing the wrong device name or are trying
+           to use "/dev/hda".  Below are the only valid device names you
+           can pass to BlessTiVo.
+
+           /dev/hdb
+           /dev/hdc
+           /dev/hdd
+
+        Q) I get a message saying "Unable to determine capacity of drive
+           connected to /dev/hdX".  Help me!
+
+        A) You are probably trying to run BlessTiVo on a different Linux
+           bootdisk than the one we distribute.  To play it safe stick
+           with Dylan's bootdisk.  Use the download locations listed at 
+	   the bottom of this document.
+
+        Q) BlessTiVo said it blessed my drive and the size reported back
+           is fine, but it is not recognized in my TiVo.  I still only have
+           my original capacity.
+
+        A) Make sure you made the second drive the slave before putting it
+           in the TiVo.  Check to see if you connected the power tail to
+           the drive also.  If none of that helps format a blank DOS floppy
+           disk on your Windows machine.  Connect the drive that was blessed
+           but did still not work.  Boot Dylan's bootdisk.  After logging
+           in as root, run the following command.
+
+                "LogDiskTiVo /dev/hdX"
+
+           Do not type the quotes and substitute the X for the device name
+           of your TiVo B drive.
+
+           The program will prompt you to put in the blank formatted DOS
+           disk, and it will generate some various log files.  Take that
+           disk and zip the log file up and send them to us.  Please specify
+           the following information in your email.
+
+                What type/capacity TiVo unit you have
+                Drive make and model you are adding
+                Type of computer you're using to bless the drive
+                What the computer reports the drive as when it first boots
+
+        Q) Can your program backup my A drive for me?
+
+        A) Not yet.  That is coming.
+
+        Q) Can I use your program to transfer my 15GB A drive in the TiVo
+           to a 30GB drive and take advantage of the space?
+
+        A) Not yet.  That is coming.
+                                    
+        Q) My problem isn't answered here.  Help.
+
+        A) Email us at the below address.
+
+
+Section 6:    How to contact us.
+
+        Send a message to tivodudes@hillsoftware.com
+
+        You can download all official releases of this software at
+
+            http://www.tivofaq.com/hack
+
+	The unoffical TiVo hacking FAQ is there also.
+
+
+

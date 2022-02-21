@@ -1,0 +1,31 @@
+#!/tvbin/tivosh
+
+set source_dir [file dirname [info script]]
+
+if {! [file readable "$source_dir/copyright"] } {
+        puts "Copyright statement missing.  Please reinstall";
+        exit 1;
+
+}
+
+set cr [open $source_dir/copyright]
+fcopy $cr stderr
+close $cr
+
+if { $argc != 1 } {
+	puts "Usage $argv0 <infile>"
+	exit 1
+}
+
+set db [dbopen]
+
+source [lindex $argv 0]
+source "$source_dir/backup-support.itcl"
+
+restore_logos
+restore_wishlists
+restore_seasonpasses
+
+set source_dir [file dirname [info script]]
+
+

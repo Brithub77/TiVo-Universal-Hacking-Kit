@@ -1,0 +1,42 @@
+TiVoNET Floppy - Script by Chris Worley  
+
+This script is in early beta.  Read the script and make sure you understand
+and agree with what it is doing before proceeding.
+
+These are the files for a "second disk" for unzipping onto a DOS formatted 
+floppy.
+
+It has a script, named "script".  You can edit it from windows notepad
+or word, but first run a "unix2dos" utility, and when finished editing,
+run a "dos2unix" utility on the script file.  You can get these
+utilities at:
+
+http://www.bastet.com/software/software.html
+
+When editing, make sure your editor isn't in a "line wrap" mode.  If it 
+adds a new line, it might screw up the script.  Also, make sure and 
+save script as a text file and not a doc file.
+
+When you are finished editing the script, copy it, along with all of
+the files in this zip file (except for this README.txt file) to a DOS 
+formatted floppy disk.
+
+Anyway, the script is self explanatory... setup the variables at the top
+with a Windows editor, shut down, then put your tivo disk on your PC,
+boot "Dylan's boot disk", log in as "root", remove the Dylan Boot Disk
+and insert the TiVoNET Floppy Disk and then:
+
+	mkdir /floppy
+	mount /dev/fd0 /floppy
+	/floppy/script
+
+Which runs the script.
+
+The script will (to both the #4 and #7 partitions) copy the popular
+"tivo-bin" tools, including tivoftpd, and the "tkp-tools" in /hack. 
+It also sets up your /profile, and renames your "route" command, puts
+the serial bash prompt at the end of rc.sysinit, and loads the NIC
+modules and configures the interface at the end of rc.sysinit.
+
+With this, the user need not login via the serial port, they should be
+able to telnet directly to the new machine.

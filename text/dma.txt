@@ -1,0 +1,23 @@
+So, you want to use DMA with byteswapped drives? :)
+
+Well, you can't have that now, but here's something to bring you as close as 
+possible:
+
+Boot with the "dmaswap" option, that'll give you a kernel with DMA enabled and 
+the bswap parameters passed to it. The kernel won't do the byteswapping while 
+DMA is enabled, though. If you decide you want byteswapping turned on a 
+certain drive after boot, it suffices to turn off DMA on the said drive, like 
+this:
+
+hdparm -d0 /dev/hdx (will disable DMA on drive x, where x is b. c or d)
+
+Automagically byteswapping will become effective at the same instant. You can 
+chech the status with:
+
+cat /proc/ide/hdx/settings
+
+If then you want back the DMA on the drive, just issue:
+
+hdparm -d1 /dev/hdx, and byteswapping will be again off on the drive.
+
+

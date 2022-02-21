@@ -1,0 +1,434 @@
+#!/tvbin/tivosh
+
+set source_dir [file dirname [info script]]
+
+if {! [file readable "$source_dir/copyright"] } {
+	puts "Copyright statement missing.  Please reinstall";
+	exit 1;
+}
+
+set cr [open $source_dir/copyright]
+fcopy $cr stderr
+close $cr
+
+source $tcl_library/tv/log.tcl
+source $tcl_library/tv/mfslib.tcl
+source $tcl_library/tv/dumpobj.tcl
+
+set db [dbopen]
+source $source_dir/backup-support.itcl
+
+proc RetryTransaction {body} {
+    global errorInfo errorCode
+    
+    while { 1 } {
+        set code [catch {transaction {uplevel $body}} string]
+        if { $code == 0 } {
+            return $string
+        } elseif { $code == 1 } {
+            if { $errorCode == "errTmActiveLockConflict" ||
+                 $errorCode == "errTmBackgroundHoldoff" ||
+                 $errorCode == "errFsLockConflict" } {
+                after [random 2000 4000]
+                # retry the transaction
+                continue 
+            }
+            error $string $errorInfo $errorCode 
+        } elseif { $code == 2 } {
+            return -code return $string
+        } elseif { $code == 3 } {
+            return -code break $string
+        } elseif { $code == 4 } {
+            return -code continue $string
+        }
+    }
+}
+ 
+proc dump_wishlists {} {
+ global db
+
+  puts "proc restore_wishlists \{\} \{"
+  puts "  global oldids"
+  puts "  global newids"
+  puts "  #"
+  puts "  # WISHLISTS"
+  puts "  #"
+
+  ForeachMfsFile fsid name type "/Theme" "" {
+    RetryTransaction {
+      set theme [db $db openid $fsid]
+      set title [dbobj $theme get Name]
+      set fields [dbobj $theme attrs]
+      puts ""
+      puts "  #$title"
+      set build_list ""
+      lappend build_list "Theme"
+      foreach field $fields {
+        set field_type [dbobj $theme attrtype $field]
+        set foo [dbobj $theme get $field]
+        if ([expr [regexp -nocase "^Index" $field] || \
+            ![string compare $field_type "object"] ]) {
+                continue
+        }
+        set foo [dbobj $theme get $field]
+        lappend build_list "$field:$foo"
+      }
+      puts "  set newid \[object_rebuild \{$build_list\}]"
+      set oldid [dbobj $theme fsid]
+      puts "  lappend oldids $oldid"
+      puts "  lappend newids \$newid"
+    }
+  }
+  puts "\}"
+}
+
+proc dump_episode_item {object} {
+  set build_list ""
+  set tmsid [dbobj $object get TmsId]
+  set series [dbobj $object get Series]
+  set stms [dbobj $series get TmsId]
+  puts "  set sfsid \[series_tms $stms\]"
+  lappend build_list $tmsid
+
+  set fields [dbobj $object attrs]
+  foreach field $fields {
+    if ([expr [regexp -nocase "^Index" $field]]) {
+       #puts "skipping"
+       continue
+    }
+    if {[string compare "Series" $field] == 0} {
+      lappend build_list "$field:\@\$sfsid"
+      continue
+    }
+    set foo [dbobj $object get $field]
+    lappend build_list "$field:$foo"
+  }
+  puts "    set fsid \[rebuild_episode \{$build_list\}\]"
+}
+
+
+proc dump_tms_object {object} {
+  set build_list ""
+  set tmsid [dbobj $object get TmsId]
+  lappend build_list $tmsid
+  set fields [dbobj $object attrs]
+  foreach field $fields {
+    if ([expr [regexp -nocase "^Index" $field]]) {
+       #puts "skipping"
+       continue
+    }
+    set foo [dbobj $object get $field]
+    lappend build_list "$field:$foo"
+  }
+  puts "  set fsid \[rebuild_series \{$build_list\}\]"
+}
+
+proc dump_seasonpass {} {
+  global db
+  # agw 23/2/03 - use the right season pass directory
+  global seasonpassdir
+
+  puts "proc restore_seasonpasses \{\} \{"
+  puts "  global new_tms"
+  puts "  global new_tms_fs"
+  puts "  global newids"
+  puts "  global oldids"
+  puts "  #"
+  puts "  # SEASON PASSES"
+  puts "  #"
+
+  puts "  set new_tms \"\""
+  puts "  set new_tms_fs \"\""
+
+  ForeachMfsFile fsid name type "$seasonpassdir" "" {
+    puts ""
+    RetryTransaction {
+      set pass [db $db openid $fsid]
+      set title [dbobj $pass get IndexPath]
+      set fields [dbobj $pass attrs]
+      set series [dbobj $pass get Series]
+      if {[string length $series] > 0} {
+        dump_tms_object $series 
+      }
+
+      set theme [dbobj $pass get Theme]
+      if {[string length $theme] > 0 } {
+        set oldid [dbobj $theme fsid]
+        puts "  set theme_id \[lindex \$newids \[lsearch \$oldids $oldid\]\]"
+      }  
+
+      set station [dbobj $pass get Station]
+      if {[string length $station] > 0} {
+        set tmsid [dbobj $station get TmsId]
+        puts "  set station_id \[station_tms_to_fsid $tmsid\]"
+      }  
+
+      puts "  # $title"
+      set build_list ""
+      lappend build_list "SeasonPass" 
+      foreach field $fields {
+        set field_type [dbobj $pass attrtype $field]
+        set foo [dbobj $pass get $field]
+        if ([expr [regexp -nocase "^Index" $field]]) {
+          #puts "skipping"
+          continue
+        }
+        if {![string compare "Series" $field] } {
+          lappend build_list "$field:\@\$fsid"
+          continue
+        }
+        if {![string compare "Theme" $field] } {
+          lappend build_list "$field:\@\$theme_id"
+          continue
+        }
+        if {![string compare "Station" $field] } {         
+          lappend build_list "$field:\@\$station_id"
+          continue
+        }
+        lappend build_list "$field:$foo"
+      }
+    }
+    puts "  object_rebuild \{$build_list\}"
+  }
+  puts "\}"
+}
+
+proc dump_person {string} {
+  global db
+  regexp "\[0-9\]+" $string personid
+  regexp "\[A-Z \]+" $string name
+  set personobj [db $db openid $personid]
+  set role [dbobj $personobj get Role]
+  set star [dbobj $personobj get Star]
+  set nicename [dbobj $personobj get Name]
+  puts "set person_string \[person_restring \{$name:$role:$star:$nicename:\}\]"
+}  
+  
+
+
+  
+proc dump_preferences {} {
+  global db
+  
+  puts "proc restore_thumbs \{\} \{"
+  puts "global new_tms"
+  puts "global new_tms_fs"
+  puts "global newids"
+  puts "global oldids"
+  puts "#" 
+  puts "# PREFERENCES"
+  puts "#"
+
+  puts "#" 
+  puts "# Genres"
+  puts "#"
+  ForeachMfsFile fsid name type "/Preference/a/14" "" {
+    RetryTransaction {
+      set pref [db $db openid $fsid]
+      set string [dbobj $pref get StringKeyValue]
+      set build_list "" 
+      lappend build_list "PrefsElement"
+      set fields [dbobj $pref attrs]
+      foreach field $fields {
+        if ([expr [regexp -nocase "^Index" $field]]) {
+           continue
+        }
+        set foo [dbobj $pref get $field]
+        lappend build_list "$field:$foo"
+      } 
+      puts "  object_rebuild \{$build_list\}"
+    }
+  }
+
+  puts "#" 
+  puts "# Series"
+  puts "#"
+  ForeachMfsFile fsid name type "/Preference/a/15" "" {
+    RetryTransaction {
+      set pref [db $db openid $fsid]
+      set string [dbobj $pref get StringKeyValue]
+      set thumbs [dbobj $pref get Thumbsness]
+      set item [dbobj $pref get Item]
+
+      dump_tms_object $item
+      
+      set build_list ""
+      lappend build_list "PrefsElement"
+
+      set fields [dbobj $pref attrs]
+      foreach field $fields {
+        if ([expr [regexp -nocase "^Index" $field]]) {
+           continue
+        }
+        if {[string compare "Item" $field] == 0} {
+          lappend build_list "$field:\@\$fsid"
+          continue
+        }
+        set foo [dbobj $pref get $field]
+        lappend build_list "$field:$foo"
+      } 
+      puts "  object_rebuild \{$build_list\}"
+      puts "  object_rethumb \$fsid set $thumbs"
+    }
+  }
+
+  # every entry in the episode DB should have its series rebuilt already
+
+  puts "#" 
+  puts "# Episodes"
+  puts "#"
+  ForeachMfsFile fsid name type "/Preference/a/16" "" {
+    RetryTransaction {
+      set pref [db $db openid $fsid]
+      set string [dbobj $pref get StringKeyValue]
+      set thumbs [dbobj $pref get Thumbsness]
+      set item [dbobj $pref get Item]
+
+      dump_episode_item $item
+      
+      set build_list ""
+      lappend build_list "PrefsElement"
+
+      set fields [dbobj $pref attrs]
+      foreach field $fields {
+        if ([expr [regexp -nocase "^Index" $field]]) {
+           continue
+        }
+        if {[string compare "Item" $field] == 0} {
+          lappend build_list "$field:\@\$fsid"
+          continue
+        }
+        set foo [dbobj $pref get $field]
+        lappend build_list "$field:$foo"
+      } 
+      puts "  object_rebuild \{$build_list\}"
+    }
+  }
+
+
+  puts "# 17"
+  ForeachMfsFile fsid name type "/Preference/a/17" "" {
+    RetryTransaction {
+      set pref [db $db openid $fsid]
+      set string [dbobj $pref get StringKeyValue]
+      dump_person $string
+      set build_list "" 
+      lappend build_list "PrefsElement"
+      set fields [dbobj $pref attrs]
+      foreach field $fields {
+        if ([expr [regexp -nocase "^Index" $field]]) {
+           continue
+        }
+        if {[string compare "StringKeyValue" $field] == 0} {
+          lappend build_list "$field:\$person_string"
+          continue
+        }
+        set foo [dbobj $pref get $field]
+        lappend build_list "$field:$foo"
+        set index 0
+      }
+      puts "  object_rebuild \{$build_list\}"
+    }
+  }
+
+  puts "# 19"
+  ForeachMfsFile fsid name type "/Preference/a/19" "" {
+    RetryTransaction {
+      set pref [db $db openid $fsid]
+      set string [dbobj $pref get StringKeyValue]
+      dump_person $string
+      set build_list "" 
+      lappend build_list "PrefsElement"
+      set fields [dbobj $pref attrs]
+      foreach field $fields {
+        if ([expr [regexp -nocase "^Index" $field]]) {
+           continue
+        }
+        if {[string compare "StringKeyValue" $field] == 0} {
+          lappend build_list "$field:\$person_string"
+          continue
+        }
+        set foo [dbobj $pref get $field]
+        lappend build_list "$field:$foo"
+        set index 0
+      }
+      puts "  object_rebuild \{$build_list\}"
+    }
+  }
+
+  puts "# 22"
+  ForeachMfsFile fsid name type "/Preference/a/22" "" {
+    RetryTransaction {
+      set pref [db $db openid $fsid]
+      set string [dbobj $pref get StringKeyValue]
+      dump_person $string
+      set build_list "" 
+      lappend build_list "PrefsElement"
+      set fields [dbobj $pref attrs]
+      foreach field $fields {
+        if ([expr [regexp -nocase "^Index" $field]]) {
+           continue
+        }
+        if {[string compare "StringKeyValue" $field] == 0} {
+          lappend build_list "$field:\$person_string"
+          continue
+        }
+        set foo [dbobj $pref get $field]
+        lappend build_list "$field:$foo"
+        set index 0
+      } 
+      puts "  object_rebuild \{$build_list\}"
+    }
+  }
+  puts "\}"
+}
+
+proc dump_logos {} {
+  global db
+  global logotablename
+  global logotableindex
+
+  RetryTransaction {
+    set setup [db $db open /Setup]
+    set sources [dbobj $setup get Source]
+    set channels ""
+    foreach source $sources {
+       append channels [dbobj $source gettarget Channel] " "
+    }
+    set channelcount [llength $channels]
+  }
+  #puts $channels
+  puts "proc restore_logos \{\} \{"
+  puts "global db"
+  foreach objectid $channels {
+    #puts "$objectid"
+    RetryTransaction {
+        if { [regexp {([0-9]*)/(.*)} $objectid junk fsid subobjid] } {
+            set chanobj [db $db openidconstruction $fsid $subobjid]
+        } else {
+            set chanobj [db $db openid $objectid]
+        }
+      #puts [dbobj $chanobj type]
+      #puts [dbobj $chanobj attrs]
+      set station [dbobj $chanobj get Station]
+      set name [dbobj $station get Name]
+      set tmsid [dbobj $station get TmsId]
+      set logoi [dbobj $station get LogoIndex]
+    }
+
+    # agw 23/2/03 - skip stations that don't have a LogoIndex
+    if {$logoi == ""} {
+      puts stderr "Station $tmsid $name has no LogoIndex - skipping"
+    } else {
+      puts "  set_station_logo $tmsid $logoi "
+      #puts " "
+    }
+  } 
+  puts "\}"
+}
+dump_wishlists
+dump_seasonpass
+#dump_preferences
+dump_logos
+
+

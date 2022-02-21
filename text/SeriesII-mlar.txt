@@ -1,0 +1,95 @@
+ Yes, you can hack a Series2
+
+Okay, I'm a total newbie at this. I've never hacked a TiVo before. I haven't used Linux at all for the last 3 years or so. I decided to try out Tiger's suggestion on how to get a bash prompt. While everything is still fresh in my head - here is how I did it:
+
+First of all, you need a Linux installation. I grabbed one of my old PII-450 boxes and installed RedHat 8.0 on it. I grabbed the A drive out of my TiVo and put it into the machine, and tried to mount a partition.. No luck. As I said, I'm a newbie at this. I figured out that there is something in the kernel I need to patch. I couldn't find any patches for the 2.4.18 kernel, so I decided to look at an earlier patch and adapt it slightly.
+Basically, you will need to recompile the kernel, and you will need to change a couple of lines in mac.c
+
+In /usr/src/linux (or wherever you store your linux sources), head into fs/partitions and open up mac.c in an editor... Find a line looking something like this (this might vary depending on your kernel version):
+
+if (be16_to_cpu(md->signature) != MAC_DRIVER_MAGIC) {
+
+and replace it with:
+
+if (be16_to_cpu(md->signature) != 0x1492) {
+
+right after that if statement you will find a line that sets the sectorsize,
+secsize = be16<something>, replace this with
+
+secsize = 512;
+
+All done. Recompile the kernel and remember to include support for Mac Partitions.
+
+Also, please note that this patch breaks compatibility with Mac. For me, it didn't matter. For you, it might.
+
+I was now able to boot up my machine and mount the partitions from my TiVo disk.
+
+Now, get bootpage.tgz from http://sekrut.net/~tivo/ and check what the boot parameters are, in my case:
+
+bootpage -p /dev/hda
+
+I got "root=/dev/hda7" back from this.. I mounted /dev/hda7,
+
+mount /dev/hda7 /mnt
+
+and looked at fstab,
+
+cat /mnt/etc/fstab
+
+and was told that the /var partition was on /dev/hda9. I unmounted /dev/hda7 and mounted /dev/hda9
+
+
+Now you need to generate the romfs image. first, create a new directory where you create the hacks file, I created a directory called img and put a file called hacks in there. I put the following in it (from Tiger),
+
+#!/bin/bash
+
+export -n BASH_ENV
+BASH_ENV=
+
+(
+exec 0<>/dev/null 1>&0 2>&1
+
+while [ ! -d /var/hack ]; do
+sleep 1
+done
+exec /var/hack/hackinit
+) &
+
+make sure it is executable and readable by everyone,
+chmod a+rwx hacks
+
+now, generate the romfs image. For this you need genromfs. If you don't already have it, Google is your friend.
+
+genromfs -f romfs.img -d img/
+
+this takes all the files from img/ and puts it into romfs.img. I got a file that was 1024 bytes long.. I dd'd this to /dev/hda16
+
+dd if=romfs.img of=/dev/hda16 bs=1024 count=1
+
+All set. Next step is to update the boot parameters, using bootpage.
+
+bootpage -P "root=/dev/hda7 BASH_ENV=\`mount\$IFS-n\$IFS/dev/hda16\$IFS/mnt;echo\$IFS/mnt/hacks`" -C /dev/hda
+
+We now have a setup that will execute anything you put in /var/hack/hackinit.
+
+I then ported tnlited to Series 2 using subuni's Series 2 MIPS Cross compiler. I applied the TiVO patches to it and compiled it.. worked out of the box. I also downloaded a bunch of precompiled binaries from http://sekrut.net/~tivo/ and put them in /var/hack/bin
+
+My /var/hack/hackinit contains this:
+
+#!/bin/bash
+
+/var/hack/bin/tnlited 23 /bin/bash
+
+
+I also made sure that all files in /var/hack were executable and readable by everyone,
+
+chown -R a+rwx /var/hack
+
+That's it. I plugged my A drive back in, restarted the TiVO, and voila! It worked.
+
+A big thanks to Tiger for releasing the solution and subuni for the
+cross compiler and tools.
+
+bash-2.02# uname -a
+Linux (none) 2.4.4-TiVo-3.0 #11 Wed May 8 15:40:02 PDT 2002 mips unknown
+bash-2.02#

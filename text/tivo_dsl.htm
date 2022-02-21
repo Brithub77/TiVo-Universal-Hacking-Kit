@@ -1,0 +1,819 @@
+ 
+
+<html>
+
+<head>
+
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+
+<title>TiVo Updating Over Dedicated Internet HOWTO</title>
+
+
+
+</head>
+
+<body bgcolor="#ffffff">
+
+<p><font size="+3"><b>TiVo Updating Over Dedicated Internet HOWTO</b></font></p>
+
+
+
+  
+<p>By Frank Pineau<br>
+  Version 2.0<br>
+  Last updated 5/21/2001
+<p><font size="+1">1 <a href="#1">Introduction</a></font><br>
+<blockquote> 
+  <p>1.1 <a href="#1.2">Foreword </a><br>
+    1.2 <a href="#1.2">Requirements </a><br>
+    1.3 <a href="#1.3">Copyright and Disclaimer</a> <br>
+    1.4 <a href="#1.4">Feedback<b> </b></a><br>
+    1.5 <a href="#1.5">Changelog</a><br>
+    1.6 <a href="#1.6">TODO</a></p>
+</blockquote>
+
+<p><font size="+1">2 <a href="#2">Getting a BASH prompt </a></font><br>
+
+
+
+<blockquote> 2.1 <a href="#2.1">Connecting to your serial port </a><br>
+  2.2 <a href="#2.2">Getting a Bash prompt </a><br>
+  2.3 <a href="#2.3">Pulling the hard drive</a><br>
+  2.4 <a href="#2.4">Hi-jacking a spare computer</a><br>
+  2.5 <a href="#2.5">Getting some tools together</a><br>
+  2.6 <a href="#2.6">Copying tools to TiVo</a><br>
+  2.7 <a href="#2.7"> Running pppd over serial </a><br>
+  2.8 <a href="#2.8">Setting up rsync </a></blockquote>
+
+<p> <font size="+1">3 <a href="#3">Retrieving updates over always-on internet 
+
+  </a></font><br>
+
+<blockquote> 3.1 <a href="#3.1">Modifying the dialing script</a></blockquote>
+
+<p><font size="+1"><a name="1"></a>1. Introduction </font></p>
+
+<p><b><a name="1.2"></a>1.1 Foreword</b></p>
+
+<p>     I wrote this HOWTO because I felt the official Hack 
+
+  FAQ was lacking in some basic information and the information at the AVS forum 
+
+  was far too spread out.  Rather than make people cull all the ppp-over-serial 
+
+  information together, I though I would lay out step-by-step how to do it, all 
+
+  in one big document.</p>
+
+<p><b><a name="1.2"></a>1.2 Requirements</b></p>
+
+<p>     This document assumes a few basic things.  First and foremost, you should 
+  have read the <a href="http://tivo.samba.org">TiVo Hack FAQ located at http://tivo.samba.org</a>.  
+  The Hack FAQ is the &quot;official&quot; repository of information regarding 
+  hacking your TiVo.  I also highly recommend browsing the <a href="http://www.avsforums.com">TiVo 
+  Underground forums at http://www.avsforums.com</a>.  This document is built 
+  almost entirely based on information found at those two locations.  You should 
+  also have basic understanding of Linux or one of its variants. Lastly, I have 
+  only tested this on Philip's 30 hour TiVo, US version, with version 1.3 and 
+  2.01 of the software.  U.K. and/or Sony models may or may not work (but should...). 
+  Also, this this document assumes you will be using Linux for the internet gateway. 
+  Other OS's (such as Windows 2000) will work, but you're on your own for configuration.</p>
+<p>     Since you will be updating over the internet, this document will also 
+  assume that the linux computer you are connecting to is already configured as 
+  a valid gateway and already has a working connection to the internet. If not, 
+  I recommend you check out the various Networking HOWTO's, especially the Home-Networking-mini-HOWTO, 
+  the IP-MASQ HOWTO and the IPCHAINS-HOWTO (firewall). These HOWTO's are included 
+  with most linux distributions. They can also be found at the Linux Documentation 
+  Project at <a href="http://howto.tucows.com">http://www.linuxdoc.org</a> (among 
+  other places). 
+<p><b><a name="1.3"></a>1.3 Copyright and Disclaimer</b></p>
+
+<p>     This document is Copyright 2000 by <a href="mailto:frank@pineaus.com">Frank 
+  Pineau</a>.  You are encouraged to redistribute it provided it is kept intact. 
+  You may not modify this document (see the section on feedback. I incorporate 
+  most changes recommended by readers). </p>
+
+<p>     This document is available for free, and while I have done the best I 
+  can to make it accurate and up to date, I take no responsibility for any problems 
+  you may encounter resulting from the use of this document, including (but not 
+  limited to) damage to your hardware and/or software, voiding your warranty, 
+  or any other issues that may result.  I offer this document without warranty 
+  of any kind whatsoever.</p>
+<p>     The latest version of this HOWTO can always be found at <a href="http://www.pineaus.com/HOWTO/">http://www.pineaus.com/HOWTO/</a></p>
+
+<p>     Trademarks mentioned in this document are property 
+
+  of their respective owners. </p>
+
+<p><b><a name="1.4"></a>1.4 Feedback</b></p>
+
+<p>     I welcome any comments, suggestions, feedback, changes, et. Al.  Send 
+  all missives to <a href="mailto:frank@pineaus.com">frank@pineaus.com</a>.  Flames 
+  and general nastiness should be sent to <a href="mailto:bgates@microsoft.com?subject=UltimateTV%20sucks!">writeyourowndamnfaq@ifyoudontlikeit.com</a>. 
+</p>
+<p><b><a name="1.5"></a>1.5 Changelog</b></p>
+<ul>
+  <li> 5/21<br>
+    Updated for v2.01 of the TiVo software<br>
+    Deprecated HOWTO version 1.3 - Find it at <a href="http://www.pineaus.com/HOWTO/obsolete/">http://www.pineaus.com/HOWTO/obsolete/</a><br>
+    Incremented to version 2.0<br>
+    <br>
+  <li>12/18<br>
+    Changed pointer to the Linux Documentation Project<br>
+    Added clarification to section 2.1<br>
+    Added new section to move tools onto TiVo before setting up pppd<br>
+    Numerous minor modifications and changes (thanks to David Ranch for the suggestions)<br>
+    Added TODO section<br>
+    Incremented to version 1.3<br>
+    <br>
+  <li>12/17<br>
+    Incremented to 1.27 to resolve an inconsistency in mirrored copies of the 
+    HOWTO<br>
+    <br>
+  <li>12/5<br>
+    Added nocrtscts flags to ppp settings<br>
+    Added info about ports and protocols used to update<br>
+    Added pointers to networking HOWTO's<br>
+    Incremented version to v1.26<br>
+    <br>
+  <li>12/1<br>
+    Added details about creating a serial cable<br>
+    Added some help with using http_get to transfer files to your TiVo<br>
+    Incremented version to v1.2<br>
+    <br>
+  <li>11/30<br>
+    Bug fixes<br>
+    <br>
+  <li>11/20<br>
+    Fixed spelling errors <br>
+    Added changelog<br>
+    Added link to this HOWTO<br>
+    Added note about removing shondss=true to section 2.4<br>
+    Incremented version to v1.1<br>
+  </li>
+</ul>
+<p><b><a name="1.6"></a>1.6 TODO</b></p>
+<ul>
+  <li>Build troubleshooting section</li>
+  <li>Work on meeting requirements for submission to LDP</li>
+</ul>
+<p><font size="+1"><a name="2"></a>2. Getting a bash prompt</font> </p>
+
+<p><b><a name="2.1"></a>2.1  Connecting your serial port</b></p>
+
+<p>     Your TiVo should have come with a cable that has a mini-stereo connector 
+  on one end and a 9-pin connector on the other end.  To connect this to your 
+  linux PC (or whatever you'll use), you'll need a null-modem adapter and a probably 
+  a gender changer.  It's just a simple serial connection. If you want to get 
+  tricky and make your own cables for whatever reason (server in another part 
+  of the house, for example), it's pretty easy. Here is a DB-9 RS232 pinout reference 
+  table that you may find useful:</p>
+<table width="47%" border="0" align="center">
+  <tr> 
+    <td width="22%"> 
+      <div align="center"><b>DB-9M</b></div>
+    </td>
+    <td width="38%"> 
+      <div align="center"><b>Function</b></div>
+    </td>
+    <td width="40%"> 
+      <div align="center"><b>Abbreviation</b></div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="22%"> 
+      <div align="center">Pin 1</div>
+    </td>
+    <td width="38%"> 
+      <div align="center">Data Carrier Detect</div>
+    </td>
+    <td width="40%"> 
+      <div align="center">CD</div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="22%"> 
+      <div align="center">Pin 2</div>
+    </td>
+    <td width="38%"> 
+      <div align="center">Receive Data</div>
+    </td>
+    <td width="40%"> 
+      <div align="center">RD (or RX or RXD)</div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="22%"> 
+      <div align="center">Pin 3</div>
+    </td>
+    <td width="38%"> 
+      <div align="center">Transmit Data</div>
+    </td>
+    <td width="40%"> 
+      <div align="center">TD (or TX or TXD)</div>
+    </td>
+  </tr>
+  <tr> 
+    <td height="21" width="22%"> 
+      <div align="center">Pin 4</div>
+    </td>
+    <td height="21" width="38%"> 
+      <div align="center">Data Terminal Ready</div>
+    </td>
+    <td height="21" width="40%"> 
+      <div align="center">DTR</div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="22%"> 
+      <div align="center">Pin 5</div>
+    </td>
+    <td width="38%"> 
+      <div align="center">Signal Ground</div>
+    </td>
+    <td width="40%"> 
+      <div align="center">GND</div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="22%"> 
+      <div align="center">Pin 6</div>
+    </td>
+    <td width="38%"> 
+      <div align="center">Data Set Ready</div>
+    </td>
+    <td width="40%"> 
+      <div align="center">DSR</div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="22%"> 
+      <div align="center">Pin 7</div>
+    </td>
+    <td width="38%"> 
+      <div align="center">Request To Send</div>
+    </td>
+    <td width="40%"> 
+      <div align="center">RTS</div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="22%"> 
+      <div align="center">Pin 8</div>
+    </td>
+    <td width="38%"> 
+      <div align="center">Clear To Send</div>
+    </td>
+    <td width="40%"> 
+      <div align="center">CTS</div>
+    </td>
+  </tr>
+  <tr> 
+    <td width="22%"> 
+      <div align="center">Pin 9</div>
+    </td>
+    <td width="38%"> 
+      <div align="center">Ring Indicator</div>
+    </td>
+    <td width="40%"> 
+      <div align="center">RI</div>
+    </td>
+  </tr>
+</table>
+<p>     There are only three wires to worry about: RX, TX, and GND. You don't 
+  even need to bother wiring the rest of the pins. On the TiVo side, the mini-stereo 
+  (TRS mini-plug) connector is wired like this:</p>
+<p>Tip to Pin 3 (TX)<br>
+  Ring to Pin 2 (RX)<br>
+  Sleeve to Pin 5 (GND)</p>
+<p>     If you make your own wire, you'll want to swap RX and TX on one of the 
+  ends (make Pin 2 TX and Pin 3 RX) so you won't need a null-modem adapter. You 
+  can buy bulk wire and all the connectors (TRS mini-plugs, unwired DB9 adaptors, 
+  etc.) from any decent electronics supply house. I recommend using CAT5 due to 
+  its superior signal-carrying quality. It can also be used for other purposes 
+  such as telephones and 100Base-T networking, so if you ever get rid of your 
+  TiVo (shya, RIGHT!) the cable can be re-used. If you go the CAT5 route, the 
+  TX and RX should be on a different pair, with the second wire of each pair going 
+  to GND. This will help reduce crosstalk and allow for cleaner, longer runs.</p>
+<p>      For mine, I bought two DB-9 adapters and wired them with cross-over serial 
+  pinouts (swapped Pins 2&amp;3 on one of the adapters) and ran CAT5 twisted pair 
+  cable between them so it would reach all the way into my server room, then I 
+  connected it to the DB9/TRS cable that came with the TiVo to complete the connection.</p>
+
+<b><a name="2.2"></a>2.2 Getting a bash prompt </b> 
+<p>     There are two ways to get a prompt with version 2.x of the TiVo software. 
+  The first way *requires* that you've already hacked v1.3 on your TiVo. Since 
+  it involves fiddling with the partitions and the &quot;myworld&quot; program, 
+  I personally consider it to be a bit dangerous, so I won't go into it in this 
+  document. If you choose to go that route, though, here's a hint: You'll need 
+  to put &quot;run myworld=false&quot; in the diagnostic mode boot paramters line, 
+  then temporarily swap the two main root partitions to boot from the old partition 
+  to make your changes. If you don't know what that means, you don't have any 
+  business messing around there.</p>
+<p>     The second way (and the only way if you've never hacked your TiVo before) 
+  is to take the cover off your TiVo, remove the drive, and mount it in a handy 
+  spare computer.<b> Be advised that this *will* void your warranty. Do this at 
+  your own risk.</b> <br>
+</p>
+<p>     I won't go into too much detail here, the Hack FAQ is much better at explaining 
+  this part than I am.  What you'll need to do is access the TiVo's diagnostic 
+  mode.  It's a little like trying to catch your BIOS screen when your computer 
+  first boots.  If you can't get this next part to work right, go read the Hack 
+  FAQ for more troubleshooting info. This part is not strictly necessary, but 
+  helpful. See below.</p>
+<p>     Once you have a good hardware serial connection to your TiVo, fire up 
+  your favorite terminal program (I used Minicom) and set it to use the serial 
+  port, no dialing strings, flow control, or anything, 9600, 8,N,1 (if that doesn't 
+  work, try 38400,8,N,1).  Plug your TiVo in and hit enter on your terminal once.  
+  The timing is a little tricky here.  I've found that you need to do it within 
+  three seconds of plugging in the TiVo.  Your mileage may vary.  Don't wait for 
+  the TiVo to start showing graphics. </p>
+
+<p>     At the prompt, use the password &quot;factory&quot;.  Then, select X for 
+  &quot;Extended Menu&quot;.  Then select P for &quot;Boot Parameters&quot;.  
+  The system will display your current boot parameters.   They will include a 
+  reference to either hda4 or hda7. This is your primary boot partition. Remember 
+  it for later. Write it down if you have to. Select B to continue booting.<br>
+</p>
+<p>     If, for some reason, you are not able to get into diagnostic mode to look 
+  at your boot settings, you'll have to try to figure out which partition is the 
+  primary later on. You can do this by looking at file dates, or perhaps just 
+  make all the changes to both partitions.</p>
+
+<p><b><a name="2.3"></a>2.3 Pulling the hard drive</b></p>
+<p><b>*WARNING* YOU ARE ABOUT TO VOID YOUR WARRANTY!!!</b></p>
+<p>     Place your TiVo (fully disconnected from all cables) on a clean, flat 
+  surface. Preferrably a static mat. If you don't have a static mat, be sure you 
+  either control or discharge static according to accepted practices. The guts 
+  of your TiVo are fragile. On the rear of the unit, you will see three Torx screws. 
+  These may be removed with a #8 Torx screwdriver. In a pinch, I've used hex wrenches, 
+  but you should really use the right tool for the job. Torx screwdrivers are 
+  available at pretty much any hardware store.</p>
+<p>     The cover itself is extremely difficult to remove the first time. To remove 
+  it, you need to slide it back about an inch, then lift it straight up. To remove 
+  mine, I inserted a wide-bladed flathead screwdriver under the lip on the back 
+  and gently pried to get it started. Check the Hack FAQ for some other ideas 
+  if you're having trouble.</p>
+<p>     Using the same Torx driver, remove the two screws holding the A drive 
+  down, disconnect the power cable and the IDE cable, and gently remove the drive. 
+  It's not necessary to remove the drive from the attached brackets. If you have 
+  a two-drive model, you only need the A drive, you won't need the B drive.</p>
+<p><b><a name="2.4"></a>2.4 Hi-jacking a spare computer</b></p>
+<p>     Before you continue, you will need to either have a working linux computer, 
+  or any working computer + a copy of Dylan's Boot Disk (DBD). I recommend using 
+  DBD regardless, so you don't run the risk of hosing a perfectly good linux partition 
+  if you make a mistake. You can find DBD (which includes the BlessTivo program) 
+  at <a href="http://www.tivofaq.com/hack/tivoboot_v3.zip">http://www.tivofaq.com/hack/tivoboot_v3.zip</a><br>
+  <br>
+       Install the drive into your spare computer on any of the IDE channels <i>except</i> 
+  IDE0/Master. The channel you install it on will determine the drive name once 
+  we go to mount it, according to the following chart:</p>
+<p>IDE0/Slave: /dev/hdb<br>
+  IDE1/Master: /dev/hdc<br>
+  IDE1/Slave: /dev/hdd</p>
+<p>     Boot the computer from your DBD boot disk (according to the instructions 
+  included with DBD). When the computer is booted and you have logged in, you 
+  should create two directories. Since DBD runs from a virtual ramdisk, these 
+  directories will vanish if you reboot, so keep that in mind.</p>
+<p>     At the prompt, type these commands (replacing &quot;X&quot; with b, c, 
+  or d, according to the chart above):</p>
+<blockquote>
+  <p><font face="Courier New, Courier, mono" size="-1"># mkdir /mnt/4<br>
+    # mkdir /mnt/7<br>
+    # mount /dev/hdX4 /mnt/4<br>
+    # mount /dev/hdX7 /mnt/7<br>
+    </font></p>
+</blockquote>
+<p>     You should now have your two root partitions mounted and ready to modify. 
+  Additional information on this process can be foud in the Hack FAQ.</p>
+<p><b><a name="2.5"></a>2.5Getting some tools together</b></p>
+
+<p>      Collect together all the pre-compiled binaries you might need, such as 
+  Tridge's rsync from <a href="http://tivo.samba.org/download/tridge">http://tivo.samba.org/download/tridge</a>. 
+  You can find some other useful tools such as &quot;diff&quot; and &quot;less&quot; 
+  at <a href="http://pvrhack.sonnik.com/tivo/download.asp">http://pvrhack.sonnik.com/tivo/download.asp</a>.</p>
+<p><b><a name="2.6"></a>2.6 Copying tools to TiVo</b></p>
+<p>     Start by creating a working directory.  I put mine under /var/tivo since 
+  the /var partition is mounted read-write in the TiVo and I don't like to keep 
+  remounting the root partition during normal operation.  All my modified scripts 
+  and my tools go here so I'll have them all in one place.  Plus, it makes rsyncing 
+  convenient later. Note that while mounted in the spare PC, the paths would be 
+  /mnt/4/var (or /mnt/7/var) and /mnt/4/var/tivo (or /mnt/7/var/tivo).</p>
+<p>     While the drive is still mounted in your spare computer, copy over, via 
+  floppy disk, any tools you'll need. If you don't at least put rsync on, then 
+  you'll have problems transferring files later on. In order to get your tools 
+  over to the TiVo after we've finished, we need to use one of three methods, 
+  Z-Modem transfer (rz/sz) , http_get, or rsync. Rsync is actually the best way 
+  to transfer files, but we can't use it until we have an rsync binary on the 
+  TiVo. We'll talk about setting that up later. http_get is a good option, but 
+  requires you to be in &quot;tivosh&quot; instead of &quot;bash&quot;, as well 
+  as a working web server. Since tivosh seems to crash easily, we want to avoid 
+  that until after we have a ppp connection. That just leaves rz/sz. rz/sz *really* 
+  doesn't work well with a ppp connection, so we need to get some of our tools 
+  (like rsync) copied over while we're still mounted in the spare PC.</p>
+<p><b><a name="2.7"></a>2.7  Running pppd over serial</b></p>
+<p>     Some of what we want to do won't work right if you do it from your spare 
+  PC, so we're going to do this in pieces. First, we'll get the bash prompt working, 
+  then we'll go back and change it to PPP later on. Bear with me. <br>
+  <br>
+       First, we'll need to enable a straight bash prompt over the serial port. 
+  For this exercise, we'll assume that the primary boot partition from Section 
+  2.2 is hda4. Start by changing directories to /mnt/4/etc/rc.d, like this:</p>
+<blockquote> 
+  <p><font face="Courier New, Courier, mono" size="-1"># cd /mnt/4/etc/rc.d<br>
+    </font><font face="Courier New, Courier, mono" size="-1"># cp rc.sysinit rc.sysinit.bak<br>
+    # echo &quot;/bin/bash &lt; /dev/ttyS3 &gt;&amp; /dev/ttyS3 &amp;&quot; &gt;&gt; 
+    rc.sysinit <br>
+    # umount /dev/hdX4 </font><font size="-1">(Change X to the appropriate letter)</font><font face="Courier New, Courier, mono" size="-1"><br>
+    # umount /dev/hdX7<br>
+    # shutdown -h now</font></p>
+</blockquote>
+  
+<p>     Now you can shut everything down and mount the TiVo drive back in the 
+  TiVo. When you fire your TiVo back up, you should be able to get a bash prompt. 
+  Wait until the boot process is completed, and with your serial connection the 
+  same as in Section 2.2, your prompt should appear in your terminal program. 
+  If your bash prompt looks screwy (weird wrapping, etc.) try the command &quot;stty 
+  echo&quot; or &quot;stty echo cooked&quot;.</p>
+
+	
+	
+<p>     A bash prompt is all well and good, but we can't really do what we want 
+  with a straight serial connection.  We really need to assign the serial port 
+  an IP address and run ppp over it.  Not to mention, if you do something weird 
+  and end up locking the port, you'll only get it back by doing a reboot.  With 
+  pppd over serial, you can telnet in.  If the telnet session locks, you can just 
+  start a new session.</p>
+
+<p>         Now, we'll create a device for the serial port and set up some scripts.  
+  Enter these lines at your prompt:</p>
+
+<blockquote> 
+
+  <blockquote> 
+    <p><font face="Courier New, Courier, mono" size="-1">% mount -o rw,remount 
+      /<br>
+      % cd /sbin <br>
+      % cp pppd custpppd <br>
+      % cd /dev <br>
+      % mknod cua3 c 5 67 <br>
+      % cd /etc <br>
+      % cp ppp-options ppp-options.bak <br>
+      % cat &gt; ppp-options.cua3 <br>
+      /dev/cua3 <br>
+      115200 <br>
+      nocrtscts <br>
+      debug<br>
+      local<br>
+      noauth<br>
+      passive<br>
+      persist<br>
+      nodetach </font><font face="Courier New, Courier, mono" size="-1"><br>
+      kdebug 1 <br>
+      asyncmap 0 <br>
+      netmask 255.255.255.0 <br>
+      ^D</font><font size="-1"><br>
+      </font> </p>
+    </blockquote>
+
+</blockquote>
+
+<p> (That last one is Control-D to save and exit) </p>
+
+<p>    That will set up the device node and the options for the serial port, as 
+  well as a backup of your pppd (there's a reason, we'll get to it.) You may also 
+  wish to add &quot;lcp-restart 1&quot; and &quot;ipcp-restart 1&quot; after &quot;nocrtscts&quot; 
+  in the script above. That should make the link slightly more fault tolerant.</p>
+
+<p>Continuing on: <br>
+
+</p>
+
+<blockquote> 
+
+  <blockquote> 
+
+    <p> <font face="Courier New, Courier, mono" size="-1">% cd /etc/rc.d <br>
+
+      % cat &gt; rc.remote-login <br>
+
+      #!/bin/bash <br>
+
+      tnlited 23 /bin/bash -login &amp; <br>
+
+      /sbin/custpppd <br>
+      if /sbin/custpppd file /etc/ppp-options.cua3 passive nodetach nocrtscts 
+      noauth persist; then <br>
+
+      echo pppd started on /dev/cua3<br>
+
+      else <br>
+
+      echo pppd failed on /dev/cua3, starting bash<br>
+
+      /bin/bash &lt; /dev/ttyS3 &gt;&amp; /dev/ttyS3 &amp; <br>
+
+      fi <br>
+
+      ^D<br>
+
+      <br>
+
+      % chmod g+x rc.remote-login<br>
+      % cp rc.sysinit rc.sysinit.bash<br>
+
+      % echo &quot;/etc/rc.d/rc.remote-login &amp;&quot; &gt;&gt; rc.sysinit <br>
+
+      % mount -o ro,remount / </font></p>
+
+  </blockquote>
+
+</blockquote>
+
+<p>     The two instances of custpppd loading in the script above are necessary 
+  because on some units (like mine), it complains that /dev/cua3 doesn't exist 
+  when you try to start pppd on it.  If you start a &quot;plain&quot; instance 
+  of pppd first, then start a second one for cua3, it works fine.  Go figure.  
+  You may find that you don't need the first instance. Also, you'll notice that 
+  you now have rc.sysinit (with ppp code), rc.sysinit.bash (with bash code) and 
+  rc.sysinit.bak (in case you screw up and need a clean copy). If you need a straight 
+  bash prompt again, you can switch between them and reboot.</p>
+
+<p>     You should also copy all these files to your working 
+
+  directory so you have copies if a TiVo software update blows them away:</p>
+
+<blockquote>
+
+  <p>/etc/ppp-options.cua3<br>
+
+    /etc/rc.d/rc.sysinit  (your new, modified one, of course)<br>
+
+    /etc/rc.d/rc.remote-login </p>
+
+</blockquote>
+
+<p> and although not really necessary, you may also want backups of your tools 
+
+  from /devbin. </p>
+
+<p>     Now, reboot your TiVo and it should start up the custpppd 
+
+  program on /dev/ttyS3 (your serial port).  Of course, you won't be able to get 
+
+  your bash prompt until you set up the linux side.</p>
+
+<p>On the linux side: </p>
+
+<blockquote> 
+
+  <blockquote>
+
+    <p><font face="Courier New, Courier, mono" size="-1">% /usr/sbin/pppd ttyS0 
+      115200 noauth debug local nocrtscts 192.168.10.1:192.168.10.2 <br>
+      % telnet 192.168.10.2 </font></p>
+
+  </blockquote>
+
+</blockquote>
+
+<p>     Of course, ttyS0 should be changed to match your linux serial port and 
+  the host:client IP's should be changed to fit your internal LAN as needed. If 
+  you do not use a separate subnet for your TiVo, you'll need to add &quot;proxyarp&quot; 
+  to the list of settings for pppd. I highly recommend creating another subnet, 
+  though, as it simplifies control for networking and firewall rules. Also, if 
+  you're having trouble with pppd timing out on the linux side, try adding &quot;lcp-max-configure 
+  60&quot; to the pppd line (right after nocrtscts). Change 60 to an appropriate 
+  number. The default is 10, which works out to a 30-second timeout. 60 will give 
+  it about 3 minutes, which should be more than enough time to get the TiVo booted 
+  and connected.</p>
+
+<p>     You should now have a happy bash prompt over telnet.  If you don't want 
+  to do updates over always-on internet, you can stop here and just play with 
+  telnetting, but you should add the &quot;nodefaultroute&quot; option to ppp-options.cua3, 
+  or pppd will die everytime the TiVo calls home.  Remember also, TiVo has NO 
+  security.  Make sure your firewall is adequate (but of course, make sure your 
+  TiVo still has access out through it...)</p>
+<p>    <b><a name="2.8"></a>2.8  Setting up rsync</b></p>
+<p>     A big problem with transferring files to and from TiVo 
+
+  is that the included rz and sz (recieve z-modem and send z-modem) don't like 
+
+  telnet very much.  It'll work, but it tends to mangle ASCII files.  Some people 
+
+  have said using the -e option will fix that.  It doesn't work for me.  I prefer 
+
+  to use rsync, but it's a little bit of a pain.  This is verbatim from the Hack 
+
+  FAQ.  I place it here only for convenience.  You should check the FAQ for up-to-date 
+
+  information.</p>
+
+*START QUOTED SECTION*
+
+<p>  Using rsync to transfer files to/from your TiVo</p>
+
+<p>Getting data onto and off your TiVo is made a lot easier using rsync. You can 
+  get a TiVo binary of rsync from <a href="http://tivo.samba.org/download/tridge/">http://tivo.samba.org/download/tridge/</a>, 
+  then you need to follow these steps to use it: </p>
+
+<p>1) setup PPP to your TiVo. Make sure you can ping. </p>
+
+<p>2) install rsync as a daemon on your Linux box (_not_ on the TiVo). To do this 
+
+  you add a line like this in /etc/inetd.conf: </p>
+
+<blockquote> 
+
+  <blockquote>
+
+    <p><font face="Courier New, Courier, mono" size="-1">rsync stream tcp nowait 
+
+      root /usr/bin/rsync rsync --daemon</font></p>
+
+  </blockquote>
+
+</blockquote>
+
+<p>then send a HUP to inetd like this &quot;killall -1 inetd&quot; </p>
+
+<p>3) create a /etc/rsyncd.conf something like this: </p>
+
+<blockquote> 
+
+  <blockquote> 
+
+    <blockquote>
+
+      <p> <font size="-1" face="Courier New, Courier, mono">[tivo]<br>
+        path = /tmp/tivo<br>
+
+        uid = root<br>
+
+        read only = no</font></p>
+
+    </blockquote>
+
+  </blockquote>
+
+</blockquote>
+
+<p>You may wish to set &quot;uid=&quot; to your own username rather than root. 
+  Then do &quot;mkdir /tmp/tivo&quot; as that user. NOTE: If you are on a open 
+  internet connection then the above will have opened the directory /tmp/tivo 
+  to the world. See the rsyncd.conf man page for security options.</p>
+
+<p> 4) test your rsync setup locally (ie. without the TiVo). Use a command like: 
+
+</p>
+
+<blockquote> 
+
+  <blockquote>
+
+    <p><font face="Courier New, Courier, mono" size="-1">rsync -Pavz /etc/hosts 
+      localhost::tivo/</font></p>
+
+  </blockquote>
+
+</blockquote>
+
+5) You can now transfer files betweem /tmp/tivo on your linux box and your TiVo. 
+Note that you must use the IP address if your Linux box in the rsync commands, 
+the host name will not work. See the rsync man page for all the options, but the 
+following will give you some ideas: 
+<blockquote> 
+
+  <blockquote>
+
+    <p><font face="Courier New, Courier, mono" size="-1">rsync -Pavz /var/log 
+      192.168.2.22::tivo/</font></p>
+
+    <p><font face="Courier New, Courier, mono" size="-1">rsync -Pav 192.168.2.22::tivo/foo 
+      /tmp/</font></p>
+
+  </blockquote>
+
+</blockquote>
+
+*END QUOTED SECTION* 
+
+<p>I use</p>
+
+<blockquote> 
+
+  <blockquote>
+
+    <p><font face="Courier New, Courier, mono" size="-1">rsync -Pav 192.168.10.1::tivo/ 
+      /var/tivo</font> </p>
+
+  </blockquote>
+
+</blockquote>
+
+<p> to receive files from /tmp/TiVo on my linux box to /var/tivo on my TiVo. The 
+  command: </p>
+
+<blockquote> 
+
+  <blockquote> 
+    <p><font face="Courier New, Courier, mono" size="-1">rsync -Pav /var/tivo 
+      192.168.10.1::tivo/</font> </p>
+
+  </blockquote>
+
+</blockquote>
+
+<p>will send files back to the linux box.</p>
+
+<p> You can try using http_get instead of rz/sz if you like. Here's how:</p>
+<p>Assuming your Linux box has some sort of webserver running on it, put the files 
+  to be transferred in some web-accessible location, like say /my/webserver/root/tivo-downloads/.</p>
+<p>On the TiVo side, run tivosh, then </p>
+<p><font face="Courier New, Courier, mono" size="-1">% http_get -T 0 -C 0 -D /var/tmp 
+  -U http://1.2.3.4:80/tivo-downloads/myfile</font></p>
+<p>/var/tmp is the destination on the TiVo side, 1.2.3.4 is the IP address of 
+  the target web server (don't forget the :80 since http_get does not default). 
+  /tivo-downloads/myfile is the path and file to retrieve. Also, be sure to use 
+  the IP address and NOT the DNS name of the web server.</p>
+
+<p><font size="+1"><a name="3"></a>3. Retrieving updates over always-on internet 
+  </font> </p>
+
+<p>
+<p>    <b><a name="3.1"></a>3.1  Modifying the dialing script</b></p>
+
+<p>     There's really only one step here.  We'll change a 
+
+  script so that it will think it already has an IP address.  This is partly why 
+
+  we run custpppd instead of pppd.  If the script runs and sees pppd running, 
+
+  it will kill it, which will make you lose your connection.</p>
+
+<p>     Start by backing up and then rsyncing /tvlib/tcl/tv/TClient-lib.itcl.  
+  If you can figure out how to edit the file right on the TiVo, you can skip rsyncing 
+  it and make these modifications right on the TiVo.</p>
+
+<p>     Around line 1350, you should see something like this:</p>
+
+<blockquote> 
+
+  <blockquote> 
+    <p> <font face="Courier New, Courier, mono" size="-1">putlog &quot;Ird Id.&quot;<br>
+      if [catch { svclog &quot;ird_id&quot; &quot;ID=$env(IrdSerialNumber)&quot; 
+      }] {<br>
+      putlog &quot;IrdSerialNumber not found.&quot;<br>
+      }</font></p>
+    <p><font face="Courier New, Courier, mono" size="-1">if [file exists /var/tmp/pppaddr] 
+      {<br>
+      if {[connectPPP $phone $pppUser $pppPass] != 0} {<br>
+      delete object $idb<br>
+      delete object $tcd411<br>
+      putlog &quot;PPP has failed, we've warned the user, set status to Failed&quot;<br>
+      toggleLed 0<br>
+      after 5000</font></p>
+
+    </blockquote>
+
+</blockquote>
+
+Add the line &quot;catch {file delete /var/tmp/pppaddr}&quot; so it looks like 
+
+this: 
+
+<blockquote> 
+
+  <blockquote> 
+    <p> <font face="Courier New, Courier, mono" size="-1">putlog &quot;Ird Id.&quot;<br>
+      if [catch { svclog &quot;ird_id&quot; &quot;ID=$env(IrdSerialNumber)&quot; 
+      }] {<br>
+      putlog &quot;IrdSerialNumber not found.&quot;<br>
+      }</font></p>
+    <p><font face="Courier New, Courier, mono" size="-1">catch {file delete /var/tmp/pppaddr}<br>
+      if [file exists /var/tmp/pppaddr] {<br>
+      if {[connectPPP $phone $pppUser $pppPass] != 0} {<br>
+      delete object $idb<br>
+      delete object $tcd411<br>
+      putlog &quot;PPP has failed, we've warned the user, set status to Failed&quot;<br>
+      toggleLed 0<br>
+      after 5000</font></p>
+
+    </blockquote>
+
+</blockquote>
+
+Once that's done, rsync it back and copy it to /tvlib/tcl/tv/. 
+
+<p>You should now be able to disconnect your phone line.  Try running a forced 
+  call.  It will try to use the modem, but it will fail and fall back to the existing 
+  ppp connection.  The updates are pulled via http, so make sure your firewall 
+  rules allow the TiVo out.  TiVo will call out over http (port 80), ftp (port 
+  23) and ntp (123) If you like, you can watch it call out.  Telnet to your TiVo 
+  and do &quot;tail -f /var/log/tclient&quot;  or &quot;tail -f /var/log/kernel&quot;.</p>
+<p>&nbsp;</p>
+
+</body>
+
+</html>
+

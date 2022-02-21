@@ -1,0 +1,3324 @@
+<HTML>
+<HEAD>
+<TITLE>The Whole Hacking The TiVo FAQ</TITLE>
+</HEAD>
+
+<BODY BACKGROUND="http://www.python.org/pics/RedShort.gif"
+      BGCOLOR="#FFFFFF"
+      TEXT="#000000"
+      LINK="#AA0000"
+      VLINK="#906A6A">
+<H1>The Whole Hacking The TiVo FAQ</H1>
+Last changed on Fri Apr 20 18:25:53 2001 PDT
+
+<P>(Entries marked with ** were changed within the last 24 hours;
+entries marked with * were changed within the last 7 days.)
+<P>
+
+<P>
+<HR>
+<H2>1. General information</H2>
+<UL>
+<LI><A HREF="#1.1">1.1. What is a TiVo?</A>
+<LI><A HREF="#1.2">1.2. Where can I get the latest TiVo hacking files?</A>
+<LI><A HREF="#1.3">1.3. Why would I want to hack my TiVo?</A>
+<LI><A HREF="#1.4">1.4. Why is the TiVo hackable?</A>
+<LI><A HREF="#1.5">1.5. Is this hacking dangerous?</A>
+<LI><A HREF="#1.6">1.6. Do I need to learn Linux to hack my TiVo?</A>
+<LI><A HREF="#1.7">1.7. How do I know if I am qualified to hack my TiVo?</A>
+<LI><A HREF="#1.8">1.8. How can I get involved in this TiVo hacking?</A>
+<LI><A HREF="#1.9">1.9. What kind of TiVo unit do I have?</A>
+<LI><A HREF="#1.10">1.10. Can I hack my TiVo so I don't need a TiVo subscription?</A>
+<LI><A HREF="#1.11">1.11. Are there any products that can make my computer a TiVo like device?</A>
+<LI><A HREF="#1.12">1.12. So who are all the people I have to thank for the TiVo hacking?</A>
+
+</UL>
+
+<P>
+<HR>
+<H2>2. Backing up your TiVo</H2>
+<UL>
+<LI><A HREF="#2.1">2.1. What do I need to open up my TiVo?</A>
+<LI><A HREF="#2.2">2.2. How do I open my TiVo?</A>
+<LI><A HREF="#2.3">2.3. What is all this cool stuff in the TiVo I see?</A>
+<LI><A HREF="#2.4">2.4. Why should I make a backup?</A>
+<LI><A HREF="#2.5">2.5. When should I make a backup?</A>
+<LI><A HREF="#2.6">2.6. I have two TiVo units can I just backup one unit?</A>
+<LI><A HREF="#2.7">2.7. What do I need to backup my TiVo A drive?</A>
+<LI><A HREF="#2.8">2.8. I want to make a backup, but how do I do it?</A>
+<LI><A HREF="#2.9">2.9. I bought an extra drive for my A drive backup how can I make a copy of it?</A>
+<LI><A HREF="#2.10">2.10. How do I make a disk to disk backup with Dolly?</A>
+<LI><A HREF="#2.11">2.11. How do I make a disk to disk backup with DiskPro Lite?</A>
+<LI><A HREF="#2.12">2.12. How do I make a disk to disk backup with Dylan's Boot Disk?</A>
+<LI><A HREF="#2.13">2.13. Isn't my TiVo units serial number stored on the drive?</A>
+<LI><A HREF="#2.14">2.14. Where can I download a virgin backup image on the Internet?</A>
+<LI><A HREF="#2.15">2.15. My TiVo A drive is locked what do I do?</A>
+<LI><A HREF="#2.16">2.16. Can I make a backup with my TiVo instead of a PC?</A>
+<LI><A HREF="#2.17">2.17. How do I make a backup to a single compressed file on another hard disk?</A>
+<LI><A HREF="#2.18">2.18. How do I split a compressed backup into smaller files onto another hard disk?</A>
+<LI><A HREF="#2.19">2.19. Why can't I use Ghost or Drive Image to backup my drive?</A>
+<LI><A HREF="#2.20">2.20. Can I zero out certain partitions to make my backup to file smaller?</A>
+<LI><A HREF="#2.21">2.21. Can I zero out the drive by having TiVo record up to its max capacity of a static picture?</A>
+<LI><A HREF="#2.22">2.22. Will a factory reset zero out the drive for better compression?</A>
+<LI><A HREF="#2.23">2.23. Can I backup my 15GB A drive onto a 30GB drive and get a 30 hour single drive unit?</A>
+<LI><A HREF="#2.24">2.24. Can I make a sector copy of my TiVo A drive to a larger drive?</A>
+<LI><A HREF="#2.25">2.25. I want a virgin backup, but I want to be sure my TiVo is good before cracking the case!</A>
+<LI><A HREF="#2.26">2.26. Why are some virgin unit backups less than 650MB and others 20GB??</A>
+<LI><A HREF="#2.27">2.27. Using rsync to transfer files to/from your TiVo</A>
+<LI><A HREF="#2.28">2.28. Why are people in the Underground calling me a MORON?</A>
+
+</UL>
+
+<P>
+<HR>
+<H2>3. Adding a second drive</H2>
+<UL>
+<LI><A HREF="#3.1">3.1. How can I add a second drive to my TiVo?</A>
+<LI><A HREF="#3.2">3.2. Are all TiVo's upgradeable?</A>
+<LI><A HREF="#3.3">3.3. What type of drive do I need to add to my TiVo?</A>
+<LI><A HREF="#3.4">3.4. How much space do different size drives give me?</A>
+<LI><A HREF="#3.5">3.5. Can I add a CDR or CDRW drive to my TiVo for removable storage?</A>
+<LI><A HREF="#3.6">3.6. Can I add a second drive using my MAC?</A>
+<LI><A HREF="#3.7">3.7. How can I add a new drive to my TiVo with Dylan's bootdisk and the BlessTiVo program?</A>
+<LI><A HREF="#3.8">3.8. How can I add a second drive to my TiVo the true hackers way?</A>
+<LI><A HREF="#3.9">3.9. Any other problems I might run into after adding the blessed drive?</A>
+<LI><A HREF="#3.10">3.10. How do I mount this darn drive in my TiVo?</A>
+<LI><A HREF="#3.11">3.11. Does anybody sell a hard drive bracket to mount the second drive with?</A>
+<LI><A HREF="#3.12">3.12. What is this about this 12 hour loss with 2.0?</A>
+<LI><A HREF="#3.13">3.13. Can I take out a drive I have blessed and put in a larger or different blessed drive?</A>
+<LI><A HREF="#3.14">3.14. Is there an easy way to backup from an upgrade without restoring the whole A drive?</A>
+<LI><A HREF="#3.15">3.15. My PC BIOS and or BlessTiVo reports my xx GB drive as a yy GB drive. Help!</A>
+<LI><A HREF="#3.16">3.16. Who can upgrade my TiVo for me? It seems too complex.</A>
+<LI><A HREF="#3.17">3.17. Will an upgrade kill my Now Showing or Season Passes?</A>
+<LI><A HREF="#3.18">3.18. Help! My TiVo won't boot with a Quantum B drive!</A>
+
+</UL>
+
+<P>
+<HR>
+<H2>4. Other TiVo hacks and information</H2>
+<UL>
+<LI><A HREF="#4.1">4.1. Converting your TiVo for PAL input</A>
+<LI><A HREF="#4.2">4.2. Can I extract videos from the TiVo?</A>
+<LI><A HREF="#4.3">4.3. How can I access the secret TiVo diagnostic mode?</A>
+<LI><A HREF="#4.4">4.4. Getting a BASH prompt on your TiVo with the Diagnostic Mode</A>
+<LI><A HREF="#4.5">4.5. Getting a BASH prompt using a hex-editor</A>
+<LI><A HREF="#4.6">4.6. Getting a BASH prompt with Dylan's bootdisk</A>
+<LI><A HREF="#4.7">4.7. I can't get the damn TiVo shell to work any ideas?</A>
+<LI><A HREF="#4.8">4.8. How can I change the password for the diagnostic mode when ``factory'' doesn't work?</A>
+<LI><A HREF="#4.9">4.9. How do I use a non Quantum drive as my A drive?</A>
+<LI><A HREF="#4.10">4.10. Configuring for a non Quantum drive with Dylan's boot disk.</A>
+<LI><A HREF="#4.11">4.11. Configuring for a non Quantum drive using the TiVo diagnostic menu.</A>
+<LI><A HREF="#4.12">4.12. What other cool variables can I set in the TiVo and what do they do?</A>
+<LI><A HREF="#4.13">4.13. I set all those cool variables above, and for no reason they stopped working. Help!</A>
+<LI><A HREF="#4.14">4.14. Are there any limitations when compiling code to run on the TiVo?</A>
+<LI><A HREF="#4.15">4.15. TiVo Partition Information</A>
+<LI><A HREF="#4.16">4.16. Partition information for drives blessed by BlessTiVo or the hackers method</A>
+<LI><A HREF="#4.17">4.17. TiVo Block 0 Layout for blessed drive</A>
+<LI><A HREF="#4.18">4.18. Signature on a blessed drive</A>
+<LI><A HREF="#4.19">4.19. Some Integrated Circuits inside the TiVo</A>
+<LI><A HREF="#4.20">4.20. How many serial ports does the TiVo have and what are they used for?</A>
+<LI><A HREF="#4.21">4.21. Details of file layout on the TiVo Root ext2 partitions</A>
+<LI><A HREF="#4.22">4.22. Some applications on the TiVo partitions and their use</A>
+<LI><A HREF="#4.23">4.23. Running LinuxPPC binaries on your TiVo</A>
+<LI><A HREF="#4.24">4.24. What is MFS</A>
+<LI><A HREF="#4.25">4.25. What are Backdoor codes and how do I use them?</A>
+<LI><A HREF="#4.26">4.26. TiVo Ethernet howto</A>
+<LI><A HREF="#4.27">4.27. How do I make my Tivo talk PPP over the serial port?</A>
+
+</UL>
+
+<P>
+<HR>
+<H2>5. Credits and contact information</H2>
+<UL>
+<LI><A HREF="#5.1">5.1. Credits</A>
+<LI><A HREF="#5.2">5.2. Contact Information</A>
+
+</UL>
+
+<HR>
+<H1>1. General information</H1>
+
+<HR>
+<H2><A NAME="1.1">1.1. What is a TiVo?</A></H2>
+That is a topic better handled by the TiVo FAQ. Go to the TiVo 
+Community Forum at <A HREF="http://www.tivocommunity.com">http://www.tivocommunity.com</A> and read the TiVo 
+FAQ. There are lots of helpful people on there and many good 
+threads on there to help you understand what your TiVo is all about.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq01.001.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq01.001.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 09:57:15 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="1.2">1.2. Where can I get the latest TiVo hacking files?</A></H2>
+Go to <A HREF="http://www.tivofaq.com/hack">http://www.tivofaq.com/hack</A> for the latest version of the BlessTiVo program for adding a second drive, 
+and other TiVo hacking related information. 
+<P>
+<P>
+You can see various memebers of the TiVo hacking communities programs and code at <A HREF="http://tivo.samba.org/download//">http://tivo.samba.org/download//</A>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq01.002.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq01.002.htp">Log info</A>
+
+/ Last changed on Fri Apr  6 07:51:06 2001 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="1.3">1.3. Why would I want to hack my TiVo?</A></H2>
+Well that depends on you. The biggest reason to hack your TiVo is 
+because you want to add more space to it. For example, by adding a 
+30GB drive to a 14 hour TiVo you can go from 14 hours of storage 
+to 52 hours. Some people want to hack their TiVo just because 
+it is fun and they enjoy the hacking experience.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq01.003.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq01.003.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 10:22:53 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="1.4">1.4. Why is the TiVo hackable?</A></H2>
+The biggest reason for this is that TiVo used Linux for their 
+Operating System. Linux is an open source OS that is widely 
+available for many different platforms. The other reason is 
+that TiVo uses standard off the shelf IDE hard drives. This 
+makes the hard drive upgrade easy since you can go to any 
+computer shop and buy an IDE drive.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq01.004.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq01.004.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 10:30:40 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="1.5">1.5. Is this hacking dangerous?</A></H2>
+Yes. There are many ``bad'' things that could happen. The TiVo runs 
+on AC power so you could electrocute yourself if you touch the power 
+supply while the unit is plugged in. Since the power supply is 
+unshielded even when unplugged you could still receive a shock! If 
+you damage the original hard drive in the TiVo you will render your 
+TiVo useless if you have no backup. The other big warning is that 
+when you open your TiVo you void your warranty. Do NOT open your 
+TiVo unless you understand the risks noted above. Life with TiVo is 
+great, but life with a dead TiVo is not!
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq01.005.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq01.005.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 10:42:15 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="1.6">1.6. Do I need to learn Linux to hack my TiVo?</A></H2>
+Well it depends on what you want to do. If you want to simply add a 
+second drive to your TiVo for more storage space, the answer is no. 
+If you want to modify the TiVo Linux kernel the answer is yes. The 
+best way to answer this question is to read the following sections 
+to see what is required for the hack you wish to do.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq01.006.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq01.006.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 10:49:37 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="1.7">1.7. How do I know if I am qualified to hack my TiVo?</A></H2>
+If you are uncomfortable opening up your PC and adding drives and 
+interface cards, your best bet is to avoid this entire procedure. 
+If you already know the difference between a primary/slave and 
+secondary/master drive setting, you are probably going to really 
+enjoy this.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq01.007.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq01.007.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 10:55:01 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="1.8">1.8. How can I get involved in this TiVo hacking?</A></H2>
+Go to the TiVo Underground forum at <A HREF="http://www.tivocommunity.com">http://www.tivocommunity.com</A>. The 
+best way though is to load up your favorite IRC client and join the 
+#tivo channel on irc.openprojects.net. Many people involved in 
+hacking the TiVo chat in there.
+<P>
+(Note: this channel is for hacking discussion, for questions, please try
+#tivo-newbies on the same irc network.)
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq01.008.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq01.008.htp">Log info</A>
+
+/ Last changed on Wed Mar 28 07:33:51 2001 by
+<A HREF="mailto:dans@fysh.org">sorphin</A>
+<P>
+
+<HR>
+<H2><A NAME="1.9">1.9. What kind of TiVo unit do I have?</A></H2>
+The following is the breakdown of the Philips units by model number. 
+<P>
+Stand Alone:
+<PRE>
+       HDR112   - 14 hour, with one hard drive 
+       HDR212   - 20 hour, with one hard drive
+       HDR312   - 30 hour, with two hard drives and 1.2.1 software 
+       HDR31201 - 30 hour, with one hard drive (LCT10) and 1.2.1 software
+       HDR31202 - 30 hour, with one hard drive (LCT10) and 1.3 software
+       HDR31203 - 30 hour, with one hard drive (LCT15) and 1.3 software
+       HDR612   - 60 hour, with two hard drives
+</PRE>
+Combo Unit:
+<PRE>
+       DSR6000  - 35 hour variable, Direct TV with Tivo Service
+                - 2 Hard Drives with 2.0 software
+</PRE>
+Currently Sony only makes the SVR 2000 which is a 30 hour single 
+drive unit with the 1.3 version software.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq01.009.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq01.009.htp">Log info</A>
+
+/ Last changed on Thu Dec 21 17:32:21 2000 by
+<A HREF="mailto:no_email_provided@localhost">TivoTechie</A>
+<P>
+
+<HR>
+<H2><A NAME="1.10">1.10. Can I hack my TiVo so I don't need a TiVo subscription?</A></H2>
+NO NO NO. This is something that will NOT be explored. TiVo has been 
+very gracious in not coming down on all this hacking described in 
+this FAQ and we will do nothing to harm that. Nothing will be looked 
+at to get around the subscription service so don't ask! Regardless 
+your TiVo will function as a VCR already with manual record mode.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq01.010.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq01.010.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 11:01:13 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="1.11">1.11. Are there any products that can make my computer a TiVo like device?</A></H2>
+Yes there are some. 
+<P>
+<PRE>
+       PureDiva:    Software only bundled with complete PC's. <A HREF="http://www.purediva.com">http://www.purediva.com</A> 
+       Ligos:       Windows based PTV. <A HREF="http://www.ligos.com/news/pr_timeshift.html">http://www.ligos.com/news/pr_timeshift.html</A> 
+       PowerVCR:    Windows based VCR. <A HREF="http://www.cyberlink.com.tw/english/products/powervcr2/powervcr2.asp">http://www.cyberlink.com.tw/english/products/powervcr2/powervcr2.asp</A> 
+       WinVCR:      Windows based VCR. <A HREF="http://www.cinax.com/Products/winvcr.html">http://www.cinax.com/Products/winvcr.html</A> 
+       SnapStream:  Windows based PTV (freeware and commercial version). <A HREF="http://www.snapstream.com">http://www.snapstream.com</A> 
+       ShowShifter: Windows based PTV (freeware). <A HREF="http://www.showshifter.com">http://www.showshifter.com</A>
+</PRE>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq01.011.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq01.011.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 11:05:32 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="1.12">1.12. So who are all the people I have to thank for the TiVo hacking?</A></H2>
+Well here are just some of the people involved. Feel free to email me 
+those I forgot. 
+<P>
+cc, Peter Creath, TivoTechie, and Ron Curry were the guys to 
+figure out originally how to add a second drive to a TiVo. It 
+all started with these guys. Many of these guys are working on 
+other projects such as understanding the MFS format, expanding 
+the A drive, etc. If it was not for the work these guys did 
+(and continue to do) none of this hacking would happen as soon 
+as it did. 
+<P>
+Dylan created a Linux boot floppy that contains the programs 
+and utilities needed to make a backup of your TiVo A drive. 
+This disk also contains Mike's BlessTiVo program on it. Dylan 
+has been working on a program to automated turning on or off 
+many of the special hacks noted in this FAQ. 
+<P>
+Andrew Tridgell has developed a PAL kit for the TiVo.  With his
+software (see section 4.1) your TiVo can except PAL video. He also
+donated space on one of samba.org servers to host this FAQ.  Andrew is 
+the creator of the infamous Samba!  Go to <A HREF="http://www.samba.org">http://www.samba.org</A> for more 
+information.
+<P>
+Mike Hill (aka Belboz) wrote the BlessTiVo program that 
+automates the ``blessing'' process to add a second drive. He 
+also wrote a program (osdmngr) to convert Targa files to and 
+from cs22 files for creating On Screen Displays for the TiVo. 
+He compiled the Joe text editor and MicroCom Terminal program 
+for the TiVo also. The osdmngr, joe, and microcom can be found 
+at <A HREF="http://tivo.samba.org/download/belboz">http://tivo.samba.org/download/belboz</A> . (I am also one of the many who edit this FAQ)
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq01.012.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq01.012.htp">Log info</A>
+
+/ Last changed on Fri Apr  6 07:54:26 2001 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H1>2. Backing up your TiVo</H1>
+
+<HR>
+<H2><A NAME="2.1">2.1. What do I need to open up my TiVo?</A></H2>
+The following equipment is needed. 
+<P>
+Torx #10 screwdriver. You can find one at almost any hardware store. 
+(Sears and Lowes had them in my area). The TiVo uses special Torx 
+screws for the case and drive. Don't try using a regular flat head 
+screwdriver or you will end up stripping the screws out and making 
+the upgrade more difficult.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.001.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.001.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 11:21:35 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.2">2.2. How do I open my TiVo?</A></H2>
+Unplug your TiVo and allow time for the hard drive to stop spinning 
+before moving it. 
+<P>
+Remove the three Torx screws on the back of the TiVo. The top lid 
+should slide off. It is on very tight. Some people have used a flat 
+head screwdriver to pry under the top of the case where the screws 
+in the back were removed. Take your time. 
+<P>
+Remember to avoid touching the power supply since you can be shocked 
+even with it unplugged.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.002.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.002.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 11:37:25 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.3">2.3. What is all this cool stuff in the TiVo I see?</A></H2>
+Well looking at the insides of your TiVo from the front you see the 
+following items. 
+<P>
+The board on the far left is the main circuit board. This board 
+contains things like the CPU, MPEG decoder chip, modem, etc. This 
+is the brains of your TiVo unit. 
+<P>
+The top right of the unit is the power supply. This supplies power to 
+the main circuit board and to the hard drive(s) . 
+<P>
+To the bottom right you will see either one or two hard drives. Most 
+units will have only one drive.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.003.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.003.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 11:39:05 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.4">2.4. Why should I make a backup?</A></H2>
+Well there are numerous reasons you should make a backup 
+<P>
+If something goes wrong and you damage your original A drive your 
+TiVo is now useless 
+<P>
+If you are upgrading your TiVo capacity by adding a second drive 
+it can not be removed once added. If you pull a second drive from a 
+TiVo once it has been added, the TiVo will no longer boot up. 
+<P>
+If TiVo changes something in future software revisions it is possible 
+user hacked units may stop working or just do ``weird things''. If 
+this would happen a backup gets you back to your original state. 
+<P>
+Even if you don't hack your TiVo a backup of the A drive could be 
+handy if your TiVo A drive dies down the road and your unit is out
+of warranty.  You could purchase a new drive and restore your backup
+onto that drive.
+<P>
+It is the smart thing to do so do it!
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.004.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.004.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 11:46:13 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.5">2.5. When should I make a backup?</A></H2>
+Well the ideal time is with a TiVo that has never been powered up. Getting a backup in this ``virgin'' state is ideal. The problem with this is you are going to void your warranty on a new TiVo you have
+never used. Some people don't mind this, but if your TiVo modem is fried and you don't use your TiVo first you will never know until after you voided your warranty. If you are going to make a backup
+to file a virgin TiVo is ideal because many people have been able to compress their virgin TiVo A drives down to a file small enough to compress onto a single CDR (less than 650MB). Newer units
+with the demo mode only compress down to a file about 3GB or so which is still small enough to fit on 5 CD's. If the TiVo has actually been in use it will not compress well and could take dozens of
+CD's for a backup.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.005.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.005.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 11:47:34 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.6">2.6. I have two TiVo units can I just backup one unit?</A></H2>
+Yes and no. The best rule of thumb is to do a backup for each unique 
+model TiVo you own. For example if you have a Sony and a Philips 
+model you should backup each since the units are different.
+<P>
+One VERY important thing also. If you have a unit that has a serial 
+number that starts with 002 and you don't back it up and restore 
+an image from a non 002 unit which has version 1.2.1 or lower of
+the TiVo software you will run into problems. The TiVo service will 
+still assume your 002 unit has 1.3 and will not upgrade the software 
+to 1.3. You will also tick TiVo off when your unit is calling in with 
+software that has not been installed on that unit. TiVo has been very 
+kind initially when things like this happened, but it is better to not 
+rock the boat. If you want to share a backup between multiple TiVo's 
+you own, make sure they all have the same version software installed 
+from the factory.
+<P>
+Update!!!
+<P>
+Do NOT use a backup of a Philips unit on a Sony or vice versa.  The TiVo 
+servers will get mixed up and TiVo will terminate your account.
+<P>
+With all the new units coming out this is a very important issue.  So just 
+remember to do a backup for each unit you hack UNLESS they are the EXACT 
+same unit and EXACT same revision software.  If you do otherwise you 
+risk losing your TiVo service and or ticking TiVo off.
+<P>
+If you are unsure on this subject go to <A HREF="http://www.tivocommunity.com">http://www.tivocommunity.com</A> 
+and ask there before you proceed.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.006.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.006.htp">Log info</A>
+
+/ Last changed on Wed Oct 25 18:32:01 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.7">2.7. What do I need to backup my TiVo A drive?</A></H2>
+The following things are needed. 
+<P>
+Follow the procedures noted in section 2.1 to open the actual TiVo 
+unit up. 
+<P>
+A backup program of some type to backup the ``A'' drive in the TiVo. 
+See section 2.9 for more information. 
+<P>
+Something to store your backup on. See section 2.8 for more details.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.007.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.007.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 11:54:24 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.8">2.8. I want to make a backup, but how do I do it?</A></H2>
+Smart choice! Well there are a couple ways to do it. 
+<P>
+You can buy an extra drive and make a complete backup of your original 
+A drive onto the new drive. This way you can pull the original A drive 
+out and store it for safe keeping and run using the new backup A 
+drive. Remember that your drive needs to be large enough to hold the 
+copy. So if you have a TiVo with a 30GB Quantum as the A drive, you 
+should buy a 30GB drive as the backup drive. I recommend getting the 
+same drive as your original A drive so that you ensure your copy will 
+fit. Some people bought a Western Digital 15GB drive for backing up 
+their 15GB Quantum in the TiVo only to find out the Western Digital 
+was actually a tiny bit smaller and they couldn't make a backup. 
+<P>
+You can also make a backup to a file or series of files onto another 
+drive. You could keep them on that drive or possibly burn them onto 
+CDROM's if you have a CDR or CDRW drive. The benefit to the backup to 
+file method is that you do not have to worry about drive model type. 
+As long as your drive is large enough to hold the image you are fine.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.008.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.008.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 11:57:39 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.9">2.9. I bought an extra drive for my A drive backup how can I make a copy of it?</A></H2>
+There are currently three recommended programs to do this with. Two are 
+DOS programs named Dolly and DiskPro Lite. The third is a Linux boot 
+disk put together by a member of the TiVo community (Dylan). It is 
+recommended to use the Linux boot disk. It has proven more reliable 
+than the DOS programs. These first steps must be done regardless of 
+which program you wish to use for the backup. 
+<P>
+1.Unplug your TiVo and allow time for the hard drive to stop spinning 
+before moving it 
+<P>
+2.Open up your TiVo. 
+<P>
+3.Remove the IDE connector and power cable from the back of the drive 
+in the TiVo. Be careful to not touch the power supply. 
+<P>
+4.Remove the two Torx screws from the front of the plate the drive is 
+mounted to. The drive should then lift up from the front and easily 
+be removed from the TiVo. 
+<P>
+5.Power off your PC and open up the case. Connect the original TiVo A 
+drive to the Secondary IDE channel on your motherboard. Take your new 
+backup drive and make sure it is set as the slave drive. This will 
+vary depending on your drive type. See the manufacturers documentation 
+for details. Connect it to the cable connected to the Secondary IDE 
+channel also. This will make your original TiVo A drive the master on 
+the Secondary IDE connector, and the backup drive will be the Slave on 
+the Secondary IDE connector. Make sure each drive also has a power 
+connector plugged into it. Unplug ANY devices from the Primary IDE 
+port. This is VERY important if you use Dolly to do the copy. 
+<P>
+6.Power up your PC and go into your CMOS. This varies depending on 
+the computer's BIOS. Some systems require hitting the delete key on 
+power up, some F10, and some the escape key. If you don't know you 
+will need to check your computers documentation. In the CMOS make sure 
+the Secondary Master and Slave drives are set to AUTO. If your BIOS 
+does not have an AUTO settings you can sometimes have the BIOS detect 
+the drives for you. Save your settings and reboot. 
+<P>
+7.Make sure your PC detects the drive sizes correctly. If your CMOS 
+reports either drives capacity wrong then DO NOT continue. Some things 
+to check if the drive is not detected correctly.
+<P>
+Your computer may be an older model and has trouble with large 
+drives. Find a system with a newer BIOS capable of handling large 
+drives. If your using the Linux boot disk you can turn off the CMOS 
+settings for the drives.  Linux can detect the drives automatically 
+without the CMOS settings.  This allowed my Pentium 166 to detect 
+a 60GB Maxtor drive.  The CMOS on the Pentium 166 would lock the system 
+up if I let it try to detect the drive.
+<P>
+The drive is locked. If the CMOS reports something like 19 cylinders, 
+16 heads, 63 Sectors you have a locked drive. Those numbers were 
+reported by a user with a locked 30GB Quantum A drive in his TiVo. See
+the sections below on how to deal with locked drives.
+<P>
+If the capacity for each drive is detected correctly then you may 
+proceed to the approriate sections below depending on which backup 
+program you are using.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.009.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.009.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 13:15:49 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.10">2.10. How do I make a disk to disk backup with Dolly?</A></H2>
+The following are the steps needed to backup your original TiVo A 
+drive to a new drive. If the new drive is a Quantum also it will be 
+bootable in your TiVo. The below steps assume you have the drives 
+connected as described in section 2.9 above. It should be noted that Dolly 
+detects xhd128 as the first hard drive the BIOS sees and not 
+necessarily the Primary Master drive. Make sure you have disconnected 
+all drives from the Primary IDE connector on your motherboard. 
+Failure to do so could cause you to erase those drives or your TiVo 
+drive. 
+<P>
+1.Download Dolly at the following address <A HREF="ftp://ftp.bke.hu/pub/mirrors/sac/utildisk/dolly.zip">ftp://ftp.bke.hu/pub/mirrors/sac/utildisk/dolly.zip</A> 
+<P>
+2.Format a bootable floppy and extract the files from the dolly archive 
+to it. Do NOT run Dolly from inside Windows or from a DOS window. 
+<P>
+3.Boot your computer with the floppy in the drive. Make sure your 
+computers boot up screen (Post screen) detects the drives fine. 
+<P>
+4.Type the following command from the A prompt 
+``dolly xhd128: xhd129: /c'' (do not type the quotes) 
+<P>
+5.After that command is finished type the following 
+``dolly xhd128: xhd129:`` (do not type the quotes) 
+<P>
+6.Make sure there were NO error messages or problems with the copy 
+process. If there was you should go back through these steps here 
+and make sure you followed every step. If it fails again, your 
+likely problem is smaller destination drive. 
+<P>
+7.After the last command finishes you can turn off your computer, 
+wait for the drives to spin down and you are done! 
+<P>
+This process can take HOURS to run. Do not be alarmed if it takes 
+awhile. Once finished you can either boot your new copied A drive if 
+it is a Quantum and store your original drive for safe keeping. If 
+your new drive is a non quantum you will need to put your original 
+A drive back in and keep the new drive as your backup.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.010.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.010.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 14:55:50 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.11">2.11. How do I make a disk to disk backup with DiskPro Lite?</A></H2>
+The following are the steps needed to backup your original TiVo A 
+drive to a new drive. If the new drive is a Quantum drive it will be 
+bootable in your TiVo without need for the "runideturbo" setting 
+described in later sections. The steps below assume you have the drive 
+connected as described in section 2.9 above. 
+<P>
+1.Download DiskPro Lite from <A HREF="http://www.fitusa.com/freesoft.htm">http://www.fitusa.com/freesoft.htm</A>. You 
+want to download the DPCR.EXE file. 
+<P>
+2.Execute the DPCR.EXE file to extract the files from it. 
+<P>
+3.Format a bootable DOS floppy. Copy the diskpro.exe file to the floppy. 
+<P>
+4.Boot your PC with the newly made floppy in the drive. 
+<P>
+5.At the DOS prompt type ``diskpro'' and hit enter (no quotes) 
+<P>
+6.Use the Quick Copy option 
+<P>
+7.Select your source drive 
+<P>
+8.Select your destination drive 
+<P>
+9.Make sure the above choices are correct before starting the copy 
+<P>
+10.Relax while the drive is copied to a new drive. A user with a 14 hour A drive reported this copy took about one hour. Your mileage may vary.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.011.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.011.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 14:59:13 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.12">2.12. How do I make a disk to disk backup with Dylan's Boot Disk?</A></H2>
+Dylan's boot disk is a ``Linux on a floppy'' that one of the AVS 
+members (Dylan in case you didn't guess!) put together. It has 
+everything on it you need to make either a disk to disk copy of a 
+TiVo A drive, or a disk to image copy. It also contains Mike Hill's 
+BlessTiVo program which will be described in later sections. The 
+process to do this is as follows. 
+<P>
+1.Download Dylan's disk at the following site 
+<A HREF="http://www.tivofaq.com/hack">http://www.tivofaq.com/hack</A>. 
+<P>
+2.Extract the files from the archive. Get a blank formatted floppy 
+ready and run the batch file from the archive. It will prompt you to 
+insert a floppy in drive A, and it will create the boot disk for you. 
+<P>
+3.Reboot the PC with the floppy diskette in the A drive. 
+<P>
+4.Once the floppy has booted you will see a login prompt. Login as 
+``root'' (no quotes) and hit enter. 
+<P>
+5.Type the following command to make your image. This assumes you have 
+the drives connected to your PC as described in section 2.9 above. Do 
+NOT connect either drive to the Primary IDE channel as the master drive. 
+It will NOT work. Connect them as detailed here unless you know what 
+you are doing. 
+<P>
+6. "dd if=/dev/hdc of=/dev/hdd bs=32k" (no quotes)
+<P>
+If that command eventually returns an error, use this one instead.
+"dd conv=noerror,sync if=/dev/hdc of=/dev/hdd bs=32k" 
+<P>
+7.This can take a LONG time. The dd program does not give any visual 
+feedback until it is finished. You hard drive activity light should 
+show activity though through the entire process. The backup time can 
+take any ware from 2-8 hours. The time varies due to drive size, CPU 
+speed, etc. 
+<P>
+8.Make sure when the command is finished that no errors were reported. 
+The program should report X number of blocks in and X numbers of blocks 
+out. These numbers should be equal. If there were errors, you need to 
+go back through this section and see if you skipped a step. 
+<P>
+9.Turn off the PC and wait for the drive to spin down. Your backup is complete.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.012.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.012.htp">Log info</A>
+
+/ Last changed on Tue Mar 27 11:17:21 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H2><A NAME="2.13">2.13. Isn't my TiVo units serial number stored on the drive?</A></H2>
+No. This has been a common misconception. The TiVo units serial number 
+is stored in a crypto chip on the motherboard. This has mainly been a 
+fear with users with two TiVo's who want to make one backup to use 
+with both units.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.013.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.013.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 15:04:30 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.14">2.14. Where can I download a virgin backup image on the Internet?</A></H2>
+Nowhere! This would violate TiVo's copyrights. If you want a backup 
+you are going to have to make it yourself. If your unit has been in 
+use for awhile this is going to be a large backup. Your best bet 
+in this situation is to just buy an extra drive and do a sector to 
+sector copy of the original.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.014.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.014.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 15:05:25 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.15">2.15. My TiVo A drive is locked what do I do?</A></H2>
+Thanks to Gene Plantz for discovering that users of IBM PC based 
+system can do the following to unlock the drive.
+<P>
+You should already have the drives connected to your PC as noted in 
+section 2.9 above.
+<P>
+1. Download dlgcheck at 
+<A HREF="http://www.westerndigital.com/service/ftp/dlgtools/dlgchk.zip">http://www.westerndigital.com/service/ftp/dlgtools/dlgchk.zip</A> . Place 
+the fies in the zip archive on a bootable DOS disk.
+<P>
+2. Make sure the PC's CMOS is set to AUTO for the locked drive.
+<P>
+3. Boot up with the dos floppy you prepared in step 1.
+<P>
+4. Run the DLGCHK program. Just press Enter on all the screens until 
+you exit.
+<P>
+5. Insert your disk with your backup program of choice (the Linux boot 
+disk, Dolly, or Diskpro Lite).
+<P>
+6. Reset the computer (do not power it off).  Hit CTRL-ALT-DEL, or hit 
+the reset button.
+<P>
+7. Proceed with the backup instructions as you would for an unlocked 
+drive.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.015.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.015.htp">Log info</A>
+
+/ Last changed on Fri Apr  6 07:56:02 2001 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.16">2.16. Can I make a backup with my TiVo instead of a PC?</A></H2>
+Yes. This is actually a good method for people with locked drives who 
+don't have a PC clone. You can only do a drive image copy with this 
+method. Here are the steps needed. 
+<P>
+1.While the TiVo is powered off and unplugged you need to connect 
+your blank drive into your TiVo as the B drive (set the jumpers to 
+slave for this drive). This new drive will contain a complete image 
+of your A drive when finished. 
+<P>
+2.You need to be able to access the TiVo diagnostic menu detailed 
+in section 4.3. If your system does not support the factory 
+password you must use one of the other methods of backup. 
+<P>
+3.You need to enable the Bash prompt as detailed in sections 4.4-4.6. 
+<P>
+4.Type the following from the bash prompt 
+<P>
+5."/devbin/dd conv=noerror,sync if=/dev/hda of=/dev/hdb bs=32k" 
+(no quotes) Note if this fails with a message about "dd not found" 
+proceed to step 6. If the command works skip to step 7. 
+<P>
+6.You need to mount the partition with dd. Type the following. 
+"mount /dev/hda4 /mnt" (no quotes). Then type 
+"/mnt/devbin/dd conv=noerror,sync if=/dev/hda of=/dev/hdb bs=32k" 
+(no quotes). If this command still fails with the "dd command not found" 
+message, your unit does not have a devbin directory, and you can not do 
+a backup with your TiVo. Proceed to step 9 if the dd command failed 
+in this step.
+<P>
+7.Let the process run to completion. Depending on the size of the drive 
+this could take 4-8 hours. 
+<P>
+8.When completed make sure there were no errors. 
+<P>
+9.If you had to use step 6 above type the following ``umount /mnt'' 
+<P>
+10.Turn off the TiVo and remove the B drive. 
+<P>
+11.You now have a complete image of your TiVo A drive.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.016.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.016.htp">Log info</A>
+
+/ Last changed on Mon Mar 26 07:05:00 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H2><A NAME="2.17">2.17. How do I make a backup to a single compressed file on another hard disk?</A></H2>
+To do this type of backup you will need Dylan's boot disk, your original 
+A drive to backup and a DOS FAT formatted hard drive to put the backup 
+on. The drive needs to have enough space to hold the backup. It should 
+be noted that if your TiVo has been used much the backup will be 
+exceedingly large and doing a disk to disk image is generally a better 
+idea. If the A drive is from a virgin TiVo this compressed image could 
+be anywhere from 600MB to 20GB. The size will vary even for virgin TiVo's 
+because some have the store demo mode on them and some don't. For the 
+example below we will assume the following drive connections. 
+<P>
+<PRE>
+ Original A drive connected to secondary port as the master drive ( /dev/hdc ) 
+ DOS/Windows formatted drive connected to Primary port as the master 
+  drive ( /dev/hda ). The partition can be either a FAT16 or FAT32
+  partition. Dylan's bootdisk does support Ext2 partitions also if 
+  you wish to use one. 
+ Do not connect the DOS/Windows drive to anything but Primary master. 
+  Byte swapping is used for all other devices and Linux will not be 
+  able to mount DOS partition connected to them. 
+</PRE>
+(Note: The following will almost always give an error since Dylan's bootdisk does not support files larger than 4 gig. We recommend you use the split file or disk to disk method).
+<P>
+The following are the steps needed to do the backup. 
+<P>
+<PRE>
+    1.Connect the drives as stated above 
+    2.Boot the computer with Dylan's boot disk in the floppy drive 
+    3.Login in as root 
+    4.Type "mount -t vfat /dev/hda1 /mnt" (no quotes) 
+    5.Type "dd if=/dev/hdc bs=32k | gzip -9c &gt; /mnt/tivodisk.gz" (no quotes).
+    Use "dd conv=noerror,sync if=/dev/hdc bs=32k | gzip -9c &gt; /mnt/tivodisk.gz" (no quotes) if the first gives an error.
+    6.Go relax because this will take awhile. Depending on the speed of
+      the computer, size of the A drive, this could take anywhere from 
+      3 to 24 hours! 
+    7.When finished make sure there were no errors. 
+    8.Type "umount /mnt" (no quotes) 
+    9.Power down the PC. 
+</PRE>
+To restore the backup do the following. Remember that this will erase whatever is on the drive connected to the secondary master port. 
+<P>
+<PRE>
+    1.Connect the drives as stated above 
+    2.Boot the computer with Dylan's boot disk in the floppy drive 
+    3.Login in as root 
+    4.Type "mount -t vfat /dev/hda1 /mnt" (no quotes) 
+    5.Type "cat /mnt/tivodisk.gz | gzip -d -c | dd of=/dev/hdc 
+      bs=32k" (no quotes) 
+    6.Go relax because this will take awhile. Depending on the speed of
+      the computer, size of the A drive, this could take anywhere from
+      3 to 24 hours! 
+    7.Make sure there were no errors reported 
+    8.Type ``umount /mnt'' (no quotes) 
+    9.Power down the PC
+</PRE>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.017.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.017.htp">Log info</A>
+
+/ Last changed on Mon Mar 26 07:08:55 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H2><A NAME="2.18">2.18. How do I split a compressed backup into smaller files onto another hard disk?</A></H2>
+This type of backup is typically done by those who want to split the 
+archive into smaller chunks to fit on a CDR or to avoid the 2GB file 
+size limitation. To do this type of backup you will need Dylan's boot 
+disk, your original A drive to backup and a DOS FAT formatted hard 
+drive to put the backup on. The drive needs to have enough space to 
+hold the backup. It should be noted that if your TiVo has been used 
+much the backup will be exceedingly large and doing a disk to disk 
+image is generally a better idea. If the A drive is from a virgin TiVo 
+this compressed image could be anywhere from 600MB to 20GB. The size 
+will vary even for virgin TiVo's because some have the store demo 
+mode on them and some don't. For the example below we will assume the 
+following drive connections. 
+<P>
+<PRE>
+ Original A drive connected to secondary port as the master drive ( /dev/hdc ) 
+ DOS/Windows formatted drive connected to Primary port as the master 
+  drive ( /dev/hda ). The partition can be either a FAT16 or FAT32 
+  partition. Dylan's bootdisk does support Ext2 partitions also if 
+  you wish to use one. 
+ Do not connect the DOS/Windows drive to anything but Primary master. 
+  Byte swapping is used for all other devices and Linux will not be 
+  able to mount DOS partition connected to them. 
+</PRE>
+The following are the steps needed to do the backup. 
+<P>
+<PRE>
+    1.Connect the drives as stated above 
+    2.Boot the computer with Dylan's boot disk in the floppy drive 
+    3.Login in as root 
+    4.Type "mount -t vfat /dev/hda1 /mnt" (no quotes) 
+    5.Type "dd if=/dev/hdc bs=32k | gzip -9c | split -b 650m - /mnt/tivodisk_" (no quotes).
+    Use "dd conv=noerror,sync if=/dev/hdc bs=32k | gzip -9c | split -b 650m - /mnt/tivodisk_" (no quotes) 
+    instead, if the first command gives you an error.
+    6.In the step above 650m denotes 650 Megabytes. This size file 
+      should fit on a CD later for burning. You can make this value 
+      whatever best suits your needs. 
+    7.Go relax because this will take awhile. Depending on the speed of 
+      the computer, size of the A drive, this could take anywhere from 
+      3 to 24 hours! 
+    8.When finished make sure there were no errors. 
+    9.Type "umount /mnt" (no quotes) 
+   10.Power down the PC. 
+</PRE>
+To restore the backup do the following. Remember that this will erase whatever is on the drive connected to the secondary master port. 
+<P>
+<PRE>
+    1.Connect the drives as stated above 
+    2.Boot the computer with Dylan's boot disk in the floppy drive 
+    3.Login in as root 
+    4.Type "mount -t vfat /dev/hda1 /mnt" (no quotes) 
+    5.Type "cat /mnt/tivodisk* | gzip -dc | dd of=/dev/hdc obs=32k" (no quotes) 
+    6.Go relax because this will take awhile. Depending on the speed of 
+      the computer, size of the A drive, this could take anywhere from 
+      3 to 24 hours! 
+    7.Make sure there were no errors reported 
+    8.Type "umount /mnt" (no quotes) 
+    9.Power down the PC
+</PRE>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.018.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.018.htp">Log info</A>
+
+/ Last changed on Mon Mar 26 07:11:23 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H2><A NAME="2.19">2.19. Why can't I use Ghost or Drive Image to backup my drive?</A></H2>
+These programs examine the partition information of all drives 
+connected. Since the TiVo disks use their own partition type and it 
+is byte swapped, programs like Ghost only allow the TiVo drive to be 
+a target drive for a copy (which is NOT what you want). You basically 
+need a disk copy program that does a sector by sector copy only. It is 
+recommended that you stick with one of the programs detailed in 
+previous sections. 
+<P>
+The latest Ghost 6.5 was tested by various people and was proven 
+not to work. The raw sector copy mode was tried also.
+<P>
+Many people assume that since Ghost supports Linux ext2 partitions now 
+that it will work with a TiVo.  It should be noted that the TiVo Linux 
+partitions are not standard ext2 format.  They are slightly modified 
+and are byte swapped.  The TiVo disk also contains 2 MFS partitions which
+are not ext2 format and the format is unknown at this time.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.019.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.019.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 16:05:21 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.20">2.20. Can I zero out certain partitions to make my backup to file smaller?</A></H2>
+Not currently. If you have a virgin TiVo that has never been powered 
+up you will get the smallest backup to file possible (if you use 
+compression). Once the TiVo has been in use though it will store all 
+the MPEG encoded video on the drive. This MPEG data will not compress 
+any further when a backup is done. Once we get a better understanding 
+of the TiVo partitions a selective backup may be possible.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.020.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.020.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 16:06:41 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.21">2.21. Can I zero out the drive by having TiVo record up to its max capacity of a static picture?</A></H2>
+No, this will not help.  
+<P>
+The reason being you are feeding a static ANALOG picture into the TiVo 
+which is then decoding it with an Analog to Digital converter.  Because 
+of this you will not get static data from the MPEG compression.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.021.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.021.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 16:08:54 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.22">2.22. Will a factory reset zero out the drive for better compression?</A></H2>
+No. Although the shows recorded will be removed from the "Now Showing"
+screen, their MPEG data is still on the drive.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.022.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.022.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 16:10:34 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.23">2.23. Can I backup my 15GB A drive onto a 30GB drive and get a 30 hour single drive unit?</A></H2>
+No. Currently the only way to upgrade a single drive 14 hour unit into 
+a single drive 30 hour unit is to purchase a 30 hour TiVo and copy 
+that A drive and put the copy into the 14 hour unit.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.023.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.023.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 16:11:38 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.24">2.24. Can I make a sector copy of my TiVo A drive to a larger drive?</A></H2>
+Yes you can. Some people have trouble finding the Quantum 15GB drive 
+used in the TiVo 14 hour unit and are purchasing a 30GB Quantum. You 
+can copy your TiVo A drive to a larger drive and it will run in your 
+TiVo, but it will only look like the original size drive to the TiVo. 
+<P>
+So if you copy a 15GB TiVo A drive to a 30GB drive the 30GB drive 
+will look like a 15GB drive to the TiVo.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.024.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.024.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 16:12:43 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.25">2.25. I want a virgin backup, but I want to be sure my TiVo is good before cracking the case!</A></H2>
+If you are worried that there may be something wrong with your TiVo 
+(the modem for instance) and want to test it before backing it up 
+(which requires opening the case and voiding your warranty) here is 
+what you can do. Connect your TiVo to your TV, Cable Box/Antenna, and 
+phone line as detailed in the TiVo manual. Power up the TiVo. Proceed 
+into guided setup and make the first initial test call. Once the call 
+is completed ``DO NOT'' proceed on with the final call (the program 
+call). Just power down the TiVo and proceed with the backup 
+instructions. This test proves that your TiVo powers up, can output 
+video to your TV, and the modem works. This test is not 100 percent, 
+since you are not testing things like the TV recording, or cable box 
+control. But it does test many things (the modem being the most 
+important). If you still don't feel comfortable then you should 
+probably configure and use your TiVo like normal until you are happy 
+and just backup the A drive to another drive as detailed in latter 
+sections below.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.025.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.025.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 21:14:33 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.26">2.26. Why are some virgin unit backups less than 650MB and others 20GB??</A></H2>
+Originally the large difference was thought to be because of the demo 
+mode in newer units.  But with some backups of virgin (never powered up 
+units) taking 20 Gigabytes and others taking less than 650 Megabytes 
+this theory doesn't seem to hold water.
+<P>
+The actual reason for this is that at the factory Philips and Sony 
+actually do a test recording of a TV signal.  On some units this test recording can be quite small and on others it has been quite long.  Some units don't seem to have any test video (more than likely the &lt; 650MB backups) at all.
+<P>
+A 14 hour virgin drive was backed up with compression to a 2.7GB file. 
+When examining the drive there was about 45 minutes of "Fox Kids 
+Cartoons" from Channel 2 in San Francisco.  
+<P>
+So even though the virgin backup could be a gamble on how big the 
+backup will be, it is still recommended that it be tried if possible. A 
+3GB backup is much better than a 20GB.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.026.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.026.htp">Log info</A>
+
+/ Last changed on Wed Oct 25 18:24:32 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="2.27">2.27. Using rsync to transfer files to/from your TiVo</A></H2>
+Getting data onto and off your TiVo is made a lot easier using
+rsync. You can get a tivo binary of rsync from
+<A HREF="http://tivo.samba.org/download/tridge">http://tivo.samba.org/download/tridge</A>/ then you need to follow these
+steps to use it:
+<P>
+1) Setup PPP to your TiVo as described in Section 4.27. Make sure you can ping.
+<P>
+2) install rsync as a daemon on your Linux box (_not_ on the tivo). To
+do this you add a line like this in /etc/inetd.conf:
+<P>
+<PRE>
+   rsync stream tcp nowait root /usr/bin/rsync rsync --daemon
+</PRE>
+then send a HUP to inetd like this "killall -1 inetd"
+<P>
+3) create a /etc/rsyncd.conf something like this:
+<P>
+<PRE>
+	  [tivo]
+		path = /tmp/tivo
+		uid = root
+		read only = no
+</PRE>
+You may wish to set "uid=" to your own username rather than root. Then
+do "mkdir /tmp/tivo" as that user.
+<P>
+NOTE: If you are on a open internet connection then the above will
+have opened the directory /tmp/tivo to the world. See the rsyncd.conf
+man page for security options.
+<P>
+4) test your rsync setup locally (ie. without the TiVo). Use a command
+like:
+<PRE>
+        rsync -Pavz /etc/hosts localhost::tivo/
+</PRE>
+5) copy the TiVo rsync binary to your TiVo (maybe using http_get).
+<P>
+You can now transfer files betweem /tmp/tivo on your linux box and
+your tivo. Note that you must use the IP address if your Linux box in
+the rsync commands, the host name will not work. See the rsync man
+page for all the options, but the following will give you some ideas:
+<P>
+<PRE>
+     rsync -Pavz /var/log 192.168.2.22::tivo/
+     rsync -Pav 192.168.2.22::tivo/foo /tmp/
+</PRE>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.027.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.027.htp">Log info</A>
+
+/ Last changed on Wed Feb 28 13:45:49 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H2><A NAME="2.28">2.28. Why are people in the Underground calling me a MORON?</A></H2>
+This refers to two posts made by Richard Bullwinkle (a TiVo Representative) in the Tivo Underground hacking forum at <A HREF="http://www.tivocommunity.com">http://www.tivocommunity.com</A> .
+<P>
+A Type I Moron is someone who takes a box that came with some version of software (1.3, for example), and restores a backup of an earlier version of software (1.21, for example). The result of this is that the box will not upgrade itself to the latest version of software, without TiVo manually intervening and forcing it. However, some people did this and caused TiVo a lot of confusion trying to figure out why the boxes had 1.21 on them in the first place. See <A HREF="http://www.avsforum.com/ubbtivo/Forum6/HTML/000906.html">http://www.avsforum.com/ubbtivo/Forum6/HTML/000906.html</A> for more details.
+<P>
+A Type II Moron is someone who takes a drive from a Philips unit and uses the image or the drive itself in a Sony unit, or vice-versa. While this will appear to work at first, what will happen is that the TiVo servers will see that the software version is incorrect, and try to update the unit. However the update will fail due to differences between the two units. Thus, every daily call will try an update, thus costing TiVo a lot for the phone calls, and eventually disabling your service to make it stop. They cannot fix this remotely by forcing it to upgrade or anything, so just don't do it. See <A HREF="http://www.avsforum.com/ubbtivo/Forum6/HTML/001799.html">http://www.avsforum.com/ubbtivo/Forum6/HTML/001799.html</A> for more details.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq02.028.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq02.028.htp">Log info</A>
+
+/ Last changed on Thu Jan 25 11:36:30 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H1>3. Adding a second drive</H1>
+
+<HR>
+<H2><A NAME="3.1">3.1. How can I add a second drive to my TiVo?</A></H2>
+There are a couple ways to do it. The easiest is to download Dylan's 
+Linux bootdisk and run Mike Hill's BlessTiVo program which is 
+included on the disk. There is the original way which requires more 
+work but is more fun for the ``hacker'' crowd. Both will be 
+described below.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.001.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.001.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 16:22:29 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.2">3.2. Are all TiVo's upgradeable?</A></H2>
+The answer is yes and no. These are the current upgrade issues. 
+<P>
+Any single drive TiVo is upgradeable by adding a second drive. If you 
+have a 30 hour two drive unit you cannot remove the 2nd drive and add 
+a new larger drive. The only way to upgrade a 2 drive unit currently 
+is to buy a new TiVo that has a single drive and either upgrade it or 
+copy its A drive onto a new A drive for insertion into your old TiVo.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.002.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.002.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 16:23:35 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.3">3.3. What type of drive do I need to add to my TiVo?</A></H2>
+Well currently there have been four manufacturers of drives that have 
+been used to upgrade a TiVo. Here is a breakdown on known working 
+drives from those manufacturers. 
+<P>
+1.Quantum 15GB Fireball LCT10 5400 RPM. This drive adds roughly 15 hours of capacity. 
+<P>
+2.Quantum 30GB Fireball LCT10 5400 RPM. This drive adds roughly 38 hours of capacity. 
+<P>
+3.Maxtor DiamondMax Plus 30GB 5400 RPM. This drive adds roughly 38 hours of capacity. 
+<P>
+4.Western Digital Caviar 30GB 5400RPM. This drive adds roughly 38 hours of capacity. 
+<P>
+5.Maxtor Diamond Max 60 GB - Model 96147U8 5400RPM. This drive adds roughly 77 hours of capacity. 
+<P>
+6.IBM Deskstar 75GB 7200 rpm drive. This drive adds roughly 96 hours of capacity.
+<P>
+Some caveats on choosing the right drive.
+<P>
+<PRE>
+ Only Quantum drives work out of the box as A drives. If you wish to 
+ use a non Quantum drive as the A drive see section 4.9 on how to do this. 
+</PRE>
+<PRE>
+ TiVos with locked drives initially won't boot with a Quantum as a B
+ drive. The explanation for precisely why this is the case is long and
+ boring, but there is a work-around.  See section 3.18 on how to do this.
+</PRE>
+<PRE>
+ 7200 RPM drives seem to work fine. They usually cost more than 5400 
+ RPM drives, and will not give you any speed improvements by using 
+ them. It should be noted that 7200 RPM drives will draw more power 
+ and generate more heat than their 5400 counterparts. The long term 
+ consequences of using 7200 RPM drives is still being debated. 
+</PRE>
+<PRE>
+ The Quantum LCT drives seem to run quieter than the other 
+ drives also. 
+</PRE>
+<PRE>
+ Quantum has phased out the lct10 series.  They were superceded by
+ the lct15 series, which is in turn in the process of being superceded
+ by the lct20 series.  The lct15 and lct20 drives are 4400 RPM instead
+ of 5400.  TiVo has shipped machines with all of these drives.
+ Older machines had lct10's (and their predecessors), and new machines
+ have lct20's.
+</PRE>
+<PRE>
+ Note that newer drives tend to run quieter, consume less power, and
+ produce less heat.  This may be important on the DirecTV/TiVo combo
+ boxes, which run fairly hot even with the cooler drives (lct15 and
+ later).
+</PRE>
+<PRE>
+ The list of supported drives could go on and on. Basically any drive 
+ 20GB and up should work fine noting the above caveats.
+</PRE>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.003.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.003.htp">Log info</A>
+
+/ Last changed on Sun Jan 21 14:20:18 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H2><A NAME="3.4">3.4. How much space do different size drives give me?</A></H2>
+Here is a handy table that breaks down many popular capacity settings. 
+<P>
+<PRE>
+ Quality    Hours/GB   14 Hour    30 Hour    52 Hour    70 Hour    91 Hour      108 Hour
+                      (13.6 GB)  (27.8 GB)  (43.6 GB)  (57.2 GB)  (73.6 GB)    (87.2 GB)
+ Basic        1.2       16.32      32.64      52.32      68.64      88.32        104.64
+ Medium       0.7        9.52      19.04      30.52      40.04      51.52        61.04
+ High         0.55       7.48      14.96      23.98      31.46      40.48        47.96
+ Best         0.35       4.76       9.52      15.26      20.02      25.76        30.52
+</PRE>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.004.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.004.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 16:35:45 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.5">3.5. Can I add a CDR or CDRW drive to my TiVo for removable storage?</A></H2>
+No. The format of the partitions containing the video is not known at 
+this time, so there is no way to put a video onto a CD in a format 
+that a PC could read.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.005.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.005.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 16:37:40 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.6">3.6. Can I add a second drive using my MAC?</A></H2>
+Yes. Download the MacTiVo Disk Blesser at 
+<A HREF="http://homepage.mac.com/ewagner">http://homepage.mac.com/ewagner</A>. See the readme file for the program 
+if you need any more detail than the info below. 
+<P>
+1.Extract the files from the archive using Stuffit Expander which you 
+can download at. <A HREF="http://www.aladdinsys.com/downloads/index.html">http://www.aladdinsys.com/downloads/index.html</A> 
+<P>
+2.Shutdown your Macintosh 
+<P>
+3.Connect the new drive you wish to add to your Macintosh. The program 
+doesn't care which part or where on the IDE buses that you connect the 
+drive. You just have to make sure that there is only one master per 
+bus. PCI cards that add on IDE buses will also work if they don't 
+pretend the attached drives are SCSI (the older ones do this to be 
+backwards compatible with pre IDE macs). 
+<P>
+4.There is a problem with the original beige G3's IDE implementation 
+and some clones, they don't support slave drives. The setup on recent 
+computers without SCSI cards is Harddrive as master on one bus, 
+CD/DVD as master on the other bus. The zip drive is placed as a 
+slave on the CD/DVD bus. Mac's with SCSI cards have the first bus 
+empty with the second holding the CD/DVD and zip drive. Its luck of 
+the draw if a SCSI equipped Mac will have the IDE cables for the 
+first bus. 
+<P>
+5.When you restart the Macintosh, the new drive should not be seen on 
+the desktop. You can verify that the drive is connected correctly by 
+opening the program "Drive Setup" which came with your Macintosh. It 
+should show you the drive, unformatted, as one of the choices to 
+format. Do not format the drive with Drive Setup. 
+<P>
+6.Launch MacTivo Disk Blesser. Agree to the warning telling you that 
+the author is not responsible for anything you do. 
+<P>
+7.Choose the drive you added and click on Format. 
+<P>
+8.The program will warn you about what you are going to do. Make sure 
+you have the right drive connected and are specifying it correctly 
+before answering yes. 
+<P>
+9.The program will give you feedback noting if the process was 
+successful. If you run the program on a 30GB drive and MacTivo Disk 
+Blesser reports it as a 9GB drive you have a problem. 
+<P>
+10.DO NOT insert a blessed drive into your TiVo that had the size 
+reported wrong. If the size is wrong, the most likely issue is your 
+using an older drive that does not support LBA mode. Every practical 
+drive for upgrading a TiVo with (20GB and up) should all support 
+LBA mode. 
+<P>
+11.If everything went fine you should be able to add the drive to 
+your TiVo. Make sure the new drive is set as slave before placing 
+it into your TiVo. 
+<P>
+12.Boot your TiVo. Go to your ``Messages and Setup'' screen and 
+then the ``System Information'' section. You should see your 
+Storage capacity in this screen. If you had a 14 hour TiVo and 
+added a 30GB drive you should be at 52 hours and change. A 30 hour 
+TiVo upgraded with a 30GB drive should give you about 68 hours and 
+change. 
+<P>
+13.Do NOT remove this blessed drive once added to your TiVo. Once a 
+blessed drive has been powered up and seen by a TiVo the two drives 
+are married together. You can't remove a blessed drive and insert a 
+new blessed drive once the first has been married. If you want to 
+install a new blessed drive, or revert back to a single drive you 
+will need to use your backup!
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.006.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.006.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 16:42:45 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.7">3.7. How can I add a new drive to my TiVo with Dylan's bootdisk and the BlessTiVo program?</A></H2>
+1.Download Dylan's boot disk at <A HREF="http://www.tivofaq.com/hack">http://www.tivofaq.com/hack</A>. 
+<P>
+2.Read the readme for Dylan's disk if you need more detail for any 
+of the below items. 
+<P>
+3.Extract the files from the archive. Get a blank formatted floppy 
+ready and run the batch file from the archive. It will prompt you to 
+insert a floppy in drive a, and it will create the boot disk for you. 
+<P>
+4.Connect the new drive you wish to add to your PC. You can connect it 
+to either the Primary Slave, Secondary Master, or Secondary Slave. I 
+recommend using either of the above Slave settings. Regardless of 
+which you pick you must set the appropriate jumper on your drive to 
+reflect the master or slave setting. 
+<P>
+5.Make sure your PC BIOS auto-detects the drive and its size correctly. If your BIOS does not detect the drive correctly, try setting it to NONE for that drive. The BIOS does not always need to see the drive, and Linux doesn't generally care what the BIOS thinks anyway.
+<P>
+6.Boot the PC with the new drive connected and Dylan's floppy in the A 
+drive. 
+<P>
+7.When the login prompt comes in type in ``root'' (no quotes) and hit 
+enter. 
+<P>
+8.Type one of the following commands without the quotes depending on 
+what port on your motherboard the drive is connected to. Case is 
+important on the command. Only type ONE of the below commands. 
+<P>
+9.If the drive is connected as the Primary slave type 
+``BlessTiVo /dev/hdb''. It should be noted that there is a space 
+between the word BlessTiVo and the /dev/hdb in this example and the 
+two below. 
+<P>
+10.If the drive is connected as the Secondary Master type 
+``BlessTiVo /dev/hdc'' 
+<P>
+11.If the drive is connected as the Secondary Slave type 
+``BlessTiVo /dev/hdd'' 
+<P>
+12.The program will warn you about what you are going to do. Make 
+sure you have the right drive connected and are specifying the right 
+port before answering yes. 
+<P>
+13.The program will give you feedback noting if the process was 
+successful. It will report the size of your drive also. Make SURE 
+this value is within about 2-3GB of your drives actual size. If 
+you run the program on a 30GB drive and BlessTiVo reports it as a 
+9GB drive you have a problem. 
+<P>
+14.DO NOT insert a blessed drive into your TiVo that had the size 
+reported wrong. If the size is wrong, the most likely issue is your 
+CMOS is not correct. See the documentation with Dylan's disk for 
+more troubleshooting with the blessing process. 
+<P>
+15.If everything went fine you should be able to add the drive to 
+your TiVo. Make sure the new B drive is set as slave before placing 
+it into your TiVo. 
+<P>
+16.Boot your TiVo. Go to your ``Messages and Setup'' screen and then 
+the ``System Information'' section. You should see your Storage 
+capacity in this screen. If you had a 14 hour TiVo and added a 30GB 
+drive you should be at 52 hours and change. A 30 hour TiVo upgraded 
+with a 30GB drive should give you about 68 hours and change. 
+<P>
+17.Do NOT remove this blessed drive once added to your TiVo. Once a 
+blessed drive has been powered up and seen by a TiVo the two drives 
+are married together. You can't remove a blessed drive and insert a 
+new blessed drive once the first has been married. If you want to 
+install a new blessed drive, or revert back to a single drive you 
+will need to use your backup!
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.007.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.007.htp">Log info</A>
+
+/ Last changed on Thu Apr 19 07:09:32 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H2><A NAME="3.8">3.8. How can I add a second drive to my TiVo the true hackers way?</A></H2>
+This information has been cut and pasted from the original hackers site <A HREF="http://tivohack.sourceforge.net">http://tivohack.sourceforge.net</A>. I apologize for editing this into steps, but it makes it easier for me to convert to and from
+HTML. It should be noted that the comments about the 33.8GB barrier below are incorrect. 
+<P>
+1.Here's how to add a B drive to your TiVo by "blessing" it. This is approximately how we did it. We've only done it a few times so far. We will be refining the process. We simply wanted to get
+the initial information out quickly. 
+<P>
+2.This has only been verified to work on a few units so far. A HDR112 has been upgraded to 52 hours with a 30 gig Quantum, another HDR112 has been upgraded to 40 hours with a 20 gig
+Quantum, and a Sony 30 hour unit has been upgraded as well with a Maxtor B drive, although the newer Sony/Philips units have a drive locking mechanism that makes it very hard to mount
+their A drives in a non-TiVo Linux box. 
+<P>
+3.WARNING: This modification is not "easy". You take all responsibility for modifying your TiVo in this way. It does involve opening the case and breaking the warranty sticker. Do not call
+TiVo support if you make a mistake and break your TiVo. If you break it, you own both pieces. If you mess up, don't expect us to fix it for you either. Maybe some day someone will release a
+utility that will just bless a drive in 1 easy command on your PC, but at this point, it's pretty tricky. It requires that you have various technical knowledge about Linux and other software tools.
+You could easily render your TiVo inoperable and possibly unrecoverable. 
+<P>
+4.WARNING 2: There hasn't been a lot of testing so far on this procedure of course. Mine seems to be working perfectly at 52 hours, but you must accept the risk that something bad may
+happen down the road. We suggest that you back up your original A drive in some fashion in case you make a mistake. How to do that we leave up to you. 
+<P>
+5.PDISK DISCLAIMER: We had to modify the source code to pdisk. Use it at your own risk. There may be bugs. We're not responsible for any loss of data. 
+<P>
+6.And PLEASE - be careful when you open the unit. It's power supply is unshielded. Stay away from it. 
+<P>
+7.In short - if you don't _understand_ what is going on below, don't do it. Just being able to read a list of steps may not be enough at this point. 
+<P>
+8.When I refer to hard drive partitions on the Linux box, I'll use hdX where X is whatever letter is appropriate for that drive. 
+<P>
+9.I used a Quantum lct10 30 gig drive (part number QML30000LB-A) that I bought from <A HREF="http://www.onsale.com">http://www.onsale.com</A>. My off the shelf Quantum seems to have the Quickview and TiVo extensions
+in it, perhaps they all do. It is the same drive used in HDR31202's and presumably the newer Sony's. Any drive may work as a B drive, but I've only tried my Quantum. Also be aware - the
+version of Linux on the TiVo doesn't seem to support drives larger than 33.8 gig. I don't know if TiVo patched their older kernel to support them. Set the B drives jumper to slave. 
+<P>
+10.You need to be able to access the original A drive and new B drive from another Linux box. To do this on an x86 box, you need to integrate TiVo's modifications to the Mac partition code.
+There are some patches on <A HREF="http://tivohack.sourceforge.net">http://tivohack.sourceforge.net</A> and <A HREF="http://www.wasteland.org/tivo">http://www.wasteland.org/tivo</A>. Please, if anyone can mirror these few files it would be very helpful. If we get hit too
+hard, we'll have to take the files down. You also need to be able to turn on byte swapping for those 2 drives (hdX=bswap). I had the most luck with Linux 2.4.0-test1. You also need to enable
+the Mac partitioning in the kernel. 
+<P>
+11.If that all works, you'll see the TiVo's partitions on the A drive hooked to your Linux box. There should be 11 of them. Mount partition 4 (hdX4) somewhere, it's an ext2 filesystem. Edit the
+bottom of etc/rc.d/rc.sysinit so it starts a bash shell on /dev/ttyS3. Also you need to blank out the first few sectors on the new B drive, with this command: "dd if=/dev/zero of=/dev/hdX bs=512
+count=32". 
+<P>
+12.Get the hard drives back in the TiVo (both of em) and hook up the DSS serial cable to your computer. You'll need a null modem adapter and gender changer at the minimum. The terminal
+settings are 9600,8N1. You should get a bash prompt shortly after the "please wait a few more seconds" screen. Run this command: "/sbin/bootpage -D /dev/hdb". Then shut down your TiVo
+and hook the B drive back up to the Linux box. 
+<P>
+13.Now you need a modified version of pdisk which is available on the sites I mentioned above. Compile it if necessary (it's in RCS format). With the B drive in the Linux box, run "pdisk
+/dev/hdX" and type in these commands (hit return after each character below): 
+<P>
+14.i 
+<P>
+15.w 
+<P>
+16.y 
+<P>
+17.q 
+<P>
+18.Then run: "pdisk -d /dev/hdX" and type these commands: 
+<P>
+19.C 2p 4M "Second MFS application region" MFS 
+<P>
+20.C 3p 3p "Second MFS media region" MFS 
+<P>
+21.x 
+<P>
+22.m 
+<P>
+23.3 
+<P>
+24.x 
+<P>
+25.w 
+<P>
+26.y 
+<P>
+27.q 
+<P>
+28.That will create the new partitions. Shut down the Linux box now and mount the B drive in the TiVo permanently. Turn the TiVo back on and get into the bash shell on it again. 
+<P>
+29.You need to mount the diagnostics partition next. Type this on your TiVo: "mount -t ext2 -o ro /dev/hda7 /mnt". Then run this to add the magic bit sequence to your new B drive:
+"/mnt/diag/genAddDiskTiVoID /dev/hdb3". Type "umount /mnt" to unmount that diagnostics partition, and reboot your TiVo. That should do it. Check the system information and see if your
+capacity increased. If not, you can try this one last thing that I don't believe is necessary, but it might be: mount the diagnostics partition again, and run "/mnt/diag/setkeys -globalkeys
+/dev/hdb". 
+<P>
+30.That's it. If you want to now, you can edit the rc.sysinit to stop the bash shell from starting (or if you were smart, you made a backup copy when you started and can just copy the backup over
+the modified one). 
+<P>
+31.Credit for figuring out this procedure goes to cc, Peter Creath, TivoTechie, and Ron Curry.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.008.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.008.htp">Log info</A>
+
+/ Last changed on Wed Oct 25 18:25:30 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.9">3.9. Any other problems I might run into after adding the blessed drive?</A></H2>
+If you notice skipping or pausing in your playback, you may need to 
+switch the IDE cable that came with your TiVo with an ATA66 cable. 
+The ATA66 cable has extra ground wires in it and can better protect 
+the signals from noise. Most do not have this issue, but if you do the 
+ATA66 cable seems to fix it. You can get these at most computer stores.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.009.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.009.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 16:57:05 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.10">3.10. How do I mount this darn drive in my TiVo?</A></H2>
+Good question. I am sure there have been many creative ways to mount 
+the new TiVo drive into the case, but the simplest seems to be 
+getting some little ``rubber feet'' and sticking them to the bottom 
+of the drive in all four corners. Then holding it down with some cable 
+ties lengthwise along the unit (between the power and IDE connectors) 
+to hold it sturdy. You could also make a mounting bracket, but the 
+rubber feat and cable tie seems to be a nice cheap and safe approach.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.010.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.010.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 16:58:50 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.11">3.11. Does anybody sell a hard drive bracket to mount the second drive with?</A></H2>
+Yes.  Mark at <A HREF="http://www.9thtee.com/TiVoUpgrades.htm">http://www.9thtee.com/TiVoUpgrades.htm</A> is selling drive mounting kits, hard drives, and torx screwdrivers.  Everything you 
+need to mount a second drive in your TiVo.
+<P>
+For detailed instructions on installing your drive and bracket into the computer Mark has detailed information at <A HREF="http://www.9thtee.com/TiVoMtgBracket.htm">http://www.9thtee.com/TiVoMtgBracket.htm</A>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.011.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.011.htp">Log info</A>
+
+/ Last changed on Sat Oct  7 13:47:53 2000 by
+<A HREF="mailto:mhil@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.12">3.12. What is this about this 12 hour loss with 2.0?</A></H2>
+It seems TiVo will be coming out with some new feature that will use 
+up to 12 hours of storage for some unknown features at this time. TiVo 
+has stated self upgraded units larger than 30 hours will lose up to 12 
+hours for these new features. Nothing is specific at this time though. 
+Worst case a 14 hour unit upgraded to 52 hours may become a 40 hour 
+unit when this hits.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.012.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.012.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 17:04:01 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.13">3.13. Can I take out a drive I have blessed and put in a larger or different blessed drive?</A></H2>
+NO! Once you bless a drive and power up your TiVo with it, you can NOT 
+take it out and replace it with another blessed drive. The only way 
+to do this is to restore your A drive backup and start over.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.013.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.013.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 17:07:20 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.14">3.14. Is there an easy way to backup from an upgrade without restoring the whole A drive?</A></H2>
+If for some reason you need to remove your B drive from your TiVo the 
+best option is to restore your A drive from your backup. Depending on 
+how you did your backup you could restore partition 10 only and your 
+TiVo should be back to a single drive unit again. If this doesn't 
+work you can always do a full restore.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.014.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.014.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 17:08:57 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.15">3.15. My PC BIOS and or BlessTiVo reports my xx GB drive as a yy GB drive. Help!</A></H2>
+If your PC BIOS or BlessTiVo don't report the size of your drive correctly you have a few options. 
+<P>
+1.Go into your PC BIOS and change the drive in questions settings to 
+NONE. Linux does not need the BIOS (but will use it sometimes). Some 
+people have said they had to turn plug and play off in their BIOS too. 
+I myself was able to bless a 60GB Maxtor drive on an old Pentium 166 
+by setting its BIOS settings to none. The drive would lock up the 
+computer if the BIOS on the PC was allowed to try detect it. 
+<P>
+2. If you have PC clone try the trick for the lock drive problem 
+detailed in section 2.15
+<P>
+3.If the above doesn't work try checking your PC or motherboard 
+manufacturers site for Flash BIOS updates for your motherboard. Be 
+very careful when doing this and follow the directions to Flash your 
+motherboard EXACTLY 
+<P>
+4.Try a different computer (friends, work, etc).
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.015.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.015.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 17:12:20 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.16">3.16. Who can upgrade my TiVo for me? It seems too complex.</A></H2>
+Nobody offers this service since nobody wants to profit from this 
+hacking. Your best bet is to find a computer savvy friend to 
+help you. If you can't find someone DON'T try to upgrade your TiVo
+yourself unless you are sure you know what you are doing.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.016.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.016.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 17:13:54 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.17">3.17. Will an upgrade kill my Now Showing or Season Passes?</A></H2>
+No. The only thing the upgrade will do is give you lots more recording 
+space!
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.017.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.017.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 17:14:29 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="3.18">3.18. Help! My TiVo won't boot with a Quantum B drive!</A></H2>
+This problem has been seen mostly on the initial Sony TiVos.  It manifests itself on machines with locked drives.  It would seem that machines shipping with TiVo software 2.0 do not have this problem.
+<P>
+To get around this problem, you need to turn off the TiVo's automatic disk-locking feature.  Enter the diagnostic mode (see section 4.3).  In that menu,
+<P>
+<PRE>
+ 5 - Toggle auto disk locking
+</PRE>
+<PRE>
+ 8 - Save changes to configuration
+</PRE>
+Saving the changes takes a few seconds, so be sure to wait for the prompt to return.  Then reboot your TiVo.
+<P>
+Your TiVo should now boot happily with the Quantum B drive.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq03.018.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq03.018.htp">Log info</A>
+
+/ Last changed on Thu Jan 11 17:37:20 2001 by
+<A HREF="mailto:pjcreath@users.sourceforge.net">pjc</A>
+<P>
+
+<HR>
+<H1>4. Other TiVo hacks and information</H1>
+
+<HR>
+<H2><A NAME="4.1">4.1. Converting your TiVo for PAL input</A></H2>
+The current models of TiVo only handle NTSC. While TiVo is planning
+a release of a model in the UK that does PAL, those of us who live
+in PAL countries (like Australia) might want to get my "palkit"
+PAL patch from <A HREF="http://tivo.samba.org/download/tridge">http://tivo.samba.org/download/tridge</A>/
+<P>
+This patch works by modifying the registers on the SAA7114 and CXD1922
+to select PAL input. Only input is affected. I am working on another
+patch for PAL output and will release it when its done. Luckily
+most modern TVs do both NTSC and PAL input.
+<P>
+UPDATE: I now have PAL output working as well. Run the program
+"setpal" from my download area above
+<P>
+UPDATE2 (October 10th): I've released a new version of palkit (version
+1.2). This version uses a much simpler method and does good quality
+PAL on both input and output. More recently I've also fixed a problem
+with running at other than best quality.
+<P>
+(NOTE: currently palmode will NOT work with 2.0.x of the TiVo software,
+Tridge is aware of this and looking into it att.)
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.001.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.001.htp">Log info</A>
+
+/ Last changed on Wed Mar 28 07:47:04 2001 by
+<A HREF="mailto:dans@fysh.org">sorphin</A>
+<P>
+
+<HR>
+<H2><A NAME="4.2">4.2. Can I extract videos from the TiVo?</A></H2>
+No. The format of the partitions that contain the video is not known 
+at this time. Work is being done on this though so stay tuned.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.002.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.002.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 23:10:08 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="4.3">4.3. How can I access the secret TiVo diagnostic mode?</A></H2>
+Upon power up if the TiVo receives a return key within a second or two it will ask the user for a secret password to get into a diagnostic mode (also known as the ``ROM Monitor'').  This diagnostic mode is no longer available on the DirecTV/TiVo combo boxes.
+<P>
+The following are the steps to access this mode. 
+<P>
+1.Connect your DSS port on the back of the TiVo to your PC's serial port. 
+Your TiVo should have came with a connector that plugs into the DSS 
+Serial port on the back of the TiVo and has a 9 pin D-Type connector 
+on the other end. You will need to put a ``null modem'' adaptor on 
+the 9pin and also a gender changer to be able to use it with your PC. 
+You can buy these at most computer stores, or Radio Shack. 
+<P>
+2.Run your favorite terminal program on Linux or Windows. Minicom 
+works great and is with most Linux distributions, Hyperterminal with 
+Windows works fine also. 
+<P>
+3.Connect the serial cable between the TiVo and the PC uses the above 
+mentioned cables and adaptors. 
+<P>
+4.Set your terminal program to 9600, N81 with no flow control 
+(hardware or software). Also make sure the COM port your using in the 
+terminal program matches the COM port the PC is plugged into. 
+<P>
+5.Power up the TiVo and immediately hit enter in your terminal program 
+``once''. The timing on this is a tad tricky.  The best rule of thumb 
+is to hit enter once you see the little TiVo guy picture pop up.
+<P>
+6.The TiVo will prompt you with a ``Verify: '' prompt. The password is 
+``factory'' (no quotes). The password was discovered by sorphin. This 
+password seems to work with some units. If your unit doesn't take the 
+factory password see section 4.8 on how to change the password.
+<P>
+<P>
+(NOTE: currently it is not possible to get to the prom prompt/into the
+prom (aka "diagnostic mode") with newer tivos (including DTivos),
+a prom version of 1.88 or higher.)
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.003.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.003.htp">Log info</A>
+
+/ Last changed on Wed Mar 28 07:49:02 2001 by
+<A HREF="mailto:dans@fysh.org">sorphin</A>
+<P>
+
+<HR>
+<H2><A NAME="4.4">4.4. Getting a BASH prompt on your TiVo with the Diagnostic Mode</A></H2>
+This procedure is for 1.3 or previous units only. This will NOT work in 2.0, as the "shondss" variable has been removed.
+<P>
+1.Follow the steps needed to get into the diagnostic screen. 
+<P>
+2.From the diagnostic menu type ``X'' to see the extended menu. 
+<P>
+3.Use option ``P'' to change the boot parameters. 
+<P>
+4.The system will display your current boot parameters. You will want 
+to append the string ``shondss=true'' to the current boot parameters. 
+Also if you have added any other parameters you should append them also. 
+<P>
+5.For example. If you current parameters are ``root=/dev/hda7'' you 
+will change the parameters to ``root=/dev/hda7 shondss=true''. It is 
+very important to maintain whatever the current boot parameters in 
+your unit are. The boot parameters can vary from unit to unit. 
+<P>
+6.Type ``B'' to continue booting. 
+<P>
+7.Remember to remove the ``shondss=true'' if you need the DSS serial 
+port for control of your DSS receiver. If you use the IR port for 
+control you can leave the BASH mode active. Your TiVo will still function.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.004.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.004.htp">Log info</A>
+
+/ Last changed on Mon Mar 26 19:53:59 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H2><A NAME="4.5">4.5. Getting a BASH prompt using a hex-editor</A></H2>
+Somebody add me!!!!
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.005.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.005.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 23:16:41 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="4.6">4.6. Getting a BASH prompt with Dylan's bootdisk</A></H2>
+"Bash" is a command shell (the "Borne Again SHell"); you enter command 
+file names and arguments, it executes those commands -- much like running
+"command.com" in DOS.  A TiVo doesn't have a console, so we have
+to create a command shell on the available serial port.
+<P>
+To do this, we have to modify the TiVo disk from a regular PC where we 
+can already get a command shell.
+<P>
+If you use Dylan's bootdisk or a Linux system (compiled with the TiVo
+partition support), you can mount the partition containing your current
+kernel on your TiVo "A" drive, then edit the /etc/rc.d/rc.sysinit file to
+get a bash prompt on the TiVo's DSS serial port.
+<P>
+1.Connect your TiVo "A" drive to your PC. Either boot Dylan's boot disk
+or your modified Linux kernel that supports TiVo's special partitions.
+<P>
+Special Note: If using Dylan's bootdisk remember that you CAN'T 
+connect a TiVo disk drive setup as "master" on the primary IDE bus, it 
+will not mount.  While booting Dylan's bootdisk, just before 
+displaying the "login:" prompt, the console should display all the 
+Tivo partitions on the disk.  If they are not displayed (and you can't 
+mount the disk), then the TiVo disk was probably put on the primary 
+IDE bus as a master.  Note that the TiVo disk drive is jumpered to 
+master by default.  You can cable the drive on the secondary IDE bus, 
+OR, (for the standard Quantum drive -- see instructions on the disk 
+for other drives) move the jumper from the first to the third pair of 
+pins in order to make the disk a "slave" rather than a "master" on the 
+primary IDE bus.  If jumpered as master on the primary IDE bus, you'll 
+get the following errors trying to mount the drive:
+<P>
+<PRE>
+	/dev/hda4: Success
+	FAT bread failed
+	FAT bread failed
+	mount: you must specify the filesystem type
+</PRE>
+Special Note #2: When connecting cables to a disk drive, it's usually not a problem to put the IDE cable in backwards (it won't boot/mount but it usually doesn't hurt anything), unless it's keyed, in which case, improper mounting can break off a pin:
+<P>
+<PRE>
+	<A HREF="http://www.avsforum.com/ubbtivo/Forum6/HTML/004264.html">http://www.avsforum.com/ubbtivo/Forum6/HTML/004264.html</A>
+</PRE>
+The 1 pin is on the red striped edge of the cable.
+<P>
+The rule of thumb is: the 1 pin is next to the power connector on the disk (but not always).  You can also look for a "1" on the circuit board by the connector on the disk.  Also, the connector might be keyed: a hump on the outside of the cable connector should match the divot on the disk side of the connection.  The cable might also have one pin-hole filled in: this should match the missing pin on the disk side of the connector.
+<P>
+All power connectors are keyed: while they require extreme force to remove, they should be simple to insert.  If you're trying to use excessive force to connect the power connector, then you're probably putting it in backwards.  If it's backwards, you'll fry the disk controller.
+<P>
+2.Your TiVo disk drive has many partitions. Two have bootable
+kernels stored on them, and can be mounted as the root partition 
+("root" is the main partition, 
+like the DOS "C:" partition).  They can't be mounted as root at the 
+same time -- one is backup should the other fail, and the dormant partition gets upgrades when available. 
+So all changes that you make to one root partition, you should mirror (copy) 
+on the other.  Both root partitions contain an rc.sysinit file,
+much like a DOS "autoexec.bat" file that is executed at boot time. 
+This file must be modified to get the "bash" command shell prompt on the 
+serial port. You should edit both files on both partitions. 
+<P>
+If you'd rather just edit the file on one partition, then you can determine
+which partition will boot as root by examining the 2nd byte on the first
+sector of the TiVo "A" drive. If the value is a 3 then edit your
+/etc/rc.d/rc.sysinit file on partition 4, if it is a 6 the file is
+on partition 7.  But, we're not going to tell you how ;)
+<P>
+3.Enter the following to mount partition 4:
+<P>
+<PRE>
+	mount /dev/hdX4 /mnt
+</PRE>
+Where X is the letter
+representing the IDE port where the TiVo "A" drive is connected on 
+your motherboard:
+<P>
+<PRE>
+        X = "b" (/dev/hdb4) -- if disk is setup as slave on primary IDE bus
+</PRE>
+<PRE>
+        X = "c" (/dev/hdc4) -- if disk is setup as master on secondary IDE bus.
+</PRE>
+<PRE>
+        X = "d" (/dev/hdd4) -- if disk is setup as slave on secondary IDE bus.
+</PRE>
+(Note that X will never be "a", master on the primary IDE bus.)
+<P>
+If the disk won't mount, maybe you're having a problem with a locked disk,  See section 2.15 for information on how to unlock the disk.
+<P>
+4.Type ``joe /mnt/etc/rc.d/rc.sysinit'' (without the quotes).
+<P>
+4 (alternate). Instead of using an editor, you can type:
+<P>
+<PRE>
+        echo '/bin/bash &lt;/dev/ttyS3 &gt;&amp; /dev/ttyS3 &amp;' &gt;&gt; /mnt/etc/rc.d/rc.sysinit
+</PRE>
+(that's all one line, use the quotes, don't forget the ">>" -- using a 
+single "&gt;" instead will destroy/replace the entire file with the one line)
+<P>
+If you use the "echo" rather than "joe", then, skip to step 8.
+<P>
+5.Go to the bottom of the file and add the following on a line all by
+itself.
+<P>
+6.``/bin/bash &lt;/dev/ttyS3 &gt;&amp; /dev/ttyS3 &amp; '' (without the quotes)
+<P>
+7.Save the changes. (CTRL-K CTRL-X)
+<P>
+8.If you have any other files you wish to put or edit on the TiVo 
+(rather than using zmodem over the serial line), you can do it now 
+(put those files on an alternate floppy, mount the floppy with "mkdir 
+/foo; mount /dev/fd0 /foo", then copy the files with "cp 
+/foo/&lt;whatever&gt; /mnt/&lt;whatever&gt;").
+<P>
+9.Type ``umount /mnt'' (without the quotes).
+<P>
+10.Repeat steps 3-9 to edit partition 7.  In step 3, use "/dev/hdX7" rather
+than "/dev/hdX4".
+<P>
+10 (alternate). Mount partition 7 on another mountpoint, and copy
+the files from partition 4 to partition 7.  This should only be done if the TiVo partitions are the same version.  First, remount partition 
+4, since we unmounted in step 9:
+<P>
+<PRE>
+	mount /dev/hdX4 /mnt
+</PRE>
+Then, make another directory, and mount the other disk there:
+<P>
+<PRE>
+	mkdir /mnt7
+	mount /dev/hdX7 /mnt7
+</PRE>
+Then, check the versions of the two partitions:
+<P>
+<PRE>
+	cat /mnt/etc/build-version /mnt7/etc/build-version
+</PRE>
+If the versions are the same, then, copy your rc.sysinit file from one partition to the other (otherwise, modify rc.sysinit with "echo" or "joe" as detailed in section 4.6):
+<P>
+<PRE>
+	cp /mnt/etc/rc.d/rc.sysinit /mnt7/etc/rc.d/rc.sysinit 
+</PRE>
+If you have any other files modified under /mnt, copy those changes too.  
+Make sure to unmount your partitions:
+<P>
+<PRE>
+	umount /mnt /mnt7
+</PRE>
+11.After powering down the PC, remove the TiVo disk and install it 
+back in the TiVo.  If you moved the disk's jumper from the "master" to 
+the "slave" position in step #1, make sure to return the jumper to the 
+"master" position.
+<P>
+12.Connect your DSS (serial) port on the back of the TiVo to your PC's serial
+port. Your TiVo should have included a connector that plugs into the
+DSS Serial port on the back of the TiVo and has a 9 pin D-Type
+connector on the other end. You will need to put a ``null modem''
+adaptor on the 9pin and also a gender changer to be able to use it
+with your PC. You can buy these at most computer stores, or Radio Shack.
+<P>
+13.Run your favorite terminal program on Linux or Windows. Minicom
+works great and is with most Linux distributions, Hyperterminal with
+Windows works fine also.
+<P>
+14.Connect the serial cable between the TiVo and the PC uses the above
+mentioned cables and adaptors.
+<P>
+15.Set your terminal program to 9600, N81 with no flow control
+(hardware or software). Also make sure the COM port your using in the
+terminal program matches the COM port the PC is plugged into.
+<P>
+16.Turn on your TiVo. After the ``please wait a few more seconds
+message'' is displayed on the TV, you should get a shell prompt on your
+terminal program.
+<P>
+17.If you do not then check your COM port settings and cables. If you
+only edited one rc.sysinit script you may have gotten the wrong one.
+<P>
+18.If it works you can now explore your TiVo while its running and do
+all kinds of dangerous things!
+<P>
+19.If pressing the "enter" key causes the next "bash" prompt to be displayed
+immediately below the cursor on the next line, rather than the first column of the
+next line, then enter:
+<P>
+<PRE>
+	stty sane
+</PRE>
+And your prompt should behave normally when pressing "enter"
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.006.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.006.htp">Log info</A>
+
+/ Last changed on Fri Apr 20 18:25:52 2001 by
+<A HREF="mailto:cworley@symbionsys.com">Chris Worley</A>
+<P>
+
+<HR>
+<H2><A NAME="4.7">4.7. I can't get the damn TiVo shell to work any ideas?</A></H2>
+Check the following things: 
+<P>
+Make sure you have the Serial out connected to your PC and not the IR 
+output. 
+<P>
+Make sure you have a null modem and gender bender connected to the 
+cable between the TiVo and your PC's COM port. 
+<P>
+Make sure you have the cable between the TiVo and PC connected to the 
+COM port your Terminal software is set to use. 
+<P>
+Make sure the software you are using is set to 9600,N,8,1 and that 
+software and hardware flow control are off. 
+<P>
+If your TiVo it set to use the serial port for DSS control you will 
+need to go in and switch it to the IR port.  You can put it back to 
+serial control when you are done using the bash shell.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.007.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.007.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 23:23:40 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="4.8">4.8. How can I change the password for the diagnostic mode when ``factory'' doesn't work?</A></H2>
+If your TiVo does not accept the ``factory'' password you can do the 
+following to get it working. 
+<P>
+1.You need to get a bash prompt on your TiVo. See section 4.4-4.6 on the steps needed. You will have to use Dylan's bootdisk to do this since your unit does not accept the ``factory'' password. 
+<P>
+2.Once you get a shell prompt on the Tivo type the command listed in step 3 below. The quotes are needed in the below example. You will also want to change the phrase password to whatever you want your TiVo diagnostic screen password to be. So whatever you set it to make sure you remember it! 
+<P>
+3.crypto -u -srp "password" 
+<P>
+4.Reboot your TiVo and try to access the diagnostic mode with the
+password you just set.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.008.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.008.htp">Log info</A>
+
+/ Last changed on Sun Jan 21 14:14:43 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H2><A NAME="4.9">4.9. How do I use a non Quantum drive as my A drive?</A></H2>
+There is a environmental variable you can set called ``runideturbo''. 
+This variable needs to be set to false. You can do this a couple ways. 
+Both will be described below. Setting this variable allows non Quantum 
+drives to work in the TiVo. You will want to use either of the below 
+methods after making the copy of the original TiVo A drive onto a non 
+Quantum drive.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.009.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.009.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 23:36:39 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="4.10">4.10. Configuring for a non Quantum drive with Dylan's boot disk.</A></H2>
+The first way to do this is to connect your newly made non Quantum A 
+drive to your PC ( do not connect as the Primary master or you will 
+not be able to mount the drive). And do the following. 
+<P>
+1.Boot the PC with Dylan's bootdisk 
+<P>
+2.At the login prompt type ``root'' and hit enter. 
+<P>
+3.Type the following followed by the enter key. ``mount /dev/hdX4 /mnt'' where the X is the either b c or d depending 
+on if you connected the non Quantum A drive to your PC's primary slave, 
+secondary master or secondary slave respectively. 
+<P>
+4.Type the following. ``cd /mnt/etc/rc.d'' and hit enter 
+<P>
+5.Then type ``joe rc.sysinit'' and hit enter 
+<P>
+6.This will place you in a text editor. Add the following as the 
+second non-commented line in the file. ``runideturbo=false'' (no "#" in front of it)
+<P>
+7.Hold the CTRL key down and hit the K key. Then release the CTRL key 
+and hit the X key. Save your changes.
+<P>
+8.Type ``cd /'' and hit enter. 
+<P>
+9.Type ``umount /mnt'' and hit enter. 
+<P>
+10.Repeat steps 3 - 9 except use the command ``mount /dev/hdX7 /mnt'' 
+instead in step 3. This is so both Linux partitions on the TiVo are 
+modified. If you know which is the active kernel partition you can 
+just modify that one, if not do both just to be safe. 
+<P>
+11.After finished step 9 the second time through you can power down 
+the PC and use the non Quantum drive in your TiVo.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.010.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.010.htp">Log info</A>
+
+/ Last changed on Thu Jan 25 11:46:19 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H2><A NAME="4.11">4.11. Configuring for a non Quantum drive using the TiVo diagnostic menu.</A></H2>
+1.Make sure you have copied your A drive data onto the non Quantum 
+drive. Connect this new drive to your TiVo as the Primary drive. Turn 
+on the TiVo and get into the diagnostic screen as noted in section 4.3. 
+<P>
+2.From the diagnostic menu type ``X'' to see the extended menu. 
+<P>
+3.Use option ``P'' to change the boot parameters. 
+<P>
+4.The system will display your current boot parameters. You will want 
+to append the string ``runideturbo=false'' to the current boot 
+parameters. Also if you have added any other parameters you should 
+append them also. 
+<P>
+5.For example. If you current parameters are ``root=/dev/hda7'' you 
+will change the parameters to ``root=/dev/hda7 runideturbo=false''. It 
+is very important to maintain whatever the current boot parameters in 
+your unit are. The boot parameters can vary from unit to unit. 
+<P>
+6.Type ``B'' to continue booting. 
+<P>
+7.Your Tivo should boot up now with the non Quantum A drive.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.011.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.011.htp">Log info</A>
+
+/ Last changed on Sun Jan 21 14:16:26 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H2><A NAME="4.12">4.12. What other cool variables can I set in the TiVo and what do they do?</A></H2>
+All the below variables below can be setup either from the diagnostic 
+menu of the TiVo or using Dylan's bootdisk as noted above in the 
+section on using non Quantum drives as the A drive in your TiVo. 
+Variables will be detailed below and their effect. The quotes 
+surrounding the variables should be ommited when placing them in the 
+boot parameters or in the /etc/rc.d/rc.sysinit file. NOTE.  When placing 
+these variables in the rc.sysinit file you should put the word "export" in 
+front of them.  For example "MYWORLD_ENABLE_BACKDOORS=1" would look like 
+"export MYWORLD_ENABLE_BACKDOORS=1".  Do this for any of the variables in this section. 
+You do NOT need to do this if you are placing them in the boot sector, 
+and can use them as is shown beloe.
+<P>
+"MYWORLD_ENABLE_BACKDOORS=1" (not in 2.0)
+<P>
+This allows you to access some hidden features of the TiVo. If this 
+variable is set the TiVo should say ``Backdoors Enabled'' in the system 
+information screen. When this mode is active the following TiVo remote 
+key sequences will access special features. See section 4.25 for all the details.
+<P>
+Adding this will also have your TiVo show more information in the System Information screen. The TiVo will show how long it has been up since the last power cycle (uptime).
+<P>
+"LIVE_CACHE_SIZE=20700" (not in 2.0)
+<P>
+Adding this changes your live TV buffer from 30 minutes to 60 minutes. 
+If you set it to 10350 that will give you the normal 30 minute buffer. 
+So increase it by 10350 for however many 30 minute you want to add to 
+the live buffer. A few things should be noted about this hack. 
+<P>
+<PRE>
+  Don't try creating a buffer larger than your free space. So if you 
+  have a 30 hour unit and you have 29 hours of shows recorded, do not 
+  try to increase your live TV buffer to 4 hours (82800). 
+</PRE>
+<PRE>
+  The TiVo ``green bar'' indicator still thinks the live TV buffer is 
+  30 minutes, but it will still work with your new settings.
+</PRE>
+"TIVO_CORRECTION_OFFSET=2000" (not in 1.3)
+<P>
+This appears to be the value used to back up after play is hit while fast forwarding or rewinding (auto known as the autocorrection).. It's in milliseconds. 2000 is the default.
+<P>
+"TIVO_CORRECTION_DELAY=1000" (not in 1.3)
+<P>
+This appears to be a variable to define how much time it takes for the IR command to be processed. 1000 appears to be very close to the default value, although the exact default value is unknown.
+<P>
+As posted by Otto in <A HREF="http://www.avsforum.com/ubbtivo/Forum6/HTML/003579.html">http://www.avsforum.com/ubbtivo/Forum6/HTML/003579.html</A> :
+<P>
+<PRE>
+  I like 1000,750 (offset,delay) better... I tried setting offset 
+  to zero and found that it was a bit harder to gauge it at different 
+  speed settings. So I upped it back to 1 second and lowered the delay 
+  from 900 to 750 and now it nails it right on the money. 
+</PRE>
+It's recommended that you try various settings for these two values until you find what works for you.
+<P>
+Also, sometimes the values may not seem to have any effect. As posted by Otto: 
+<P>
+<PRE>
+  Try playing a recorded show and pausing and doing a frame advance. I
+  think this causes it to reload some parameters.
+</PRE>
+That should cause it to take effect if you are having problems adjusting the settings.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.012.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.012.htp">Log info</A>
+
+/ Last changed on Mon Mar 26 12:22:46 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H2><A NAME="4.13">4.13. I set all those cool variables above, and for no reason they stopped working. Help!</A></H2>
+More than likely your TiVo just upgraded its software from 1.2.1 to 1.3 
+(or possibly 2.0 when it is released). You probably added the variables 
+to the rc.sysinit file. When TiVo upgrades their software they format 
+and install the new software onto the other inactive Linux partition. 
+So any changes you made to your rc.sysinit file will be lost. You will 
+need to redo them. People who set the ``runideturbo'' variable to true 
+to use a non Quantum drive as an A drive will have to reset this 
+variable before they can even boot their TiVo after an upgrade. It is 
+advisable to use the diagnostic mode to set these variables since they 
+have not been modified in a software upgrade (yet).
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.013.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.013.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 23:50:10 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="4.14">4.14. Are there any limitations when compiling code to run on the TiVo?</A></H2>
+Assuming you have setup the cross compiler correctly you should be able 
+to compile code to run on the TiVo. Some limitations known right now. 
+<P>
+1.You can not use floating point math in your program 
+<P>
+2.Long words should be stored on a 4 byte boundary 
+<P>
+3.Standard Power PC executables do not work. So you need to recompile 
+code for anything you want to run.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.014.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.014.htp">Log info</A>
+
+/ Last changed on Fri Sep 22 23:51:38 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="4.15">4.15. TiVo Partition Information</A></H2>
+The following is the break down of the partitions on an A drive in a 
+single/dual drive TiVo. 
+<P>
+<PRE>
+ Partition #     Type        Size        Description
+ ===========   ========      =====       ===================================================
+     1         Bootpage       2K         Bootsector and partition information
+     2          Image        2 MB        Bootstrap 1 Image
+     3          Image        2 MB        Kernel 1 Image
+     4           Ext2        128MB       Root 1 Image (Linux Mountable)
+     5          Image        2 MB        Bootstrap 2 Image
+     6          Image        2 MB        Kernel 2 Image
+     7           Ext2        128MB       Root 2 Image (Linux Mountable)
+     8           Swap        64MB        Linux Swap Partition
+     9           Ext2        128MB       /var Partition (Linux mountable)
+    10          MFS App    512MB/260MB   Single Drive TiVo is 512MB, Dual is 260MB. **
+    11         MFS Media  Rest of space  Contains recorded video, animations, TiVo demo, etc
+</PRE>
+** Note. A single drive TiVo has a 512MB MFS App partition. The from 
+the factory dual drive TiVo will contain a 260MB MFS App partition 
+on both drives. You will see below that a user blessed B drive 
+contains a tiny MFS app partition since the original A drive already 
+contains the 512MB partition.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.015.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.015.htp">Log info</A>
+
+/ Last changed on Sat Sep 23 00:11:29 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="4.16">4.16. Partition information for drives blessed by BlessTiVo or the hackers method</A></H2>
+The following is the layout of a drive B after blessing it.
+<P>
+<P>
+<PRE>
+ Partition #   Type           Size             Description
+ ===========   =============  =============    ======================================
+     1         Bootpage       2K               Bootsector and partition information
+     2         MFS App        4MB              Small because A drive is already 512MB
+     3         MFS Media      Rest of space    Contains recorded video
+</PRE>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.016.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.016.htp">Log info</A>
+
+/ Last changed on Sat Sep 23 00:15:34 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="4.17">4.17. TiVo Block 0 Layout for blessed drive</A></H2>
+Note. The block 0 information for the TiVo A drive is identical except 
+you may have the values for the primary and alternate kernel swapped, 
+and the boot parameters will reflect /dev/hdaX also. 
+<P>
+<PRE>
+ Location      Size                 Value              Description
+ =========     ===============      ================   ===================================
+ 0000-0001     16 bit integer       0x1492             Signature
+ 0002-0002     8 bit integer        0x03               Primary Kernel Partition
+ 0003-0003     8 bit integer        0x06               Alternate Kernel Partition
+ 0004-0083     128 byte string      'root=/dev/hdb4'   Boot Params. Null terminated
+ 0084-00A3     32 byte string       'unnamed'          Hostname. Null terminated
+ 00A4-00A7     4 bytes              10.x.x.x           IP address, x=random # 0x00 - 0xFE
+ 00A8-00AD     6 bytes              x:x:x:x:x:x        MAC address, x=random # 0x00 - 0xFF
+ 00AE-01FF     338 bytes            0                  Undefined
+</PRE>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.017.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.017.htp">Log info</A>
+
+/ Last changed on Sat Sep 23 19:30:22 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="4.18">4.18. Signature on a blessed drive</A></H2>
+This is the information you get from running genAddDiskTiVoID or 
+BlessTiVo. These offsets are from the start of the MFS media 
+partition (/dev/hdX3) 
+<P>
+<PRE>
+ Offset              Size        Value
+ 07B00000-07B00038   57 bytes    ``Add-on media file system disk, copyright TiVo Inc. 1999.\0''
+ 1C6AA390-1C6AA396   7 Bytes     'T', 'i', 'V', 'o', 0x06, 0x0b, 0x63
+ 30F9D8FC-30F9D900   5 Bytes     'a', 's', 'c', 'c', 'd'
+</PRE>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.018.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.018.htp">Log info</A>
+
+/ Last changed on Sat Sep 23 19:33:00 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="4.19">4.19. Some Integrated Circuits inside the TiVo</A></H2>
+The following is a list of some IC's inside the TiVo.
+<P>
+<PRE>
+ Chip Identifier       Manufacturer      Description
+ ===============       ==============    =====================================
+ SAA7114H              Philips           Video Decoder/Scaler
+ PowerPC 403GCX        IBM               PowerPC CPU
+ MSP 3430Ga4           Miconas           Sound Processor for Analog TV Signals
+ SAA7120H              Philips           Video Encoder YUV to NTSC or PAL
+ CS22PFJ22C            IBM               MPEG Audio/Video Decoder
+ MK2745-265            ICS               MPEG-II Clock Synthesizer
+ RP336LD               Conexant          V.90/K56flex/V.34 Modem Data Pump
+ P39X                  Rockwell          Micro Controller for Modem Chip
+ ADSP-2183             Analog Devices    16 Bit DSP
+ CXD1922Q              Sony              MPEG-II Video Encoder
+</PRE>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.019.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.019.htp">Log info</A>
+
+/ Last changed on Mon Oct 16 12:36:34 2000 by
+<A HREF="mailto:mhil@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="4.20">4.20. How many serial ports does the TiVo have and what are they used for?</A></H2>
+The TiVo has four serial ports. The table below describes them. 
+<P>
+<PRE>
+ Device Name     Description
+ ===========     ===================================================
+ /dev/ttyS0      IR Port on front of TiVo and IR blaster on the back
+ /dev/ttyS1      TiVo Modem
+ /dev/ttyS2      Debug Port on the TiVo. Not available
+ /dev/ttyS3      DSS Serial port on back of the TiVo
+</PRE>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.020.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.020.htp">Log info</A>
+
+/ Last changed on Sat Sep 23 19:39:40 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="4.21">4.21. Details of file layout on the TiVo Root ext2 partitions</A></H2>
+Here is the layout of the two Root ext2 partitions on the TiVo. These 
+are partitions /dev/hdX4 and /dev/hdX7. Only some partitions are 
+detailed below (mainly partitions with binaries in them). It should 
+be noted that paths like /devbin may not exist on some units. During 
+the upgrade process some directories may be removed.
+<P>
+<PRE>
+ Partition     Directory     Description
+ /dev/hdX4     /bin          Contains common OS programs like, bash, cp, mount, etc
+ /dev/hdX4     /devbin       Contains useful utilites like ls, dd, grep, du, etc. Add this to your shell path.
+ /dev/hdX4     /sbin         Contains applications needed by TiVo operation such as pppd, irtest, etc.
+ /dev/hdX4     /tvbin        Contains the bulk of the TiVo needed binaries such as myworld, osdwriter.
+ /dev/hdX7     /diag         Contains useful programs like genAddDiskTiVoID, hardware test program.
+ /dev/hdX9     /diag         Contains useful programs like genAddDiskTiVoID, hardware test program.
+ /dev/hdX9     /log          Contains log file info. Many interesting things can be read here.
+ /dev/hdX9     /tmp          Temporary directory. Hidden treasures can be found looking in here.
+ /dev/hdX9     /utils        Contains applications for adding drives, updating proms.
+</PRE>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.021.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.021.htp">Log info</A>
+
+/ Last changed on Sat Sep 23 19:42:50 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="4.22">4.22. Some applications on the TiVo partitions and their use</A></H2>
+To execute these programs you will need to have the BASH shell prompt 
+described in sections 4.4-4.6 working. Note some of these files may not 
+exist on non-virgin units, a unit that has run guided setup, or a 
+unit that has had a software upgrade. 
+<P>
+<PRE>
+ cs22 files:   Any files with the cs22 extension are On Screen Display 
+               still images that can be loaded on your TiVo by using the 
+               osdwriter program to view them. They seem to be Run 
+               Length Encoded image files. Located in /dev/hdX4/tvbin 
+</PRE>
+<PRE>
+ mpv files:    MPEG encoded video files. The MPEG file format used by 
+               TiVo on MFS partition 11 has not been determined. 
+</PRE>
+<PRE>
+ osdwriter:    By executing this program and passing it the filename of 
+               a cs22 file on your TiVo you can force the TiVo to display 
+               that static image on the screen. You can hit your TiVo 
+               button on the remote to remove the image from your screen. 
+               Located in /dev/hdX4/tvbin 
+</PRE>
+<PRE>
+ myworld:      This seems to be the main TiVo executable that is run to 
+               get the TiVo doing its thing. If you shut this program 
+               down your TiVo will be dead except for the shell prompt. 
+               Start it back up and your TiVo should come back to life. 
+               Located in /dev/hdX4/tvbin 
+</PRE>
+<PRE>
+ bootpage:     Program that is used to write out a bootpage to block zero 
+               on the specified device. Location /dev/hdX4/sbin 
+</PRE>
+<PRE>
+ updatekernel: Script to allow you to update to a newer kernel. The script 
+               does all the work for you. Location /dev/hdX4/sbin 
+</PRE>
+<PRE>
+ updateprom:   Script that allows you to update your PROM from a PROM image 
+               file. Do not use this unless you know what your doing. 
+               Programming an invalid PROM could render your TiVo useless. 
+               Location /dev/hdX4/sbin 
+</PRE>
+This is only a small sample of applications on the TiVo.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.022.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.022.htp">Log info</A>
+
+/ Last changed on Sun Jan 21 14:21:05 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H2><A NAME="4.23">4.23. Running LinuxPPC binaries on your TiVo</A></H2>
+yes, you can run LinuxPPC binaries on your TiVo. This provides an
+easy way to get lots of software going quickly. 
+<P>
+BUT, the ld.so and libc.so that comes with the TiVo are incompatible
+with LinuxPPC binaries. You need to put copies of the LinuxPPC ones
+in /lib but not overwrite the ones that are already there. This
+is possible because you can give them different names. For libc this
+is easy as LinuxPPC binaries look for libc.so.6 instead of libc.so
+but for ld.so you need to edit the LinuxPPC binaries to look for the 
+right dynamic loader.  I chose to call the LinuxPPC loader ld.so.X
+and edited my LinuxPPC binaries to change the "1" in ld.so.1 to a "X"
+I've put copies of the ld.so.X and libc.so.6 files I used
+in my download area at <A HREF="http://tivo.samba.org/download/tridge">http://tivo.samba.org/download/tridge</A>/.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.023.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.023.htp">Log info</A>
+
+/ Last changed on Sun Oct 15 16:27:56 2000 by
+<A HREF="mailto:tridge@samba.org">Tridge</A>
+<P>
+
+<HR>
+<H2><A NAME="4.24">4.24. What is MFS</A></H2>
+MFS is a custom Filesystem System used by the TiVo for storing Database and Stream information.
+<P>
+Usually we see MFS partitions in pairs, even partitions are usually MFS APP partitions which contain anything but streams.
+<P>
+Odd partitions are usually MFS Media Partitions which usually contain only streams (your recordings)
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.024.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.024.htp">Log info</A>
+
+/ Last changed on Thu Dec 21 23:37:39 2000 by
+<A HREF="mailto:no_email_provided@localhost">TivoTechie</A>
+<P>
+
+<HR>
+<H2><A NAME="4.25">4.25. What are Backdoor codes and how do I use them?</A></H2>
+Backdoor codes allow access to some hidden features of the TiVo.  They seem to be gone from TiVo software version 2.0.
+<P>
+To access them, you first need to enable backdoor codes.  There are several ways to do this.  First, you can set the MYWORLD_ENABLE_BACKDOORS variable (see section 4.12).
+<P>
+Alternatively, under version 1.3 of the TiVo software (and reportedly on version 1.5), you can enable the backdoors using the remote.  "Browse By Name" for "0v1t" (TiVo spelled backwards with zero and one instead of "O" and "I") and press the "Thumbs-Up" key.  You should see a message stating "Backdoors enabled!"
+<P>
+In either case, if you go to the "System Information" screen, you should see "Backdoors Enabled".
+<P>
+When Backdoor mode is active the following TiVo remote key sequences will access special features:
+<P>
+<PRE>
+ ``Clear Enter Clear Thumbs-Up'' will allow you to access the TiVo's 
+   log files on your TV screen. Page up and page down allow you to move 
+   through the log information and the right arrow you to move through 
+   the log files. 
+</PRE>
+<PRE>
+ ``Clear Enter Clear Thumbs-Down'' will shut down the myworld program 
+   on a TiVo. The myworld program is the brains of the TiVo. Shutting 
+   it down is not advisable since the only thing you can do with the 
+   TiVo at that point is use the BASH shell if you activated one. If 
+   you do have a BASH prompt you can rerun the myworld program to get 
+   the TiVo running fully again. If not you need to power down and up 
+   the TiVo to get it fully functional again. 
+</PRE>
+<PRE>
+ ``Clear Enter Clear 4'' this forces suggestions to be rebuilt. 
+</PRE>
+<PRE>
+ ``Clear Enter Clear FastForward'' this resets the TiVo 
+</PRE>
+<PRE>
+ ``Clear Enter Clear 5'' toggles the overshoot correction during fast 
+   forwarding on and off. 
+</PRE>
+<PRE>
+ ``Clear Enter Clear Skip-to-end'' turns on "Boat-Anchor" mode. This
+   convinces the TiVo that it should behave as if it has no guide
+   data(?).  It's unknown whether this requires backdoor mode to
+   be enabled, and it's not a good idea to try it.
+</PRE>
+<P>
+The following codes must be entered in the "Browse By Name" screen. 
+<P>
+<PRE>
+ ``Enter Enter 1'' gives you Speed1: prompt. Turns the record LED on
+   (indicating the backdoor is open and can be changed?). Enter a
+   number for how fast you want the first scan speed to run at, then
+   press  ``Enter Enter 1 again. The record LED will go out. 
+</PRE>
+<PRE>
+   The last two digits of the number must be 00 for an integer multiple
+   speed. The digits to the left of the 00 indicate how many times
+   normal playing speed the scan is running. 300 (which is 3x) is the
+   default Speed1 scan speed, but you can't see that, you can only
+   enter a number. A value of "1" is super slow motion (.01x speed)
+   Unit will revert back to default speed when rebooted. 
+</PRE>
+<PRE>
+ ``Enter Enter 2'' gives you Speed2: prompt. Default is 2000. See
+   Speed1 above. 
+</PRE>
+<PRE>
+ ``Enter Enter 3'' gives you Speed3: prompt. Default is 6000. See
+   Speed1 above. 
+</PRE>
+<PRE>
+ ``Enter Enter 4'' gives you Rate1: prompt. Function unknown. 
+</PRE>
+<PRE>
+ ``Enter Enter 5'' gives you Rate2: prompt. Function unknown. 
+</PRE>
+<PRE>
+ ``Enter Enter 6'' gives you Rate3: prompt. Function unknown. 
+</PRE>
+<PRE>
+ ``Enter Enter 7'' gives you Inter: prompt. Function unknown. (Same
+   as TIVO_INTERSTITIAL_INTERVAL environment variable.) 
+</PRE>
+<PRE>
+ ``Enter Enter 8'' gives you Open: prompt. Function unknown. (Same
+   as TIVO_LONGOPEN_INTERVAL environment variable.) 
+</PRE>
+<PRE>
+ ``Enter Enter 9'' gives you Int.disabled, or int.enabled prompt.
+   Toggles "interstitials". Intersititials were little TiVo guy
+   animations that occurred between each menu screen. Most of them
+   were deleted as being too annoying, but the initial boot one
+   remains. Setting the TIVO_DISABLE_INTERSTITIALS environment
+   variable to 1 disables it. Toggling "Int." from the remote causes
+   the animation to play every time you hit the TiVo button. This may
+   not work on Sony machines.
+</PRE>
+<PRE>
+ ``Enter Enter Tivo'' If in Debug mode (see C-C-E-E 2 below), lets you
+   set the TiVo's clock. Warning: setting this value is very tricky (and
+   hasn't really been worked out yet), and may cause all of your Guide
+   data to get "expired". If you want to play with this, keep in mind
+   that TiVo may get mad at you for downloading several copies of your
+   Guide data over the course of a couple of days. The best way to fix a
+   messed up clock without reloading all the Guide data is to do the
+   "Make a Test Call" option. 
+</PRE>
+The following codes must be entered in the "System Information" screen. 
+<P>
+<PRE>
+ ``Clear Clear Enter Enter 1'' goes Nowhere, Does Nothing; included for
+   completeness. 
+</PRE>
+<PRE>
+ ``Clear Clear Enter Enter 2'' turns on "Special Mode: DEBUG" (Note:
+   you have to leave the "System Information" screen and re-enter it to
+   see this flag turned on.) Starts sending debugging output to the
+   /var/log/tvdebuglog file. 
+</PRE>
+<PRE>
+ ``Clear Clear Enter Enter 3'' seems to initiate a call. (a special one?) 
+</PRE>
+<PRE>
+ ``Clear Clear Enter Enter 4'' makes the machine go "Bing!" 
+</PRE>
+<PRE>
+ ``Clear Clear Enter Enter 5'' and you have the machine that goes "Bing!" 
+</PRE>
+<PRE>
+ ``Clear Clear Enter Enter 6'' will reveal the machine that goes "Bing!" 
+</PRE>
+<PRE>
+ ``Clear Clear Enter Enter 7'' causes a message to be written to
+   /var/log/tven saying: SetupDebugContext::OnNumber[94]: USER PROBLEM
+   LOGSTAMP 
+</PRE>
+<PRE>
+   This works even without Backdoors enabled.  It's likely that Customer
+   Support tells customers who are having problems to do CCEE7 around
+   the time that the problem occurs, and then when they upload the logs,
+   they can help locate what was going on when the problem happened. 
+</PRE>
+<PRE>
+ ``Clear Clear Enter Enter 8'' takes you to the "Channels You Watch"
+   page with NONE OF THE CHANNELS SELECTED! I guess this would be a
+   quick way to clear your channel list. Fortunately you can just back
+   out of it without losing your current channel list. Nobody has tried
+   going forward from that screen... 
+</PRE>
+<PRE>
+ ``Clear Clear Enter Enter 9'' I see you have the machine that goes
+   "Bing!"
+</PRE>
+<PRE>
+ ``Clear Clear Enter Enter 0'' allows you to enter your own "Dial-in
+   configuration code"! It does not appear to let you directly change
+   the TFA value. 
+</PRE>
+<PRE>
+  Otto reports at <A HREF="http://www.avsforum.com/ubbtivo/Forum6/HTML/002736.html">http://www.avsforum.com/ubbtivo/Forum6/HTML/002736.html</A>: 
+</PRE>
+<PRE>
+     TFA is definitely Toll Free Authorization. We wormed it out of one
+     of the Tivo CS guys. 
+</PRE>
+<PRE>
+     0=[Access] denied ["you probably didn't ask, but you used a local, so QED"]
+     1=No decision [made yet] (you got time)
+     2=Oh you requested (we'll get back to ya)
+     3=Yeah, I guess so
+     4=Researched and you are out of luck
+     5=You had your chance but did nothing 
+</PRE>
+<PRE>
+     The Dial In Access code (the 000 part) can be changed via some
+     special key sequences.... Anyway, when Tivo CS gets a really
+     unusual problem that needs files downloaded to the unit, they can
+     tell the customer to change the access code and it'll then download
+     certain types of files.. These may be predefined debugging type
+     things or may be files the guy just then put on the server. 
+</PRE>
+<PRE>
+     So I won't tell you how to change that number. Best case scenario:
+     Your daily call fails. Worst case scenario: Your Tivo breaks by
+     downloading and running some weird debug thing and is unrepairable
+     without a whole drive backup.
+</PRE>
+The list of codes is in no way exhaustive, as until recently it was not easy to enter "Backdoors enabled" mode.
+<P>
+Thanks to Chris Durst for his excellent list of Backdoor codes from which much of this FAQ entry was derived.  You can find his list at <A HREF="http://www.tiac.net/users/cdurst/tivocodes.html">http://www.tiac.net/users/cdurst/tivocodes.html</A>.  That list may be more up-to-date than this FAQ entry.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.025.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.025.htp">Log info</A>
+
+/ Last changed on Thu Jan 11 17:15:34 2001 by
+<A HREF="mailto:pjcreath@users.sourceforge.net">pjc</A>
+<P>
+
+<HR>
+<H2><A NAME="4.26">4.26. TiVo Ethernet howto</A></H2>
+The TiVoNet adapter creates an ISA bus on the TiVo using the factory 
+test connector (that looks like a PCI edge connector) on the front of 
+the TiVo motherboard.  It's important to note that the TiVo does not 
+include provisions for either a PCI or ISA bus, and this ISA bus add-on 
+is not fully ISA compliant, but it does allow for NE2000 compatible and 
+3COM 3C503 NIC cards that don't require DMA.
+<P>
+Andrew Tridgell was instrumental in developing this board.  He's well 
+respected in the Linux community for developing "Samba" (by ethernet 
+packet sniffing, he reverse engineered the Microsoft proprietary SMB 
+networking protocol used to share files between Windows boxes; so 
+Linux machines can act as Windows file servers and clients).
+<P>
+For info on how to build an ethernet adapter to your tivo see:
+<P>
+<PRE>
+	<A HREF="http://samba.org/tridge/tivo-ethernet/isa_adapter_howto.txt">http://samba.org/tridge/tivo-ethernet/isa_adapter_howto.txt</A>
+</PRE>
+Another FAQ (with very good LAN setup advice) is being developed at: 
+<P>
+<PRE>
+	<A HREF="http://mysite.directlink.net/jack/tivonet/tivonetHowTo.html">http://mysite.directlink.net/jack/tivonet/tivonetHowTo.html</A>
+</PRE>
+Yet more information can be found at:
+<P>
+<PRE>
+	<A HREF="http://www.9thtee.com/tivonetusage.htm">http://www.9thtee.com/tivonetusage.htm</A> and
+	<A HREF="http://www.9thtee.com/tivonetparts.htm">http://www.9thtee.com/tivonetparts.htm</A>
+</PRE>
+For further redundancy, read on...
+<P>
+NOTE: The moment you take off the cover of the TiVo unit, your 
+warantee is void.
+<P>
+NOTE: This FAQ entry is intended to be the simplest method to get your TiVoNet up and running (for example, if all goes well, you'll never need serial port shell access).  Only use the following instructions when using a professionally 
+built and tested TiVoNet system with an included NE2000 compatible card (i.e. the 9thTee package).  Many 
+testing steps are skipped that you should perform if building your own 
+card or integrating the TiVoNet with an untested NIC card;  the FAQ URL's listed above are better resources in these cases.  There is a 
+script (etc...) available from 9thTee that follows these instructions
+somewhat automatically (the script can be customized from Windows).  
+Note that this is still beta:
+<P>
+<PRE>
+	<A HREF="http://9thtee.com/tivonetfloppy.zip">http://9thtee.com/tivonetfloppy.zip</A>
+</PRE>
+This script is intended for those who haven't already upgraded their TiVo.  If you've already hacked your TiVo, then the script may screw up what you've already done.  The script has been sucessfully used on TiVo v1.3 and v2.0.1 systems.
+<P>
+NOTE: do remember to plug the TiVoNet internal floppy-style power adapter in correctly -- 
+if you plug it in backwards, you could apply 12v where 5v is expected
+and fry your TiVoNet board.
+The power connector on the board has "red" and "black" printed on the
+board next to the posts that connect to the red and black power/ground 
+wires. When properly powered, the TiVoNet board's LED should lite up 
+(and not the capacitors ;).  If you have a two-wire connector, then you should
+not have to worry about this problem (just don't cross power and ground,
+make sure all four posts are connected to the floppy-style power connector).
+<P>
+NOTE: when assembling the TiVoNet on your TiVo, put the NIC together 
+with the TiVoNet first (holding each board in one hand), then put the 
+combined unit on the TiVo motherboard.  Make sure both ISA and PCI connectors are 
+firmly seated.  When seating the PCI connector, you need to place your fingers on the back of the TiVoNet board, where the pins of the PCI connector stick out, then press towards the TiVo motherboard to seat.  The pins sticking in your fingers can hurt a bit: use an eraser (not from the end of a pencil, but a long, flat, stand-alone one) between your finger and the pins.
+<P>
+NOTE: the TiVo's internal power supply is unprotected.  It's adjacent to where
+the main (120v) power plug connects to the box. It'll give you a good jolt
+even if the TiVo's power cord is unplugged.  Keep your (and your kids)
+distance from this
+part of the unit.
+<P>
+NOTE: to protect the components from static shock, make sure to properly ground yourself when dealing with the 
+TiVoNet board, the NIC adapter, or the TiVo motherboard.  I find it sufficient 
+to touch an exposed (unpainted) part of the chassis of another computer that's 
+plugged in (grounded), before touching components.
+Radio Shack sells a wrist strap to keep you constantly 
+grounded.
+<P>
+--End of important notes.
+<P>
+Assuming the complete TiVoNet installed: the NIC drivers must be loaded, 
+the interface and route configured, and the telnet daemon must be 
+started.
+<P>
+The best way to do this, if you're starting with an unhacked TiVo 
+(no bash prompt on the serial port), is to follow the instructions for 
+"Getting a BASH prompt" in section 4.6 of this HAQ FAQ, with the 
+following exceptions and additions...
+<P>
+1. Create another floppy disk with the files "8390.0", "tivone.o", and 
+"probe.o" from:
+<P>
+<PRE>
+	<A HREF="http://tivo.samba.org/download/tridge">http://tivo.samba.org/download/tridge</A>/
+</PRE>
+You might also want to load this floppy with "nfs.o" (the NFS kernel 
+module, for mounting directories from other Unix systems), "smbfs.o" 
+(The Samba file system kernel module) and "smbmount" (for mounting 
+Windows "shares" onto the tivo), an ftp daemon, or "rsync".  Most of 
+those are available at the 9thtee site:
+<P>
+<PRE>
+	<A HREF="http://www.9thtee.com/tivonetusage.htm">http://www.9thtee.com/tivonetusage.htm</A>
+</PRE>
+except "rsync", which is available from Tridge's site:
+<P>
+<PRE>
+	<A HREF="http://tivo.samba.org/download/tridge">http://tivo.samba.org/download/tridge</A>/
+</PRE>
+2. Section 4.6, step 8, refers to "additional files from a floppy".  
+With the TiVo "A" disk mounted, create a mount point and mount the 
+floppy (make sure the floppy is in the drive):
+<P>
+<PRE>
+	mkdir /floppy
+	mount /dev/fd0 /floppy
+</PRE>
+3. Copy the kernel modules from the floppy to the "A" drive.
+<P>
+<PRE>
+	cp /mnt/floppy/8390.o /mnt/lib/modules
+	cp /mnt/floppy/tivone.o /mnt/lib/modules
+	cp /mnt/floppy/probe.o /mnt/lib/modules
+</PRE>
+Make sure to follow the section 4.6 instructions, assuring that both 
+root partitions 4 and 7 get the same files.
+<P>
+4. Rename the route command (it screws up PPP if the TiVoNet is running) and leave a route command that does nothing in it's place:
+<P>
+<PRE>
+	cp /mnt/sbin/route /mnt/sbin/route.tivo
+	echo '#!/bin/bash' &gt;/mnt/sbin/route
+</PRE>
+Repeat this for both partitions 4 and 7.
+<P>
+4. Alternate. Modify tcphonehome.tcl script.
+<P>
+Look for the line where it is trying to add the default route:
+<P>
+<PRE>
+	$gw=/bin/getprom -gateway
+ 	route add default gw $gw
+</PRE>
+Replace $gw in the second line with the correct IP address.
+<P>
+4. Alternate 2.  modify "gw" from the boot prom (see how to modify boot prom parameters elsewhere in this FAQ).
+<P>
+5. Section 4.6, steps 4-7, refer to modifying the /mnt/etc/rc.sysinit 
+file.  In addition,  at the end of the file, add the commands to load 
+the drivers and configure the interface and start up the telnet daemon:
+<P>
+<P>
+<PRE>
+	if [ "$tivoether" = true ]; then
+            (
+             tnlited 23 /bin/bash -login &amp;
+             sync ;
+             insmod -f /lib/modules/8390.o ;
+             insmod -f /lib/modules/tivone.o ;
+             sleep 2;
+             sync;
+             ifconfig eth0 192.168.1.72 up ;
+             route.tivo add default gw 192.168.1.1 ;
+            ) &amp;
+         fi
+</PRE>
+Where "192.168.1.72" is the ethernet address you want for your TiVo, 
+and "192.168.1.1" is your gateway (replace those values with your 
+desired values appropriate for your network).
+<P>
+"tivoether" is a boot prom parameter.  Setting these parameters is 
+covered in the HACK FAQ in sections 4.3 and 4.8.  This allows you to 
+turn on and off booting with the TiVoNet from the prom monitor.
+<P>
+If you're feeling lucky, then just set "tivoether" to true before the 
+predicate, i.e.:
+<P>
+<PRE>
+	export tivoether=true
+</PRE>
+(put this before the predicate in rc.sysinit, shown at the top of this 
+step 5.)
+<P>
+If the ethernet board (or just mis-coded driver) hangs your TiVo, then
+having tivoether in the boot parameters is a quick way to revive your
+system.  If you set it to "true" in rc.sysinit, and it hangs the TiVo,
+then you'll have to reboot the TiVo without the TiVoNet hardware to 
+revive the system (assuming bad hardware caused the hang).  If that 
+still hangs the system, then the above predicate hung the system, and 
+you'll have to remove the drive, reboot with Dylan's boot disk, and 
+remove this predicate from the rc.sysinit (using the "joe" editor).
+<P>
+Note that, if you halt the system with the root partition mounted R/W, 
+then the system will delay for a long period of time during booting 
+while checking the root partition. This is just a delay, not a hang.
+<P>
+Rather than hand editing this predicate into rc.sysinit using "joe", 
+you can create a file on your floppy that contains this predicate, and 
+append this file to the end of rc.sysinit after booting Dylan's boot 
+disk.  For example, let's say you called the file containing this 
+script "tivostartup.txt" and put it on the secondary floppy (mounted 
+in step 2):
+<P>
+<PRE>
+	cat /mnt/floppy/tivostartup.txt &gt;&gt;/mnt/etc/rc.d/rc.sysinit
+</PRE>
+Will append the contents of this file to the end of rc.sysinit.
+<P>
+If you create this text file from a Windows machine, make sure to run the file thru a "dos2unix.exe" utility to replace CR/LF's appropriately.
+<P>
+If you chose to modify "tcphonehome.tcl" in step "4 alternate" or set the gateway address up from the prom monitor in step "4 alternate 2", then make sure to use the normal "route" command, rather than "route.tivo" in the modified rc.sysinit script.
+<P>
+Make sure, as detailed in section 4.6, to modify the rc.sysinit 
+on both partitions 4 and 7.
+<P>
+6.  Copy any other files you want on your TiVo system (see examples 
+above), and modify rc.sysinit accordingly, if necessary.
+<P>
+7.  Make sure to unmount the TiVo parititions before turning the PC 
+power off (as described in section 4.6) and replacing any changed jumper
+on the hard disk.
+<P>
+8.  After starting the TiVo with it's modified disk and the network 
+card cabled correctly, you should be able to telnet directly to the IP 
+address you configured for your TiVo -- bypassing using the serial port 
+BASH prompt altogether (unless you need to set the "tivoether" boot 
+parameter -- in which case you'll need to use the serial port to access 
+the prom monitor, then set this parameter).
+<P>
+If you telnet in sucessfully, your set!
+<P>
+If not, then continue to the debugging section:
+<P>
+DEBUGGING:
+<P>
+1. If you changed jumper settings to boot your TiVo disk in a PC, did you change the 
+jumper settings back the way they were before reinstalling the disk in the
+TiVo?
+<P>
+2. Start by logging in via the serial console, as described in section 4.6 
+of this FAQ.  If you can't log in, then rc.sysinit was possibly not 
+correctly modified or the NIC card drivers are hanging the system.
+<P>
+(Note: step 5, above, gives some detailed examples for debugging this problem,
+depending on how you setup the "tivoether" variable.) 
+<P>
+Remove the TiVoNet from your TiVo, and try booting again.  If it boots correctly,
+and gives you a serial prompt, then your NIC card is most likely not setup correctly.
+<P>
+3. If it still doesn't give you a serial prompt, then put your TiVo's hard 
+disk back on your PC and boot 
+Dylan's boot disk and check that all the previous instructions have 
+been followed.  If you found something wrong with your setup, then 
+retry the reassembled TiVo with the TiVoNet card.  
+<P>
+If you can't find anything wrong with the setup, then
+remove the "tivoether" predicate from rc.sysinit and reboot the reassembled
+TiVo without the TiVoNet card and see if the serial prompt works.
+<P>
+If the serial prompt now works, then try loading the driver modules and configuring
+the interface from the command prompt.
+<P>
+If the serial prompt still doesn't work, then you're not setting up 
+the serial prompt correctly or not
+correctly setting up the cable for the serial port, or not setting 
+up your host terminal properly
+for the serial commection, OR: you've got serious problems..
+<P>
+Otherwise, if you have a serial prompt and still can't telnet in...
+<P>
+4. Run:
+<P>
+<PRE>
+	ps -auxww
+</PRE>
+This shows running processes.  See if the "tnlited" telnet daemon is running.  If not, start it up with:
+<P>
+<PRE>
+ 	tnlited 23 /bin/bash -login
+</PRE>
+There have been numerous reports of certain Windows and RedHat Linux 7.1 telnet clients that actually kill the TiVo telnet daemon.  If this is the case, see if you can find another telnet client for your host.
+<P>
+If you can ping your TiVo from your workstation ("ping &lt;ip address&gt;"), but you can't keep your telnet daemon running on the TiVo, then this is probably the problem.
+<P>
+Note that "ps" may not work if it's not in your "PATH" or uninstalled.  The "tivonetfloppy.zip" installation does install the "ps" command.  Also, the "ps" command is builtin to the "tivosh": enter the "tivosh" command, at its prompt, enter the above "ps" command.
+<P>
+5.  Check that the device drivers are loaded:
+<P>
+<PRE>
+	cat /proc/modules
+</PRE>
+It should show output like:
+<P>
+<PRE>
+	nfs                    51808   5
+	tivone                  4508   1
+	8390                    7264   0 [tivone]
+	mixaud                  6124   1
+	pxmpegdecode           50276   0 [mixaud]
+	fpga7114              136996   0 (unused)
+	therm                   1020   0 (unused)
+	fan                      696   0
+	i2c                     9848   0 [pxmpegdecode fpga7114 therm]
+	ideturbo                2336   1
+</PRE>
+If either "tivone" or "8390" are not loaded, then there might be something wrong with the card.
+<P>
+Try loading the probe module:
+<P>
+<PRE>
+	cat /proc/kmsg &amp;
+	insmod -f /lib/modules/probe.o
+</PRE>
+and watch for errors.
+<P>
+6. Check if the ethernet interface is properly configured, type:
+<P>
+<PRE>
+ 	ifconfig
+</PRE>
+The resulting output should look like:
+<P>
+<PRE>
+  	eth0      Link encap:Ethernet  HWaddr 00:80:48:ED:5B:88
+          inet addr:192.168.1.53  Bcast:192.168.0.255  Mask:255.255.255.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:297979 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:2144 errors:0 dropped:0 overruns:0 carrier:0 coll:1
+          Interrupt:29 Base address:0x300
+</PRE>
+Although your IP address will be different.  If your seeing TX packets, but no RX packets, you might have a broken interrupt on the NIC card.
+<P>
+7. Check the route.  This only effects getting out your gateway, and not getting between machines on your local lan, but check it out anyway.  Type:
+<P>
+<PRE>
+ 	route.tivo -n
+</PRE>
+It should respond with something like:
+<P>
+<PRE>
+	Kernel IP routing table
+	Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+	192.168.0.0    0.0.0.0         255.255.255.0   U     32767  0        0 eth0   
+      	0.0.0.0         192.168.0.1   0.0.0.0         UG    0      0        0 eth0  
+</PRE>
+The first line indicates the route to the local network.  It's saying: you can get to (in the example) "192.168.0.x" via eth0. This route is created by the ifconfig command.  If it's wrong, then something is wrong with the ifconfig statement you're using to configure the interface.
+<P>
+The second line indicates that you can get to anywhere (0.0.0.0 or x.x.x.x) by sending packets to the gateway, which is "192.168.0.1" (in the example).
+<P>
+8.  If the drivers are loaded, the interface is configured, and the telnet daemon is running, then go fix the workstation you were trying to telnet from!
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.026.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.026.htp">Log info</A>
+
+/ Last changed on Thu Apr 19 10:05:01 2001 by
+<A HREF="mailto:cworley@symbionsys.com">Chris Worley</A>
+<P>
+
+<HR>
+<H2><A NAME="4.27">4.27. How do I make my Tivo talk PPP over the serial port?</A></H2>
+Read the excellent HOWTO on this subject located here: <A HREF="http://www.pineaus.com/HOWTO/Tivo-DSL-HOWTO.html">http://www.pineaus.com/HOWTO/Tivo-DSL-HOWTO.html</A>
+<P>
+It describes, in great detail, how to setup the Tivo to do a dedicated PPP to a computer over the serial port connection (assuming you're not using the serial port to connect to a DSS box) and will let you configure to do your daily calls over a cable modem or DSL line, etc.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq04.027.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq04.027.htp">Log info</A>
+
+/ Last changed on Wed Feb 28 13:44:21 2001 by
+<A HREF="mailto:otto@tivofan.com">Otto</A>
+<P>
+
+<HR>
+<H1>5. Credits and contact information</H1>
+
+<HR>
+<H2><A NAME="5.1">5.1. Credits</A></H2>
+This FAQ would not be possible without the help of many people. This 
+list by no way is complete, but I will do my best to give it a shot! 
+They are in no particular order. If I missed someone please let me know. 
+<P>
+<PRE>
+  cc, Peter Creath, TivoTechie, Ron Curry, sorphin, Dylan, Otto, 
+  Rick Strobel, mschwab, Justin_Thyme, dcl, Stan Simmons, soundguy, 
+  Turbo, MusclNerd, Jack, Tiger, Bill Doyle, Brian Bechtel, 
+  Tridge, Rene Gaudet, rbruce, Gene Plantz, and David Bott.
+</PRE>
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq05.001.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq05.001.htp">Log info</A>
+
+/ Last changed on Sat Sep 23 19:53:09 2000 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<H2><A NAME="5.2">5.2. Contact Information</A></H2>
+If you have any comments or suggestions for this FAQ please post a message in the underground forum area on <A HREF="http://www.tivocommunity.com">http://www.tivocommunity.com</A> 
+<P>
+That way your message will be ready by the many people who help edit the FAQ.
+<P>
+
+<A HREF="index.cgi?req=edit&amp;file=faq05.002.htp">Edit this entry</A> /
+<A HREF="index.cgi?req=log&amp;file=faq05.002.htp">Log info</A>
+
+/ Last changed on Sat Apr  7 23:20:22 2001 by
+<A HREF="mailto:mhill@samba.org">mhill</A>
+<P>
+
+<HR>
+<A HREF="http://tivo.samba.org/">Hacking The TiVo</A> /
+<A HREF="index.cgi?req=home">Hacking The TiVo FAQ Wizard 1.0.3</A> /
+Feedback to <A HREF="mailto:mhill@samba.org">mhill</A>
+
+</BODY>
+</HTML>
+<BR>(times: user 1.2, sys 0.06, ch-user 0, ch-sys 0, real 4.93)

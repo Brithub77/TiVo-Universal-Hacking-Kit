@@ -1,0 +1,36 @@
+PLEASE READ THIS SHORT FILE THOROUGHLY.  REALLY.
+
+This tool is mostly untested, and comes with no warranty whatsoever.
+
+It will probably cause your tivo to burst into flames, so don't blame me if 
+you run this anyway and it does.
+
+If you remain undeterred, and would like to run this program, usage is below.
+
+This program creates backups of season pass, wishlist and logo assignment 
+information on your tivo.
+
+To create a backup, do:
+
+	backup > outfile
+
+this will create a file "outfile" containing the backup data.  you can 
+compress and store this, or copy it over to another tivo for restore, or
+whatever you like.  The outfile is in plain text.
+
+To use a backup, do:
+
+	restore infile
+
+"restore" will read the data in infile, and create the season passes, wishlists
+and logo assignments.  IT DOES NOT DELETE EXISTING SEASON PASSES AND WISHLISTS.
+If you want to exactly replicate the tivo that the backup came from, you 
+should manually delete the existing season passes and wishlists on the target
+machine.  If you do a backup and then a restore, you will end up with 2 of
+everything.  Consider yourself warned.
+
+This program is very much untested, so I am interested in hearing any test
+results people have.  if you get an error, please include the full text of
+the error message in your report.  I can be reached at user name angra on the
+tivo community forum, or via email at danspam@envy.gtf.org
+

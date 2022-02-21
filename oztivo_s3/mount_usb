@@ -1,0 +1,9 @@
+#!/bin/sh
+# Script to mount USB stick on /mnt/usb
+
+/sbin/insmod /lib/modules/fat.o
+/sbin/insmod /lib/modules/vfat.o
+/sbin/insmod /lib/modules/scsi_mod.o
+/sbin/insmod /lib/modules/sd_mod.o  
+/sbin/insmod /lib/modules/usb-storage.o
+mount /dev/sda1 /mnt/usb/

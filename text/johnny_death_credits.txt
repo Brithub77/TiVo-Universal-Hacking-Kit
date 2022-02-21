@@ -1,0 +1,37 @@
+I haven't personally created any of the software included here. I've just tied 
+it together in a nice little package - hopefully - easy to use. I'd like to 
+use this opportunity to acknowledge here all the people who made this 
+possible:
+
+The original team of TiVo hackers, that have put together the original         
+      'hacker's way' of adding a second drive, especially TiVoTechie and cc.
+
+Mike Hill aka Mr.Belboz - for having written the BlessTiVo program, the        
+      keystone to all subsequent TiVo hacking. 
+
+Dylan, who made it easy for everybody by providing a boot floppy with          
+      everything that was needed for the procedure.
+
+fray, for the Quantum unlocking patch.
+
+I'm especially pleased to acknowledge Trevor Heartfield, aka TiVoMad, for his  
+     upgrade procedure, as well as his kind collaboration during the beta      
+     phase of this CD; he offered part of his time to debug edit_bootparams so 
+     that the upgrade works off the CD, too. Thanks, Trevor!
+
+bonehead, for his modified dd that gives feedback - I know some of you will    
+     like it. :)
+
+Andrew Tridgell, who made TiVoNet possible :)
+
+Chris Worley, for the TiVoNet setup script.
+
+Peter Anvin, for isolinux.
+
+Patrick Volkerding and the Slackware team, for their wonderful distribution.
+
+And last, but not least, the beta-testers for putting up with my tyranny. The  
+     nightmare's over, guys! You know who you are. :) I appreciate your        
+     collaboration and suggestions, and your pointing out my stupidity at      
+     times. In particular I want to acknowledge DanT, sjf and Worf.
+

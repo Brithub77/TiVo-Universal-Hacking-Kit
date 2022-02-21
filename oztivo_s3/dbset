@@ -1,0 +1,19 @@
+#!/tvbin/tivosh
+
+if {$argc != 3} {
+	puts "Usage: dbset path attribute value"
+	exit 1
+}
+
+set path [lindex $argv 0]
+set attr [lindex $argv 1]
+set value [lindex $argv 2]
+
+set db [dbopen]
+RetryTransaction {
+	set obj [db $db open $path]
+	dbobj $obj set $attr $value
+}
+dbclose $db
+exit 0
+
