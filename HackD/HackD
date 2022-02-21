@@ -1,0 +1,356 @@
+#!/bin/bash
+# Version 1.2 by Bryce Powell
+# Originally derived from the first version of Lrhorer's script of a similar name
+
+# USE AT YOUR OWN RISK! I will not be held responsible if you break your TiVo or PC.
+
+####################################################################################
+#######################################################################################################
+
+# Run from root. Otherwise it will not work.
+
+# Set up the static variables.  Edit as needed.
+dstring=`date +%m-%d-%y`
+HackDir=/HackD
+Nul_Init=$HackDir/null-linuxrc.img.gz 
+ReplacRdUS=$HackDir/replace_initrd_US.x86
+ReplacRdAU=$HackDir/replace_initrd_AU.x86
+TiVoPart=$HackDir/tivopart
+BootPage=$HackDir/bootpage
+TarBallUS=$HackDir/hack_US
+TarBallAU=$HackDir/hack_AU
+RcSysinit=$HackDir/rc.sysinit.author
+PatchDirUS=$HackDir/tivoapp_patches
+PatchDirAU=$HackDir/oztivoapp_patches
+PasswdSsh=$HackDir/get-password.sh
+TWP=$HackDir/tivowebplus
+MFS_FTP=$HackDir/mfsftp
+Show_Msg=/usr/bin/dialog
+TiVo=/tivo
+TiVoVar=/tivovar
+
+# Make sure the expected directories exist
+mkdir -p $HackDir/Saved_Kernels/
+mkdir -p $HackDir/Saved_Apps/
+mkdir -p $TiVo
+mkdir -p $TiVoVar
+
+# Dialog height and width, only if dialog is found
+if [ -a $Show_Msg ];
+then
+	H=0
+	W=0
+	Title="HackD-Version-1.2"
+	Dialog="$Show_Msg --backtitle ${Title}"
+else
+	echo "Binary file dialog not found. Not showing dialog messsages..."
+fi
+	
+# Check the PROM
+prommod=n
+model=na
+type=unknown
+# console=2
+echo
+echo -n "Please enter the first 3 digits of your service number:"
+read service
+if [ ! $(echo $service | grep '^[0-9]\{3\}$') ]; 
+then
+	echo "Invalid service number. Exiting..."
+fi
+digit1=`echo $service | cut -c0-1`
+digit2=`echo $service | cut -c2-2`
+digit3=`echo $service | cut -c3-3`
+if [ "$service" == 648 ];
+then
+	echo -n "Have you replaced your PROM? [y/n]: "
+	read prommod
+	if [ "$prommod" != "y" ]; 
+	then
+		echo "You must have your PROM replaced before using this script. Exiting..."
+	fi
+fi
+
+# Find out whether it's a US or AU/NZ TiVo
+echo "Checking service number..."
+if [ "$service" == 648 ] || [ "$service" == 652 ] || [ "$service" == 658 ];
+then
+	echo "This is a US TiVo."
+elif [ "$service" == 663 ];
+then
+	echo "This is an AU/NZ TiVo."
+else
+	echo "Unknown TiVo device. Exiting..."
+fi
+echo
+
+# Check that all the expected files exist
+tvalid=0
+if ! [[ -s $Nul_Init && -f $Nul_Init ]]
+then
+     echo "Null initrd file $Nul_Init not found."
+     tvalid=1
+fi
+
+if ! [[ -s $ReplacRdUS && -f $ReplacRdUS ]]
+then
+     echo "Binary file $ReplacRdUS not found."
+     tvalid=1
+fi
+
+if ! [[ -s $ReplacRdAU && -f $ReplacRdAU ]]
+then
+     echo "Binary file $ReplacRdAU not found."
+     tvalid=1
+fi
+
+if ! [[ -s $TiVoPart && -f $TiVoPart ]]
+then
+     echo "Binary file $TiVoPart not found."
+     tvalid=1
+fi
+
+if ! [[ -s $BootPage && -f $BootPage ]]
+then
+     echo "Binary file $BootPage not found."
+     tvalid=1
+fi
+
+if ! [[ -s $RcSysinit && -f $RcSysinit ]]
+then
+     echo "Binary file $RcSysinit not found."
+     tvalid=1
+fi
+
+if [[ $tvalid -eq 1 ]]     
+then
+	echo "This hack will not work without all the correct files in $HackDir under"
+     echo "the correct names.  Provide the correct files and try again."
+     exit 1
+fi
+
+# Function to evaluate the hardware platform
+tivo_hardware () {
+hardware=$( dd if=$dspec"10" bs=8 count=1 | hexdump | grep 0000000 | cut -d" " -f4 )
+case $hardware in
+     baab)   # S3 TiVo
+          echo 32
+          return 0
+     ;;
+
+     baeb)   # TiVo_HD
+          echo 64
+          return 0
+     ;;
+
+     *)        # Not a TiVo
+          echo
+          return 1
+     ;;
+esac
+}
+
+# Scan for TiVo partitions
+tvalid=1
+for dspec in /dev/sd?;
+do
+        # Check if the target is a hard drive then attempt to load the drive partitions
+        # Change the "disk" string if Linux thinks it is not a hard drive. Typically,
+        # this may happen if a USB / SATA adapter is used.
+        ls -l $dspec | grep -q disk
+        if [ $? -eq 0 ];
+        then
+                echo $dspec
+
+                # Check for a tenth partition on the target drive.
+                if [[ -b $dspec"10" ]]
+                then
+                        echo Tenth partition found for $dspec"10"
+
+                        # Check to see if the tenth partition is a known TiVo partition type
+                        tivo_type=$( tivo_hardware )
+                        tvalid=$?
+                        [[ $tvalid -eq 0 ]] && break
+                else
+                        # Attempt to rescan the drive to provide TiVo partitions
+                        $TiVoPart r $dspec 1> /dev/null 2>&1
+
+                        # Check to see if a tenth partition has appeared
+                        if [[ -b $dspec"10" ]]
+                        then
+                             # Check to see if the new tenth partition is a known TiVo partition type
+                             tivo_type=$( tivo_hardware )
+                             tvalid=$?
+                             [[ $tvalid -eq 0 ]] && break
+                        fi
+                fi
+        fi
+done
+
+if [ $tvalid -eq 1 ]
+then
+        echo Valid TiVo drive not found.  Exiting...
+        exit 1
+fi
+echo MFS filesystem is $tivo_type bits
+echo
+
+# Get the active root partition using bootpage (assumes root=/dev/hdaX is the first parameter).
+root=$( $BootPage -p $dspec | cut -d" " -f1 )
+echo $root | grep -q "root=/dev/hd"
+if [ $? -ne 0 ];
+then
+     echo "Invalid bootpage parameters.  Please correct the bootpage parameters before continuing."
+     echo "Current parameters: $( $BootPage -p $dspec )"
+     exit 1;
+fi
+
+# Get the active kernel partition using bootpage
+kerndrv=$dspec$( $BootPage -b $dspec )
+
+# Use the name of the root partition on the TiVo to set the name of the root partition on the PC
+rootdrv=$dspec${root##*hda}
+
+# Set the partition for /var
+vardrv=${dspec}9
+
+# Display the active partitions and pause for 5 seconds.
+echo
+echo Boot = $kerndrv
+echo Root = $rootdrv
+echo /var = $vardrv
+echo
+tvar=5
+until [ $tvar -lt 1 ];
+do
+        echo -ne "     "$tvar "\r"
+        sleep 1
+        tvar=$[ $tvar - 1 ];
+done
+echo  "       "
+
+echo
+echo "Mounting drives..."
+mount | grep $rootdrv || mount $rootdrv $TiVo
+mount | grep $vardrv || mount $vardrv $TiVoVar
+
+# Get the software version
+sver=`cat $TiVo/etc/build-version`
+sver=${sver##*\ }
+
+# Make sure the tivoapp patches exist
+if [ "$service" == 648 ] || [ "$service" == 652 ] || [ "$service" == 658 ];
+then
+	HackFile=$PatchDirUS/"$sver"_hacks.fil
+elif [ "$service" == 648 ] || [ "$service" == 652 ] || [ "$service" == 658 ] && [ -a $PatchDirUS/H1_hacks.fil ];
+then
+	HackFile=$PatchDirUS/H1_hacks.fil
+elif [ "$service" == 648 ] || [ "$service" == 652 ] || [ "$service" == 658 ] && [ -a $PatchDirUS/K1_hacks.fil ];
+then
+	HackFile=$PatchDirUS/K1_hacks.fil
+elif [ "$service" == 663 ];
+then
+	HackFile=$PatchDirAU/"$sver"_patch
+else
+     echo "Text file $HackFile not found."
+     echo "Note: The file may be zero length (no hacks to process),"
+     echo "but it must exist."
+     tvalid=1
+fi
+
+# Replace the initrd of the US or AU/NZ kernel
+if [ "$service" == 648 ] || [ "$service" == 652 ] || [ "$service" == 658 ] && [ -a $ReplacRdUS ];
+then
+     echo "Writing new kernel for US.."
+     $ReplacRdUS $kerndrv $Nul_Init $HackDir/Saved_Kernels/"$sver"_Kernel:$dstring
+elif [ "$service" == 663 ] && [ -a $ReplacRdAU ];
+then
+     echo "Writing new kernel for AU/NZ.."
+     $ReplacRdAU $kerndrv $Nul_Init $HackDir/Saved_Kernels/"$sver"_Kernel:$dstring
+else
+     echo "Cannot replace US or AU/NZ kernel. Exiting..."
+     exit 1
+fi
+
+echo
+echo "Replacing iptables function..."
+cd $TiVo/sbin
+cp iptables iptables.sav.$dstring
+echo
+tvar=5
+until [ $tvar -lt 1 ];
+do
+        echo -ne "     "$tvar "\r"
+        sleep 1
+        tvar=$[ $tvar - 1 ];
+done
+
+# Copy rc.sysinit.author to /etc/rc.d and chmod it to +x
+echo "Copying rc.sysinit.author and making it executable..."
+cp $RcSysinit $TiVo/etc/rc.d
+cd $TiVo/etc/rc.d
+chmod +x rc.sysinit.author 
+echo
+
+# Copy and extract the US or AU/NZ tarball
+cd $TiVo
+if [ "$service" == 648 ] || [ "$service" == 652 ] || [ "$service" == 658 ] && [ -a $TarBallUS.tar.gz ];
+then
+     echo "Copying and extracting the US hack tarball..."
+     tar -xvf $TarBallUS.tar.gz
+elif [ "$service" == 663 ] && [ -a $TarBallAU.tar.gz ];
+then
+     echo "Copying and extracting the AU/NZ hack tarball..."
+     tar -xvf $TarBallAU.tar.gz
+else
+     echo "Tarball for US or AU/NZ not found. Exiting..."
+     exit 1
+fi
+
+# Set up SSH login
+if [ -a $Show_Msg ] && [ -a $PasswdSsh ];
+then
+	$PasswdSsh
+else
+	echo "Either binary file $Show_Msg or shell script $PasswdSsh was not found. Skipping SSH server setup..."
+fi
+
+# Copy and extract TiVoWebPlus
+cd $TiVo
+if [[ -a $TWP ]];
+then
+	echo "Copying and extracting TiVoWebPlus..."
+	tar -xvzf $TWP.tgz
+else
+	echo "TiVoWebPlus not found. Skipping..."
+fi
+
+# Copy and extract MFS_FTP
+cd $TiVo
+if [[ -a $MFS_FTP ]];
+then
+	echo "Copying and extracting MFS_FTP..."
+	tar -xvzf $MFS_FTP.tar.gz
+else
+	echo "MFS_FTP not found. Skipping..."
+fi
+
+# Set the bootpage parameters
+if [[ -a $TiVo/TivoWebPlus ]];
+then
+	echo "Setting bootpage parameters for $dspec and applying hacks (without MFS_FTP)..."
+	$BootPage -P "root=/dev/hda${root##*hda} dsscon=true console=1,115200 hacks=telnet,ssh,ftp,tivowebplus,serial upgradesoftware=false" -C $dspec
+elif [[ -a $TiVo/mfs_ftp ]];
+then
+	echo "Setting bootpage parameters for $dspec and applying hacks (without TiVoWebPlus)..."
+	$BootPage -P "root=/dev/hda${root##*hda} dsscon=true console=1,115200 hacks=telnet,ssh,ftp,mfs_ftp,serial upgradesoftware=false" -C $dspec
+elif [[ -a $TiVo/TivoWebPlus ]] && [[ -a $TiVo/mfs_ftp ]];
+then
+	echo "Setting bootpage parameters for $dspec and applying hacks..."
+	$BootPage -P "root=/dev/hda${root##*hda} dsscon=true console=1,115200 hacks=telnet,ssh,ftp,mfs_ftp,tivowebplus,serial upgradesoftware=false" -C $dspec
+else
+	echo "Setting bootpage parameters for $dspec and applying hacks (without TiVoWebPlus and MFS_FTP)..."
+	$BootPage -P "root=/dev/hda${root##*hda} dsscon=true console=1,115200 hacks=telnet,ssh,ftp,serial upgradesoftware=false" -C $dspec
+fi
+
+# End of script

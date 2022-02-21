@@ -1,0 +1,47 @@
+CONTENTS:
+
+    vmlinux-3.0.px	Kernel image for Series 1 TiVo running version
+			3.0-* of the TiVo software.
+
+    config-3.0		Kernel config file for vmlinux-3.0.px.
+
+Changes to the stock TiVo Linux sources:
+  o LBA48 (actually LBA32) support in the IDE driver.  This means
+    that drives larger than 128GiB (137GB) are now supported.
+    NOTE: to access the full capacity of a large disk you must
+	  run MFS Tools under a version of Linux that has LBA48
+	  support.  Otherwise, you will only be able to use up to
+	  128GiB (137GB) of the disk.
+	 
+  o Large swap partition support.  The stock TiVo Linux kernel is
+    only capable of using the first 128MiB of a swap partition.
+    This diff adds support for version 1 swap partitions.  NOTE
+    that you will need to write a version 1 swap header to support
+    a large partition.  You can use my tpip utility for this or,
+    you can run my updated mkswap binary on the TiVo itself with
+    the "-v1" flag.  Both are available in my main TiVo directory.
+    You cannot simply run mkswap on an x86 PC running Linux due
+    to byte order differences (even with byte swapping turned on)
+    unless you use my patch to mkswap that adds a byte swapping
+    option; see mkswap.diff in my main TiVo directory.
+
+ o  It is now possible to use the DSS port as the system console,
+    allowing you to see the boot and kernel messages.  To enable
+    this, set "dsscon=true" in the boot parameters, just like
+    you would on a Series 2 TiVo.
+
+ o  The kernel does not include a driver for a PC IDE controller
+    since the TiVo doesn't include one (it has a custom IDE
+    controller).  This saves a bit of space.
+
+ o  The __kernel_thread symbol is exported so you can build NFS
+    as a module.
+
+The patches to the stock TiVo Linux sources are available from:
+    ftp://ftp.courtesan.com/pub/TiVo/kernel/hacks/
+
+Installing the new kernel:
+
+The simplest way by far is to use tpip, http://www.courtesan.com/tivo/tpip.html
+There is more information available in my TiVo large disk page at
+http://www.courtesan.com/tivo/bigdisk.html

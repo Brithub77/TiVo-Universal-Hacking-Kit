@@ -1,0 +1,203 @@
+#!/bin/bash
+
+#Version 1.1 by Bryce Powell
+#Originally derived from Matt Callow's oZTiVo version
+#Use at your own risk! I will not be held responsible if you break your TiVo.
+
+#############################################################################
+
+# PLEASE READ BEFORE YOU CONTINUE ANY FURTHER!!!
+
+################################################
+
+# First, if you are using Windows to edit rc.sysinit.author, make sure it is in UNIX format! Do this by using DOS2UNIX (it comes with almost all Linux CDs and distros).
+
+
+# If you know what you are doing, good for you! You can ignore completing these next few steps.
+
+
+# If you don't have Windows and are operating on a Linux distro with DOS2UNIX pre-installed, just finish reading the instructions from lines 31 to 44.
+
+ 
+# If you are working with Mac or a Linux distro that doesn't come with DOS2UNIX, download it via a terminal or package manager. Users with a Mac can get the Homebrew package manager and install DOS2UNIX with it.
+
+# sudo /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# sudo brew install dos2unix
+
+
+# For Linux users, the package manager already comes with your distro. Install DOS2UNIX using these commands:
+
+# sudo apt install dos2unix
+# OR 
+# sudo apt-get install dos2unix
+
+
+# It will now begin to unpack DOS2UNIX. 
+
+
+# Wait a bit, execute the following, and you're almost there! This next step applies to BOTH Mac and Linux.
+
+# sudo dos2unix rc.sysinit.author
+
+
+# Now copy the file to the specified path (/etc/rc.d) on the TiVo's hard drive.
+
+# Example:
+# sudo cp rc.sysinit.author /tivo/etc/rc.d
+
+
+# Go to the correct destination directory.
+
+# Example:
+# cd /tivo/etc/rc.d
+
+
+# Then "chmod" it to 755 or +x. Both Mac and Linux have this command built in.
+
+# sudo chmod +x rc.sysinit.author
+# OR
+# sudo chmod 755 rc.sysinit.author
+
+
+# If you somehow forgot to or didn't read those steps, you will have to take the drive out of the TiVo again, look at the part of the instructions you
+# missed or couldn't complete, and make the needed changes. Otherwise your TiVo will not boot properly, period.
+
+###############################################################################################################
+######################################################################################################################################################
+
+# END OF REQUIRED SECTION
+
+#########################
+
+# FEEL FREE TO EDIT BEYOND THIS POINT
+
+#####################################
+
+line=1
+# Show a message on the screen + stdout
+show_msg() {
+	echo $@
+	text2osd --line $line --message  "$@"
+	line=$(( $line + 1 ))
+}
+
+# Start rc.sysinit.author
+show_msg "Starting rc.sysinit.author" 
+show_msg "and waking TiVo up after"
+show_msg "a long rest..."
+show_msg "Give him a few moments"
+show_msg "please."
+
+# Export the paths
+export PATH=$PATH:/bin:/dev:/sbin:/tvbin:/var:/var/etc:/var/hack:/hack:/hack/bin:/hack/etc:/TivoWebPlus:/mfs_ftp
+
+# Set the global variables
+
+# Set the bin directory
+BIN_DIR=/bin
+# Set the Bash binary file
+BASH=$BIN_DIR/bash
+# Set the dev directory
+DEV_DIR=/dev
+# Set the serial port for Bash to run on
+PORT=$DEV_DIR/ttyS1
+# Set the sbin directory
+SBIN_DIR=/sbin
+# Set the Telnet binary file
+TELNET=$SBIN_DIR/tnlited
+# Set the iptables binary file
+IPTABLES=$SBIN_DIR/iptables
+# Set the etc directory
+ETC_DIR=/etc
+# Set the hack directory
+HACK_DIR=/hack
+# Set the bin directory inside of /hack
+HACKBIN_DIR=$HACK_DIR$BIN_DIR
+# Set the Dropbear SSH binary file
+SSH=$HACKBIN_DIR/dropbear
+# Set the TiVoFTPd binary file
+TIVOFTPD=$HACKBIN_DIR/tivoftpd
+# Set the etc directory inside of /hack
+HACKETC_DIR=$HACK_DIR$ETC_DIR
+# Set the tvbin directory
+TVBIN_DIR=/tvbin
+# Set the var directory
+VAR_DIR=/var
+# Set the etc directory inside of /var
+VARETC_DIR=$VAR_DIR$ETC_DIR
+# Set the Dropbear directory
+SSH_DIR=$VARETC_DIR/dropbear
+# Set the hack directory inside of /var
+VARHACK_DIR=$VAR_DIR$HACK_DIR
+# Set the TiVoWebPlus directory
+TWP_DIR=/TivoWebPlus
+# Set the tivoweb file
+TIVOWEB=$TWP_DIR/tivoweb
+# Set the MFS_FTP directory
+MFSFTP_DIR=/mfs_ftp
+# Set the mfs_ftp.tcl file
+MFS_FTP=$MFSFTP_DIR/mfs_ftp.tcl
+
+# Start Bash on Serial
+show_msg "Starting Bash on Serial"
+show_msg "(ttyS1 for S3 models)..."
+$BASH -login < $PORT &> $PORT &
+
+# Start Telnet
+show_msg "Starting Telnet on port"
+show_msg "23..."
+$TELNET 23 $BASH -login &
+
+# Start SSH (if set in the bootpage parameters or located in the hack directory)
+if [[ $hacks  == *"ssh"* ]] || [[ -f $SSH ]] ; then
+	show_msg "Starting the Dropbear SSH"
+	show_msg "server..."
+	test -d $SSH_DIR || mkdir -p $SSH_DIR
+	$SSH -R -B
+else 
+	show_msg "File dropbear not found."
+	show_msg "Skipping..."
+fi
+
+# Start TiVoFTPd (if set in the bootpage parameters or located in the hack directory)
+if [[ $hacks  == *"ftp"* ]] || [[ -f $TIVOFTPD ]] ; then
+	show_msg "Starting the TiVoFTPd server"
+	show_msg "on port 21..."
+	$TIVOFTPD 21 &
+else
+	show_msg "File tivoftpd not found."
+	show_msg "Skipping..."
+fi
+
+# Start TiVoWebPlus (if set in the bootpage parameters or located in $TWP_DIR)
+if [[ $hacks  == *"tivowebplus"* ]] || [[ -f $TIVOWEB ]] ; then
+	show_msg "Starting TiVoWebPlus..."
+	$TIVOWEB &
+else
+	show_msg "File tivoweb not found."
+	show_msg "Skipping..."
+fi
+
+# Start MFS_FTP (if set in the bootpage parameters or located in $MFSFTP_DIR)
+if [[ $hacks  == *"mfs_ftp"* ]] || [[ -f $MFS_FTP ]] ; then
+	show_msg "Starting the MFS_FTP server"
+	show_msg "on port 3105..."
+	$MFS_FTP 3105 &
+else
+	show_msg "File mfs_ftp.tcl not found."
+	show_msg "Skipping..."
+fi
+
+# Disable the firewall
+show_msg "Disabling the built-in"
+show_msg "firewall..."
+$IPTABLES -F
+
+# Finish and clean up
+show_msg "rc.sysinit.author is now"
+show_msg "finished and he just woke up!"
+show_msg "Expect to see TiVo soon."
+show_msg "Waiting for his arrival..."
+show_msg "He's here! TiVo wants to be"
+show_msg "your friend, so go enjoy your" 
+show_msg "time with him."

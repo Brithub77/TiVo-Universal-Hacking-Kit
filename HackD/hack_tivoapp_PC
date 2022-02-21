@@ -1,0 +1,249 @@
+#!/bin/bash
+# Version 1.0 by Bryce Powell
+# Originally derived from the first version of Lrhorer's script with a similar name
+
+# This script applies patches to any tivoapp from a modified S3 US TiVo running 
+# software versions 11.0k to 11.0m.
+
+# USE AT YOUR OWN RISK! I will not be held responsible if you break your TiVo or PC.
+
+# It absolutely CANNOT be used with S3 AU/NZ TiVo units (ozTiVo). If you run this on a PC
+# with a AU/NZ TiVo drive attached, look forward to being able to do nothing with it! 
+
+# The UI you've come to love so much will be gone, as well as the ability to boot up.
+# More specifically, infinite loops will begin at the "Almost There" screen and all
+# you'll have now is a piece of hacked you-know-what.
+
+# Luckily, there's an good solution for this, and it's easier than getting a
+# tivoapp off of another TiVo with the same software.
+
+# I've included a way to backup your tivoapp without affecting your drive itself.
+# The script will automatically detect the tivoapp and back it up.
+# If you want to risk losing access to your TiVo, comment the backup section
+# and it will skip that part. I wouldn't recommend it, but if you are feeling
+# confident that you know what you're doing, go ahead. Just remember what I said.
+
+# If you want to restore the saved tivoapp, you will have to the the drive out 
+# (again) and replace the dysfunctional tivoapp with the backup made earlier. 
+# And voila! Congrats on finally getting your TiVo working! Tell yourself not 
+# to do that again, and you can continue using your device without the patches.
+
+# If you have any questions or concerns, please message me on Discord
+# @snaillover18 or TiVo Community Forum under the username brycepowell.
+
+# Thanks for understanding, and happy patching!
+
+###############################################
+###################################################################################################################
+
+# Run from root. Otherwise it will not work.
+
+# Set up the static variables.  Edit as needed.
+dstring=`date +%m-%d-%y`
+HackDir=/HackD
+TivoPart=$HackDir/tivopart
+BootPage=$HackDir/bootpage
+
+# Make sure the expected directories exist
+mkdir -p /tivo
+
+# Check that all the expected files exist
+tvalid=0
+if ! [[ -s $TivoPart && -f $TivoPart ]]
+then
+     echo "Binary file $TivoPart not found."
+     tvalid=1
+fi
+
+if ! [[ -s $BootPage && -f $BootPage ]]
+then
+     echo "Binary file $BootPage not found."
+     tvalid=1
+fi
+
+# Check if this is running on a PC
+# Assumes if the environment variable TIVO_ROOT exists
+set | grep -q "TIVO_ROOT="
+
+# Function to evaluate the hardware platform
+tivo_hardware () {
+hardware=$( dd if=$dspec"10" bs=8 count=1 | hexdump | grep 0000000 | cut -d" " -f4 )
+case $hardware in
+     baab)   # S3 TiVo
+          echo 32
+          return 0
+     ;;
+
+     baeb)   # Tivo_HD
+          echo 64
+          return 0
+     ;;
+
+     *)        # Not a TiVo
+          echo
+          return 1
+     ;;
+esac 
+}
+
+# Scan for TiVo partitions
+tvalid=1
+for dspec in /dev/sd?;
+do
+        # Check the target is a hard drive then Attempt to load the drive partitions
+        # Change the "disk" string if Linux thinks the drive is not a hard drive.  Typically,
+        # this may happen if a USB / SATA adapter is used.
+        ls -l $dspec | grep -q disk
+        if [ $? -eq 0 ];
+        then
+                echo $dspec
+
+                # Check for a tenth partition on the target drive.
+                if [[ -b $dspec"10" ]]
+               	then
+                	echo Tenth partition found for $dspec"10"
+
+                	# Check to see if the tenth partition is a known TiVo partition type
+                        tivo_type=$( tivo_hardware )
+                        tvalid=$?
+                        [[ $tvalid -eq 0 ]] && break
+                else
+                       	# Attempt to rescan the drive to provide TiVo partitions
+                        $TivoPart r $dspec 1> /dev/null 2>&1
+
+                        # Check to see if a tenth partition has appeared
+                        if [[ -b $dspec"10" ]]
+                        then
+                        	# Check to see if the new tenth partition is a known TiVo partition type
+                             	tivo_type=$( tivo_hardware )
+                                tvalid=$?
+                                [[ $tvalid -eq 0 ]] && break
+                        fi
+                fi
+        fi
+done
+
+if [ $tvalid -eq 1 ]
+then
+        echo Valid TiVo Drive not found.  Exiting.
+        exit 1
+fi
+echo MFS file system is $tivo_type bits
+echo
+
+	
+# Get the active root partition using bootpage (assumes root=/dev/hdaX is the first parameter).
+root=$( $BootPage -p $dspec | cut -d" " -f1 )
+echo $root | grep -q "root=/dev/hd"
+if [ $? -ne 0 ];
+then
+	echo "Invalid bootpage parameters.  Please correct the bootpage parameters before continuing."
+     	echo "Current parameters: $( $BootPage -p $dspec )"
+     	exit 1;
+fi
+
+# Get the active kernel partition using bootpage
+kerndrv=$dspec$( $BootPage -b $dspec )
+
+# Use the name of the root partition on the TiVo to set the name of the root partition on the PC
+rootdrv=$dspec${root##*hda}
+
+# Set the partition for /var
+vardrv=${dspec}9
+
+# Display the active partitions and pause for 5 seconds.
+echo
+echo Boot = $kerndrv
+echo Root = $rootdrv
+echo /var = $vardrv
+echo
+tvar=5
+until [ $tvar -lt 1 ];
+do
+        echo -ne "     "$tvar "\r"
+        sleep 1
+        tvar=$[ $tvar - 1 ];
+done
+echo  "       "
+
+echo
+echo Mounting drives...
+mount | grep $rootdrv || mount $rootdrv /tivo
+
+# Get the software version
+sver=`cat /tivo/etc/build-version`
+sver=${sver##*\ }
+
+if [[ $? -eq 0 ]]
+then
+        # Set up the static variables
+	mkdir -p $HackDir/Saved_Apps
+        SaveFile=$HackDir/Saved_Apps/tivoapp.tmp
+        Archive=$HackDir/Saved_Apps/tivoapp.sav
+	PatchDir=$HackDir/tivoapp_patches
+        HackFile=$PatchDir/"$sver"_hacks.fil
+        Platform=PC
+        # Change to the directory containing tivoapp
+        cd /tivo/tvbin
+fi
+
+if ! [[ -f $HackFile ]]
+then
+        echo "Text file "$sver"_hacks.fil not found in /tivoapp_patches.  Exiting..."
+        exit 1
+fi
+
+echo Creating temporary tivoapp
+cp tivoapp $SaveFile
+
+echo Getting the hacking parameters for tivoapp
+fail=1
+while read line
+do
+        offset=$(($(echo $line | cut -d" " -f1) - 0x00400000))
+        oldword=$(echo $line | cut -d" " -f2 | sed s'/"//g')
+        newword=$(echo $line | cut -d" " -f3 | sed s'/"//g')
+        echo $oldword $newword $offset
+
+        if [[ $Platform == PC ]]
+        then
+                B1=$( dd if=tivoapp skip=$offset bs=1 count=4 2> /dev/null | hexdump | grep 0000000 | cut -c11-12 )
+                B2=$( dd if=tivoapp skip=$offset bs=1 count=4 2> /dev/null | hexdump | grep 0000000 | cut -c9-10 )
+                B3=$( dd if=tivoapp skip=$offset bs=1 count=4 2> /dev/null | hexdump | grep 0000000 | cut -c16-17 )
+                B4=$( dd if=tivoapp skip=$offset bs=1 count=4 2> /dev/null | hexdump | grep 0000000 | cut -c14-15 )
+                testword=$B1$B2$B3$B4
+        fi
+
+ 	echo $testword
+        # Check to make sure the bytes match
+        if [[ "$testword" == "$oldword" ]]
+        then
+                echo Updating tivoapp $(echo $line | cut -d" " -f4)
+                # Convert the string into a 4 byte number expression
+                escape="\x"
+                H1=${newword:0:2}
+                H2=${newword:2:2}
+                H3=${newword:4:2}
+                H4=${newword:6:2}
+                newword=$escape$H1$escape$H2$escape$H3$escape$H4
+                echo -ne "$newword" | dd conv=notrunc of=$SaveFile bs=1 seek=$offset
+        elif [[ "$testword" == "$newword" ]]
+        then
+                echo Failed for $oldword $newword $offset
+                echo Tivoapp already has patch at this location.
+                test -e $SaveFile && rm $SaveFile
+                exit 1
+        else
+                echo Failed for $oldword $newword $offset Old value: $testword
+                echo Exiting
+                test -e $SaveFile && rm $SaveFile
+                exit 1
+        fi
+done < $HackFile
+
+echo Saving a backup of the old tivoapp
+test -e $Archive.$dstring && mv $Archive.$dstring $Archive.$dstring.safety
+mv tivoapp $Archive.$dstring
+mv $SaveFile tivoapp
+echo
+echo Done!

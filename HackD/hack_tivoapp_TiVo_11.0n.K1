@@ -1,0 +1,127 @@
+#!/bin/bash
+# Version 1.0 by Bryce Powell
+# Originally derived from the first version of Lrhorer's script with a similar name
+
+# This script applies patches to any tivoapp from a modified S3 US TiVo running 
+# software version 11.0n.K1.
+
+# USE AT YOUR OWN RISK! I will not be held responsible if you break your TiVo.
+
+# It absolutely CANNOT be used with S3 AU/NZ TiVo units (ozTiVo). If you run this on
+# an AU/NZ TiVo, look forward to being able to do nothing with it! 
+
+# The UI you've come to love so much will be gone, as well as the ability to boot up.
+# More specifically, infinite loops will begin at the "Almost There" screen and all
+# you'll have now is a piece of hacked you-know-what.
+
+# Luckily, there's an good solution for this, and it's easier than getting a
+# tivoapp off of another TiVo with the same software.
+
+# I've included a way to backup your tivoapp without affecting your drive itself.
+# The script will automatically detect the tivoapp and back it up.
+# If you want to risk losing access to your TiVo, comment the backup section
+# and it will skip that part. I wouldn't recommend it, but if you are feeling
+# confident that you know what you're doing, go ahead. Just remember what I said.
+
+# If you want to restore the saved tivoapp, you will have to the the drive out 
+# (again) and replace the dysfunctional tivoapp with the backup made earlier. 
+# And voila! Congrats on finally getting your TiVo working! Tell yourself not 
+# to do that again, and you can continue using your device without the patches.
+
+# If you have any questions or concerns, please message me on Discord
+# @snaillover18 or TiVo Community Forum under the username brycepowell.
+
+# Thanks for understanding, and happy patching!
+
+###############################################
+###################################################################################################################
+
+# Run from root. Otherwise it will not work.
+
+# Set up the static variables.  Edit as needed.
+dstring=`date +%m-%d-%y`
+
+# Check if this is running on a TiVo
+# Assumes if the environment variable TIVO_ROOT exists
+set | grep -q "TIVO_ROOT="
+
+# Get the software version
+sver=`cat /etc/build-version`
+sver=${sver##*\ }
+
+if [[ $? -eq 0 ]]
+then
+        # Set up the static variables
+        SaveFile=/tvbin/tivoapp.tmp
+        Archive=/tvbin/tivoapp.sav
+		HackBinDir=/hack/bin
+		PatchDir=$HackBinDir/tivoapp_patches
+        HackFile=$PatchDir/K1_hacks.fil
+        Platform=TiVo
+        # Change to the directory containing tivoapp
+        cd /tvbin
+	# Change the root filesystem to read/write
+        mount -o remount,rw /
+fi
+
+if ! [[ -f $HackFile ]]
+then
+        echo "Text file K1_hacks.fil not found in /tivoapp_patches.  Exiting..."
+        exit 1
+fi
+
+echo Creating temporary tivoapp
+cp tivoapp $SaveFile
+
+echo Getting the hacking parameters for tivoapp
+fail=1
+while read line
+do
+        offset=$(($(echo $line | cut -d" " -f1) - 0x00400000))
+        oldword=$(echo $line | cut -d" " -f2 | sed s'/"//g')
+        newword=$(echo $line | cut -d" " -f3 | sed s'/"//g')
+        echo $oldword $newword $offset
+        
+        if [[ $Platform == TiVo ]]
+        then
+                B1=$( dd if=tivoapp skip=$offset bs=1 count=4 2> /dev/null | hexdump | grep 0000000 | cut -c9-12 )
+                B2=$( dd if=tivoapp skip=$offset bs=1 count=4 2> /dev/null | hexdump | grep 0000000 | cut -c14-17 )
+                testword=$B1$B2
+        fi
+
+ 	echo $testword
+        # Check to make sure the bytes match
+        if [[ "$testword" == "$oldword" ]]
+        then
+                echo Updating tivoapp $(echo $line | cut -d" " -f4)
+                # Convert the string into a 4 byte number expression
+                escape="\x"
+                H1=${newword:0:2}
+                H2=${newword:2:2}
+                H3=${newword:4:2}
+                H4=${newword:6:2}
+                newword=$escape$H1$escape$H2$escape$H3$escape$H4
+                echo -ne "$newword" | dd conv=notrunc of=$SaveFile bs=1 seek=$offset
+        elif [[ "$testword" == "$newword" ]]
+        then
+                echo Failed for $oldword $newword $offset
+                echo Tivoapp already has patch at this location.
+                test -e $SaveFile && rm $SaveFile
+		[[ $Platform == TiVo ]] && mount -o remount,ro /
+                exit 1
+        else
+                echo Failed for $oldword $newword $offset Old value: $testword
+                echo Exiting
+		[[ $Platform == TiVo ]] && mount -o remount,ro /
+                test -e $SaveFile && rm $SaveFile
+                exit 1
+        fi
+done < $HackFile
+
+echo Saving a backup of the old tivoapp
+test -e $Archive.$dstring && mv $Archive.$dstring $Archive.$dstring.safety
+mv tivoapp $Archive.$dstring
+mv $SaveFile tivoapp
+[[ $Platform == TiVo ]] && mount -o remount,ro /
+echo
+echo Done!

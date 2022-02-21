@@ -1,0 +1,8 @@
+echo -ne "\x10\x00\x00\xa2" | dd conv=notrunc of=tivoapp bs=1 seek=9581864
+echo -ne "\x24\x10\x00\x01" | dd conv=notrunc of=tivoapp bs=1 seek=3381364
+echo -ne "\x00\x00\x80\x21" | dd conv=notrunc of=tivoapp bs=1 seek=2240736
+echo -ne "\x24\x11\x00\x00" | dd conv=notrunc of=tivoapp bs=1 seek=2240772
+echo -ne "\x00\x00\x80\x21" | dd conv=notrunc of=tivoapp bs=1 seek=12410144
+echo -ne "\x10\x40\x00\x26" | dd conv=notrunc of=tivoapp bs=1 seek=7277076
+echo -ne "\x10\x00\x00\x08" | dd conv=notrunc of=tivoapp bs=1 seek=3686132
+echo -ne "\x10\x00\x00\x03" | dd conv=notrunc of=tivoapp bs=1 seek=5611968
