@@ -1,0 +1,10 @@
+#!/bin/bash
+
+export -n BASH_ENV
+BASH_ENV=
+
+(
+  /sbin/insmod -f -s /mnt/kmonte.o
+  /mnt/monte /dev/hda6 "root=/dev/hda7 console=2,115200 dsscon=true upgradesoftware=false"
+)
+
