@@ -1,0 +1,4 @@
+The directories in this directory contain build scripts that 
+simplify retrieving the appropriate source code for building 
+the cross-compilers in the xcompilers directory of this CD, 
+as well as building the cross-compilers from that source.
