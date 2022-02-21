@@ -1,2 +1,2 @@
-# TiVo-Univeersal-Hacking-Kit
+# TiVo-Universal-Hacking-Kit
 A collection of hacking utilities for Series1, Series2, and Series3 TiVo models.
