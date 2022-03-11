@@ -1,4 +1,4 @@
-*** HackD v1.2 by Brithub77 ***
+*** HackD v1.3 by Brithub77 ***
 *** Everything you need in order to get your Series3 TiVo HackD ***
 
 USE AT YOUR OWN RISK! I WILL NOT BE HELD RESPONSIBLE IF YOUR BREAK YOUR TIVO.
@@ -14,41 +14,62 @@ INSTRUCTIONS FOR USE:
 
 4. That's it! Put the drive back in the TiVo and see if it boots up.
 
+
 _____________________________________________________________________________
 
 CONTENTS:
 
-HackD -- initial directory
+-> HackD -- initial directory
   -> .git -- assorted GitHub files for repository
   -> oztivoapp_patches -- software-specific patches for AU/NZ tivoapps to 
-     enable backdoors, disable encyrption, etc.   
-  -> Saved_Apps -- where unmodified backups of tivoapp binary files are 
-     located
-  -> Saved_Kernels -- where unmodified backups of TiVo kernels are located
-  -> source_video -- contains examples of videos extracted from hacked TiVos
+     enable backdoors, disable encryption, etc.   
+  -> Saved_Apps -- where unmodified backups of tivoapp binary files extracted
+     using any of the provided hack_tivoapp scripts can be located (those scripts 
+     are explained later in the README)
+  -> Saved_Kernels -- where unmodified backups of TiVo kernels extracted using HackD
+     can be located
+  -> source_video -- where streams from hacked TiVos can conveniently be stored
+     (rename it to whatever you'd like)
   -> tivoapp_patches -- software-specific patches for US tivoapps to enable 
-     backdoors, disable encyrption, etc.
-  -> bootpage -- sets boot parameters to TiVo 
+     backdoors, disable encryption, etc.
+  -> bootpage -- sets boot parameters to TiVo (e.g. enabling hacks such as Telnet,
+     prevention of software upgrades, etc.)
   -> hack_AU.tar.gz -- busybox distro complete with all the necessary 
      hacks and utilities for AU/NZ TiVos
   -> hack_US.tar.gz -- busybox distro complete with all the necessary 
      hacks and utilities for US TiVos
   -> get-password.sh -- the script in which you choose your own username and 
-     password for logging in to the server
-  -> hack_oztivoapp_PC -- patches AU/NZ tivoapps while the drive is attached 
+     password for logging in to the SSH server
+  -> hack_oztivoapp_PC -- patches AU/NZ tivoapps only while the drive is attached 
      to the PC
   -> hack_oztivoapp_TiVo -- natively patches AU/NZ tivoapps 
-  -> hack_tivoapp_PC -- patches US tivoapps while the drive is attached to 
+  -> hack_tivoapp_PC -- patches US tivmfs-utils64.tar.gzoapps only while the drive is attached to 
      the PC
-  -> hack_tivoapp_PC_11.0n.H1 -- patches US tivoapps (version 11.0n.H1) while
+  -> hack_tivoapp_PC_9.3.Y3 -- patches US tivoapps for version 9.3.Y3 only while
      the drive is attached to the PC
-  -> hack_tivoapp_PC_11.0n.K1 -- patches US tivoapps (version 11.0n.K1) while
+  -> hack_tivoapp_PC_11.0n.H1 -- patches US tivoapps for version 11.0n.H1 only while
+     the drive is attached to the PC
+  -> hack_tivoapp_PC_11.0n.K1 -- patches US tivoapps for version 11.0n.K1 only while
      the drive is attached to the PC
   -> hack_tivoapp_TiVo -- natively patches US tivoapps
-  -> hack_tivoapp_TiVo_11.0n.H1 -- natively patches US tivoapps (version 11.0n.H1)
-  -> hack_tivoapp_TiVo_11.0n.K1 -- natively patches US tivoapps (version 11.0n.K1)
-  -> HackD -- main script
-  -> null-linuxrc.img.gz -- backup of the initrd (ROM) from a TiVo kernel
+  -> hack_tivoapp_TiVo_9.3.Y3 -- natively patches US tivoapps for version 9.3.Y3
+  -> hack_tivoapp_TiVo_11.0n.H1 -- natively patches US tivoapps for version 11.0n.H1
+  -> hack_tivoapp_TiVo_11.0n.K1 -- natively patches US tivoapps for version 11.0n.K1
+  -> HackD -- main script; does all of the hard work for you
+  -> mfsftp.tar.gz -- archive containing MFS_FTP, a TiVo-native software used to extract 
+     and transfer .ty, .ty+, or .tmf streams from MFS (TiVo's Media File System), as well 
+     as retrive the .xml files that include the streams' metadata
+  -> mfstools.tar.gz -- archive containing MFSTools programs (restore, backup, mfsck, mls, 
+     etc.) for modifying TiVo drives; does NOT hack or extract anything on a drive
+  -> mfs-utils64.tar.gz -- archive containing MFS-Utils programs for both 64-bit and 32-bit
+     drive architecture (mfs_uberexport, mfs_streams, mfs_import, mfs_dumpobj, etc.); this is
+     primarily used to extract recordings and modify the MFS database from where they are 
+     stored
+  -> null-linuxrc.img.gz -- backup of the initrd (internal ROM or memory) extracted 
+     from a TiVo kernel using either of the replace_initrd binary programs (a short and 
+     in-depth explanation of this is coming up very shortly in the README)
+  -> pdisk -- utility that can perform tasks on your TiVo drive, such as listing its 
+     partitions
   -> rc.sysinit.author -- startup script that allows all hacks to run once 
      MyWorld (TiVo's UI) is finished loading
   -> README -- this file
@@ -58,6 +79,14 @@ HackD -- initial directory
   -> replace_initrd_US.x86 -- replaces the initrd in an US TiVo kernel and 
      backs up the original initrd, as well as the kernel itself, to allow 
      the PROM to pass boot checks
-  -> tivopart -- can revalidate the TiVo drive for Linux to read, as well 
-     as perform some other tasks that could corrupt it for the time being; 
-     needed in order to mount drive partitions
+  -> tivo_apm_recognizer.patch -- patch file to be applied to your kernel's source directory
+     (usually found in /usr/src); adds support for mounting TiVo drive partitions on your Linux
+     distro; only tested and verified with newer Linux kernels on Ubuntu, so you might need to 
+     manually edit the file to fit the version of your distro's kernel
+  -> tivopart -- can revalidate the TiVo drive for Linux to be able to read, 
+     as well as perform some other miscellaneous tasks; needed in order to mount 
+     drive partitions, unless TiVo partition support is already built-in to your 
+     Linux kernel (you need to patch and recompile the kernel in order
+     for this to be possible; the patch file is included with HackD)
+  -> tivowebplus.tgz -- archive containing the necessary installation files for
+     TiVoWebPlus, a web server accessed from your TiVo's IP address
