@@ -1,0 +1,5 @@
+0x070165c "104000aa 100000aa" //noencryption
+0x06d1120 "00008021 24100001" //backdoors
+0x0467908 "02001021 21020001" //masterspigot
+0x05234b8 "0c149e9b 24020000" //kill_tivo_ui_asterisks_nonworking
+0x051970c "0c149e9b 24020000" //kill_tivo_plus_trial_nag
